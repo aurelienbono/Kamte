@@ -30,42 +30,39 @@ class _HomePageState extends State<HomePage> {
                   child: Image.asset('assets/images/image1.png'),
                   margin: EdgeInsets.only(bottom: 32),
                 ),
-              Expanded(
-                child: ScrollConfiguration(
-                  behavior: NoGlowBehaviour( ),
-                  child: ListView( 
-                    children: [   TaskCardWidget(
-                      title: "aurelien",
-                      description:
-                          "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it",
+                Expanded(
+                  child: ScrollConfiguration(
+                    behavior: NoGlowBehaviour(),
+                    child: ListView(
+                      children: [
+                        TaskCardWidget(),
+                      ],
                     ),
-                    TaskCardWidget(
-                      title: "GICAM",
-                      description:
-                          " distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it",
-                    ),
-                    TaskCardWidget(), 
-                     TaskCardWidget(), 
-                      TaskCardWidget(), 
-                       TaskCardWidget(), 
-                    ],),
-                ),
-              )
+                  ),
+                )
               ],
             ),
             Positioned(
-              bottom:20, 
-              right: 0 , 
-                child: GestureDetector(
-                  onTap: (){ 
-                  Navigator.push(context, MaterialPageRoute(builder: (contex)=>TaskPage())); 
-                  },
-                  child: Container(
-                    width: 60, height: 60,
-                    decoration: BoxDecoration( color: Color(0xff3F4E4F),borderRadius: BorderRadius.circular(20)),
-                              child: Center(child: Icon(CupertinoIcons.add, color: Colors.white,))),
-                            ),
-                )
+              bottom: 20,
+              right: 0,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (contex) => TaskPage()));
+                },
+                child: Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                        color: Color(0xff3F4E4F),
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Center(
+                        child: Icon(
+                      CupertinoIcons.add,
+                      color: Colors.white,
+                    ))),
+              ),
+            )
           ],
         ),
       ),

@@ -2,6 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:keep_note/database_helper.dart';
+import 'package:keep_note/models/task.dart';
 import 'package:keep_note/widget.dart';
 
 class TaskPage extends StatefulWidget {
@@ -40,6 +42,23 @@ class _TaskPageState extends State<TaskPage> {
                       ),
                       Expanded(
                           child: TextField(
+                           onSubmitted: (value) async {
+                             print("La valeur du champs est : $value");  
+
+                            if(value != '') { 
+                            DataBaseHelper _dbHelper = DataBaseHelper(); 
+
+                            Task _newTask = Task( 
+                              title: value
+                            ); 
+
+                           await _dbHelper.insertTask(_newTask ); 
+
+                           print("Un nouveau task a eté crée : ${_newTask.title}"); 
+                            }
+
+
+                           },
                         decoration: InputDecoration(
                             hintText: "  Entrez un titre ...",
                             border: InputBorder.none),
