@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:keep_note/database_helper.dart';
 import 'package:keep_note/screen/taskpage.dart';
 import 'package:keep_note/widget.dart';
 
@@ -13,6 +14,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  DataBaseHelper _dbHelper = DataBaseHelper(); 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,14 +35,24 @@ class _HomePageState extends State<HomePage> {
                   margin: EdgeInsets.only(bottom: 32),
                 ),
                 Expanded(
-                  child: ScrollConfiguration(
-                    behavior: NoGlowBehaviour(),
-                    child: ListView(
-                      children: [
-                        TaskCardWidget(),
-                      ],
-                    ),
-                  ),
+                    child: FutureBuilder( 
+                      initialData: [],
+                      future: _dbHelper.getTask(),
+                      builder: (context , AsyncSnapshot snapshot ){ 
+                        return ScrollConfiguration(
+                          behavior: NoGlowBehaviour(),
+                          child: ListView.builder( 
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context,index) { 
+                               return TaskCardWidget( 
+                                title: snapshot.data[index].title,
+                               ); 
+                            }, 
+                            ),
+                        ) ; 
+                      }
+
+                    )
                 )
               ],
             ),
@@ -48,7 +62,9 @@ class _HomePageState extends State<HomePage> {
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (contex) => TaskPage()));
+                      MaterialPageRoute(builder: (contex) => TaskPage())).then((value) { setState(() {
+                        
+                      });});
                 },
                 child: Container(
                     width: 60,

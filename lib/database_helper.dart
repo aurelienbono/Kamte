@@ -1,5 +1,5 @@
-import 'package:keep_note/models/task.dart';
 import 'package:path/path.dart';
+import 'package:keep_note/models/task.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DataBaseHelper{ 
@@ -31,4 +31,15 @@ Future<void> insertTask(Task task) async {
   );
 }
 
+
+
+Future<List<Task>> getTask() async{ 
+  Database _db  = await database(); 
+
+  List<Map<String,dynamic>> taskMap = await _db.query('tasks'); 
+  return List.generate(taskMap.length, (index) { 
+    return Task( id: taskMap[index]['id'], title:taskMap[index]['title'] , description: taskMap[index]['description'] ); 
+  }); 
+}
+ 
 }

@@ -94,7 +94,9 @@ class _TaskPageState extends State<TaskPage> {
               right: 24 , 
                 child: GestureDetector(
                   onTap: (){ 
-                  Navigator.push(context, MaterialPageRoute(builder: (contex)=>TaskPage())); 
+                  Navigator.push(context, MaterialPageRoute(builder: (contex)=>TaskPage())) ; 
+                  
+                   
                   },
                   child: Container(
                     width: 60, height: 60,
