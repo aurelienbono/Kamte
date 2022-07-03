@@ -15,13 +15,22 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
+   String? _taskTitle='';
+
   void initState() {
-    print("ID:${widget.task?.id}");
+
+    if(widget.task !=null){ 
+      _taskTitle = widget.task?.title; 
+    }
     super.initState();
   }
 
+
   @override
   Widget build(BuildContext context) {
+
+
+
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -66,6 +75,7 @@ class _TaskPageState extends State<TaskPage> {
                             }
                           }
                         },
+                        controller: TextEditingController()..text =_taskTitle!,
                         decoration: InputDecoration(
                             hintText: "  Entrez un titre ...",
                             border: InputBorder.none),
@@ -90,7 +100,7 @@ class _TaskPageState extends State<TaskPage> {
                   ),
                 ),
                 TodoWidget(isDone: false),
-                TodoWidget(isDone: true)
+              
               ],
             ),
             Positioned(
