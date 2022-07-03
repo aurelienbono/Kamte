@@ -15,22 +15,17 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
-   String? _taskTitle='';
+  String? _taskTitle = '';
 
   void initState() {
-
-    if(widget.task !=null){ 
-      _taskTitle = widget.task?.title; 
+    if (widget.task != null) {
+      _taskTitle = widget.task?.title;
     }
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
-
-
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -75,7 +70,7 @@ class _TaskPageState extends State<TaskPage> {
                             }
                           }
                         },
-                        controller: TextEditingController()..text =_taskTitle!,
+                        controller: TextEditingController()..text = _taskTitle!,
                         decoration: InputDecoration(
                             hintText: "  Entrez un titre ...",
                             border: InputBorder.none),
@@ -99,8 +94,43 @@ class _TaskPageState extends State<TaskPage> {
                     },
                   ),
                 ),
-                TodoWidget(isDone: false),
-              
+                // TodoWidget(isDone: false),
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(right: 12),
+          
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 22,
+                                height: 22,
+                                decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                        color: Color(0xff82869d), width: 1.4)),
+                                child: Icon(
+                                  CupertinoIcons.checkmark_alt,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                            child: TextField(
+                          decoration: InputDecoration(
+                              hintText: " Entrez un nouveau objectif",
+                              border: InputBorder.none),
+                        ))
+                      ],
+                    ),
+                  ],
+                )
               ],
             ),
             Positioned(
