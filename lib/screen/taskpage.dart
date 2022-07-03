@@ -7,25 +7,31 @@ import 'package:keep_note/models/task.dart';
 import 'package:keep_note/widget.dart';
 
 class TaskPage extends StatefulWidget {
-  TaskPage({Key? key}) : super(key: key);
+  final Task? task;
+  TaskPage({required this.task});
 
   @override
   State<TaskPage> createState() => _TaskPageState();
 }
 
 class _TaskPageState extends State<TaskPage> {
+  void initState() {
+    print("ID:${widget.task?.id}");
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Container(
             child: Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 24,bottom: 12),
+                  padding: const EdgeInsets.only(top: 24, bottom: 12),
                   child: Row(
                     children: [
                       InkWell(
@@ -42,23 +48,24 @@ class _TaskPageState extends State<TaskPage> {
                       ),
                       Expanded(
                           child: TextField(
-                           onSubmitted: (value) async {
-                             print("La valeur du champs est : $value");  
+                        onSubmitted: (value) async {
+                          print("La valeur du champs est : $value");
 
-                            if(value != '') { 
-                            DataBaseHelper _dbHelper = DataBaseHelper(); 
+                          if (value != '') {
+                            if (widget.task == null) {
+                              DataBaseHelper _dbHelper = DataBaseHelper();
 
-                            Task _newTask = Task( 
-                              title: value
-                            ); 
+                              Task _newTask = Task(title: value);
 
-                           await _dbHelper.insertTask(_newTask ); 
+                              await _dbHelper.insertTask(_newTask);
 
-                           print("Un nouveau task a eté crée : ${_newTask.title}"); 
+                              print(
+                                  "Un nouveau task a eté crée : ${_newTask.title}");
+                            } else {
+                              print('mise a jour de l existant');
                             }
-
-
-                           },
+                          }
+                        },
                         decoration: InputDecoration(
                             hintText: "  Entrez un titre ...",
                             border: InputBorder.none),
@@ -71,41 +78,43 @@ class _TaskPageState extends State<TaskPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 12), 
+                  padding: const EdgeInsets.only(bottom: 12),
                   child: TextField(
                     decoration: InputDecoration(
                         hintText: " Entrez une description pour ....",
-                        border: InputBorder.none , 
-                        contentPadding: EdgeInsets.symmetric( 
-                          horizontal: 20
-                        )),
-                        onSubmitted: (value){ 
-                          print("validation value");
-                        },
-                      
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 20)),
+                    onSubmitted: (value) {
+                      print("validation value");
+                    },
                   ),
                 ),
-          TodoWidget(isDone: false),
-          TodoWidget(isDone: true)
-          ],
-        ),
-             Positioned(
-              bottom:20, 
-              right: 24 , 
-                child: GestureDetector(
-                  onTap: (){ 
-                  Navigator.push(context, MaterialPageRoute(builder: (contex)=>TaskPage())) ; 
-                  
-                   
-                  },
-                  child: Container(
-                    width: 60, height: 60,
-                    decoration: BoxDecoration( color: Color.fromARGB(255, 176, 36, 80),borderRadius: BorderRadius.circular(20)),
-                              child: Center(child: Icon(CupertinoIcons.delete_simple, color: Colors.white,))),
-                            ),
-                )
+                TodoWidget(isDone: false),
+                TodoWidget(isDone: true)
               ],
-            )),
+            ),
+            Positioned(
+              bottom: 20,
+              right: 24,
+              child: GestureDetector(
+                onTap: () {
+                  // Navigator.push(context, MaterialPageRoute(builder: (contex)=>TaskPage())) ;
+                },
+                child: Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 176, 36, 80),
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Center(
+                        child: Icon(
+                      CupertinoIcons.delete_simple,
+                      color: Colors.white,
+                    ))),
+              ),
+            )
+          ],
+        )),
       ),
     );
   }

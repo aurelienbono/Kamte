@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keep_note/database_helper.dart';
+import 'package:keep_note/models/task.dart';
 import 'package:keep_note/screen/taskpage.dart';
 import 'package:keep_note/widget.dart';
 
@@ -16,6 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   DataBaseHelper _dbHelper = DataBaseHelper(); 
+  Task _task = Task(); 
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                                return GestureDetector(
                                 onTap: (){
                                     Navigator.push(context,
-                      MaterialPageRoute(builder: (contex) => TaskPage()));
+                                MaterialPageRoute(builder: (contex) => TaskPage( task: snapshot.data[index],)));
                                 },
                                  child: TaskCardWidget( 
                                   title: snapshot.data[index].title,
@@ -68,7 +70,7 @@ class _HomePageState extends State<HomePage> {
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (contex) => TaskPage())).then((value) { setState(() {
+                      MaterialPageRoute(builder: (contex) => TaskPage(task: null ))).then((value) { setState(() {
                         
                       });});
                 },
