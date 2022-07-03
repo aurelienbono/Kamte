@@ -97,37 +97,44 @@ class _TaskPageState extends State<TaskPage> {
                 // TodoWidget(isDone: false),
                 Column(
                   children: [
-                    Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 12),
-          
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 22,
-                                height: 22,
-                                decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: Color(0xff82869d), width: 1.4)),
-                                child: Icon(
-                                  CupertinoIcons.checkmark_alt,
-                                  color: Colors.white,
-                                  size: 18,
+                    Padding(
+                      padding: const EdgeInsets.symmetric( 
+                        horizontal: 24
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(right: 12),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 22,
+                                  height: 22,
+                                  decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(
+                                          color: Color(0xff82869d), width: 1.4)),
+                                  child: Icon(
+                                    CupertinoIcons.checkmark_alt,
+                                    color: Colors.white,
+                                    size: 18,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        Expanded(
-                            child: TextField(
-                          decoration: InputDecoration(
-                              hintText: " Entrez un nouveau objectif",
-                              border: InputBorder.none),
-                        ))
-                      ],
+                          Expanded(
+                              child: TextField( 
+                                onSubmitted: (val){ 
+                                  
+                                },
+                            decoration: InputDecoration(
+                                hintText: " Entrez un nouveau objectif",
+                                border: InputBorder.none),
+                          ))
+                        ],
+                      ),
                     ),
                   ],
                 )
