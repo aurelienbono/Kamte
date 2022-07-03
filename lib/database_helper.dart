@@ -1,3 +1,4 @@
+import 'package:keep_note/models/todo.dart';
 import 'package:path/path.dart';
 import 'package:keep_note/models/task.dart';
 import 'package:sqflite/sqflite.dart';
@@ -18,13 +19,25 @@ class DataBaseHelper{
   }
 
 
-// Define a function that inserts dogs into the database
+// Define a function that inserts Tasks into the database
 Future<void> insertTask(Task task) async {
   Database _db = await database();
 
   await _db.insert(
     'tasks',
     task.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+}
+
+
+// Define a function that inserts Todo into the database
+Future<void> insertTodo(Todo todo) async {
+  Database _db = await database();
+
+  await _db.insert(
+    'todo',
+    todo.toMap(),
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
 }

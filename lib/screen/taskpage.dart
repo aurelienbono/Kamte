@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keep_note/database_helper.dart';
 import 'package:keep_note/models/task.dart';
+import 'package:keep_note/models/todo.dart';
 import 'package:keep_note/widget.dart';
 
 class TaskPage extends StatefulWidget {
@@ -126,9 +127,27 @@ class _TaskPageState extends State<TaskPage> {
                           ),
                           Expanded(
                               child: TextField( 
-                                onSubmitted: (val){ 
-                                  
-                                },
+                                onSubmitted: (val) async{
+                          print("La valeur du champs est : $val");
+
+                          if (val != '') {
+                            if (widget.task != null) {
+                              DataBaseHelper _dbHelper = DataBaseHelper();
+
+                              Todo _newTodo = Todo(title: val,isDone: 0, 
+                               taskId: widget.task!.id 
+                               );
+
+                              await _dbHelper.insertTodo(_newTodo);
+
+                              print(
+                                  "Un nouveau todo a eté crée : ${_newTodo.title}");
+                            }
+                            else { 
+                              print("todo n'existe pas"); 
+                            }
+                          }
+                        },
                             decoration: InputDecoration(
                                 hintText: " Entrez un nouveau objectif",
                                 border: InputBorder.none),
