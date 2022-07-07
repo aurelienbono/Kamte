@@ -11,7 +11,7 @@ class TaskCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: double.infinity,
+        width: double.infinity, 
         padding: EdgeInsets.symmetric( vertical: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
