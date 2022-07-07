@@ -12,33 +12,31 @@ class TaskCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 22),
+        padding: EdgeInsets.symmetric( vertical: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.white,
         ),
-        margin: EdgeInsets.only(bottom: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
+        margin: EdgeInsets.only(bottom: 18),
+        child: ListTile( title:   Text(
               title ?? ("sans nom"),
               style: TextStyle(
                 fontSize: 22,
                 color: Color(0xff211551),
                 fontWeight: FontWeight.bold,
               ),
-            ),
-            Padding(
+            ), 
+            trailing:    Padding(
               padding: EdgeInsets.only(top: 10),
               child: Text(
-                description ?? ("aucune description ajoutée"),
+                description ?? ("0"),
                 style: TextStyle(
-                    fontSize: 16, color: Color(0xff86829d), height: 1.5),
+                    fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xff86829d),),
               ),
+            ),
             )
-          ],
-        ));
+        
+        );
   }
 }
 
