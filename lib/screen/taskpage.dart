@@ -17,13 +17,17 @@ class TaskPage extends StatefulWidget {
 
 class _TaskPageState extends State<TaskPage> {
   String? _taskTitle = '';
+  int? _taskId = 0 ; 
 
   void initState() {
     if (widget.task != null) {
       _taskTitle = widget.task?.title;
+      _taskId = widget.task?.id; 
     }
     super.initState();
   }
+
+  DataBaseHelper _dbHelper = DataBaseHelper();
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +62,6 @@ class _TaskPageState extends State<TaskPage> {
 
                           if (value != '') {
                             if (widget.task == null) {
-                              DataBaseHelper _dbHelper = DataBaseHelper();
-
                               Task _newTask = Task(title: value);
 
                               await _dbHelper.insertTask(_newTask);
@@ -96,12 +98,32 @@ class _TaskPageState extends State<TaskPage> {
                   ),
                 ),
                 // TodoWidget(isDone: false),
+                FutureBuilder(
+                    initialData: [],
+                    future: _dbHelper.getTodo(_taskId!),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      return Expanded(
+                        child: ListView.builder(
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: (){ 
+
+                                },
+                                child: TodoWidget(
+                                  isDone: snapshot.data[index].isDone == 0
+                                      ? false
+                                      : true,
+                                  text: snapshot.data[index].title,
+                                ),
+                              );
+                            }),
+                      );
+                    }),
                 Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric( 
-                        horizontal: 24
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: Row(
                         children: [
                           Container(
@@ -115,7 +137,8 @@ class _TaskPageState extends State<TaskPage> {
                                       color: Colors.transparent,
                                       borderRadius: BorderRadius.circular(5),
                                       border: Border.all(
-                                          color: Color(0xff82869d), width: 1.4)),
+                                          color: Color(0xff82869d),
+                                          width: 1.4)),
                                   child: Icon(
                                     CupertinoIcons.checkmark_alt,
                                     color: Colors.white,
@@ -126,28 +149,27 @@ class _TaskPageState extends State<TaskPage> {
                             ),
                           ),
                           Expanded(
-                              child: TextField( 
-                                onSubmitted: (val) async{
-                          print("La valeur du champs est : $val");
+                              child: TextField(
+                            onSubmitted: (val) async {
+                              print("La valeur du champs est : $val");
 
-                          if (val != '') {
-                            if (widget.task != null) {
-                              DataBaseHelper _dbHelper = DataBaseHelper();
+                              if (val != '') {
+                                if (widget.task != null) {
+                                  DataBaseHelper _dbHelper = DataBaseHelper();
 
-                              Todo _newTodo = Todo(title: val,isDone: 0, 
-                               taskId: widget.task!.id 
-                               );
+                                  Todo _newTodo = Todo(
+                                      title: val,
+                                      isDone: 0,
+                                      taskId: widget.task!.id);
 
-                              await _dbHelper.insertTodo(_newTodo);
+                                  await _dbHelper.insertTodo(_newTodo);
+                                  setState(() {});
 
-                              print(
-                                  "Un nouveau todo a eté crée : ${_newTodo.title}");
-                            }
-                            else { 
-                              print("todo n'existe pas"); 
-                            }
-                          }
-                        },
+                                  // print(
+                                  //     "Un nouveau todo a eté crée : ${_newTodo.title}");
+                                }
+                              }
+                            },
                             decoration: InputDecoration(
                                 hintText: " Entrez un nouveau objectif",
                                 border: InputBorder.none),
