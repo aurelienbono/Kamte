@@ -15,9 +15,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  DataBaseHelper _dbHelper = DataBaseHelper();
+  Task _task = Task();
 
-  DataBaseHelper _dbHelper = DataBaseHelper(); 
-  Task _task = Task(); 
+
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -37,43 +40,39 @@ class _HomePageState extends State<HomePage> {
                   margin: EdgeInsets.only(bottom: 32),
                 ),
                 Expanded(
-                    child: FutureBuilder( 
-                      initialData: [],
-                      future: _dbHelper.getTask(),
-                      builder: (context , AsyncSnapshot snapshot ){ 
-                        return ScrollConfiguration(
-                          behavior: NoGlowBehaviour(),
-                          child: ListView.builder( 
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (context,index) { 
-                               return GestureDetector(
-                                onTap: (){
-                                    Navigator.push(context,
-                                MaterialPageRoute(builder: (contex) => TaskPage( task: snapshot.data[index],)));
-                                },
-                                 child: TaskCardWidget( 
-                                  title: snapshot.data[index].title,
-                                 ),
-                               ); 
-                            }, 
+                    child: FutureBuilder(
+                        initialData: [],
+                        future: _dbHelper.getTask(),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          return ScrollConfiguration(
+                            behavior: NoGlowBehaviour(),
+                            child: ListView.builder(
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (contex) => TaskPage(
+                                                  task: snapshot.data[index],
+                                                )));
+                                  },
+                                  child: TaskCardWidget(
+                                    title: snapshot.data[index].title,
+                                  ),
+                                );
+                              },
                             ),
-                        ) ; 
-                      }
-
-                    )
-                )
+                          );
+                        }))
               ],
             ),
             Positioned(
               bottom: 20,
               right: 0,
               child: GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (contex) => TaskPage(task: null ))).then((value) { setState(() {
-                        
-                      });});
-                },
+                // onTap: showMadal,
                 child: Container(
                     width: 60,
                     height: 60,
@@ -92,4 +91,6 @@ class _HomePageState extends State<HomePage> {
       ),
     ));
   }
+
+
 }

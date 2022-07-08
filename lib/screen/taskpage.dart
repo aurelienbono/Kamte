@@ -19,15 +19,40 @@ class _TaskPageState extends State<TaskPage> {
   String? _taskTitle = '';
   int? _taskId = 0 ; 
 
+
+  late FocusNode _titleFocus; 
+  late FocusNode _descriptionFocus; 
+  late FocusNode _todoFocus; 
+
+
   void initState() {
     if (widget.task != null) {
       _taskTitle = widget.task?.title;
       _taskId = widget.task?.id; 
     }
+    _titleFocus = FocusNode(); 
+    _descriptionFocus = FocusNode(); 
+    _todoFocus = FocusNode(); 
+
+
     super.initState();
   }
 
+
+  bool _contentVisile = false; 
+
+void dispose() {
+
+  _titleFocus.dispose(); 
+  _titleFocus.dispose(); 
+  _titleFocus.dispose(); 
+  super.dispose(); 
+}
+
+
   DataBaseHelper _dbHelper = DataBaseHelper();
+
+
   
 
   @override
@@ -58,6 +83,7 @@ class _TaskPageState extends State<TaskPage> {
                       ),
                       Expanded(
                           child: TextField(
+                            focusNode: _titleFocus,
                         onSubmitted: (value) async {
                           print("La valeur du champs est : $value");
 
@@ -72,7 +98,8 @@ class _TaskPageState extends State<TaskPage> {
                             } else {
                               print('mise a jour de l existant');
                             }
-                          }
+                          } 
+                          _descriptionFocus.requestFocus(); 
                         },
                         controller: TextEditingController()..text = _taskTitle!,
                         decoration: InputDecoration(
@@ -89,12 +116,15 @@ class _TaskPageState extends State<TaskPage> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                   child: TextField(
+                   
+                    focusNode: _descriptionFocus,
+                    
                     decoration: InputDecoration(
                         hintText: " Entrez une description pour ....",
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(horizontal: 20)),
                     onSubmitted: (value) {
-                      print("validation value");
+                     _todoFocus.requestFocus(); 
                     },
                   ),
                 ),
@@ -151,6 +181,7 @@ class _TaskPageState extends State<TaskPage> {
                           ),
                           Expanded(
                               child: TextField(
+                                focusNode: _todoFocus,
                             onSubmitted: (val) async {
                               print("La valeur du champs est : $val");
 
@@ -181,30 +212,75 @@ class _TaskPageState extends State<TaskPage> {
                   ],
                 )
               ],
-            ),
-            Positioned(
-              bottom: 20,
-              right: 24,
-              child: GestureDetector(
-                onTap: () {
-                  // Navigator.push(context, MaterialPageRoute(builder: (contex)=>TaskPage())) ;
-                },
-                child: Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 176, 36, 80),
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Center(
-                        child: Icon(
-                      CupertinoIcons.delete_simple,
-                      color: Colors.white,
-                    ))),
-              ),
+            ),       
+             Positioned(
+                bottom: 20,
+                right: 24,
+                child: GestureDetector(
+                  onTap: () {
+                    // Navigator.push(context, MaterialPageRoute(builder: (contex)=>TaskPage())) ;
+                  },
+                  child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 176, 36, 80),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Center(
+                          child: Icon(
+                        CupertinoIcons.delete_simple,
+                        color: Colors.white,
+                      ))),
+                ),
+       
             )
           ],
         )),
       ),
     );
   }
+
+/******** le show modal pour ajouter un portefeuille actuellement  */
+// void showMadal() {
+//     showModalBottomSheet(
+//         shape: RoundedRectangleBorder(
+//           borderRadius: BorderRadius.vertical(
+//             top: Radius.circular(25.0),
+//           ),
+//         ), 
+//         backgroundColor: Color(0xfff6f6f6),
+//         context: context,
+//         builder: (BuildContext context) {
+//           return Container(
+//               child:  Expanded(
+//                           child: TextField(
+//                             focusNode: _titleFocus,
+//                         onSubmitted: (value) async {
+//                           print("La valeur du champs est : $value");
+
+//                           if (value != '') {
+//                             if (widget.task == null) {
+//                               Task _newTask = Task(title: value);
+
+//                               await _dbHelper.insertTask(_newTask);
+
+//                               print(
+//                                   "Un nouveau task a eté crée : ${_newTask.title}");
+//                             } else {
+//                               print('mise a jour de l existant');
+//                             }
+//                           } 
+//                         },
+//                         controller: TextEditingController()..text = _taskTitle!,
+//                         decoration: InputDecoration(
+//                             hintText: "  Entrez un titre ...",
+//                             border: InputBorder.none),
+//                         style: TextStyle(
+//                             fontSize: 28,
+//                             fontWeight: FontWeight.bold,
+//                             color: Color(0xff86829d)),
+//                       )));
+//         });
+//   }
+
 }
