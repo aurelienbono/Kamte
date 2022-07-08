@@ -20,19 +20,12 @@ class _TaskPageState extends State<TaskPage> {
   int? _taskId = 0 ; 
 
 
-  late FocusNode _titleFocus; 
-  late FocusNode _descriptionFocus; 
-  late FocusNode _todoFocus; 
-
 
   void initState() {
     if (widget.task != null) {
       _taskTitle = widget.task?.title;
       _taskId = widget.task?.id; 
     }
-    _titleFocus = FocusNode(); 
-    _descriptionFocus = FocusNode(); 
-    _todoFocus = FocusNode(); 
 
 
     super.initState();
@@ -40,14 +33,6 @@ class _TaskPageState extends State<TaskPage> {
 
 
   bool _contentVisile = false; 
-
-void dispose() {
-
-  _titleFocus.dispose(); 
-  _titleFocus.dispose(); 
-  _titleFocus.dispose(); 
-  super.dispose(); 
-}
 
 
   DataBaseHelper _dbHelper = DataBaseHelper();
@@ -83,7 +68,7 @@ void dispose() {
                       ),
                       Expanded(
                           child: TextField(
-                            focusNode: _titleFocus,
+                    
                         onSubmitted: (value) async {
                           print("La valeur du champs est : $value");
 
@@ -96,10 +81,10 @@ void dispose() {
                               print(
                                   "Un nouveau task a eté crée : ${_newTask.title}");
                             } else {
-                              print('mise a jour de l existant');
+                            await  _dbHelper.updateTaskTitle(_taskId!, value); 
+                            print("TASK UPDATE"); 
                             }
                           } 
-                          _descriptionFocus.requestFocus(); 
                         },
                         controller: TextEditingController()..text = _taskTitle!,
                         decoration: InputDecoration(
@@ -117,14 +102,12 @@ void dispose() {
                   padding: const EdgeInsets.only(bottom: 12),
                   child: TextField(
                    
-                    focusNode: _descriptionFocus,
                     
                     decoration: InputDecoration(
                         hintText: " Entrez une description pour ....",
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(horizontal: 20)),
                     onSubmitted: (value) {
-                     _todoFocus.requestFocus(); 
                     },
                   ),
                 ),
@@ -181,7 +164,6 @@ void dispose() {
                           ),
                           Expanded(
                               child: TextField(
-                                focusNode: _todoFocus,
                             onSubmitted: (val) async {
                               print("La valeur du champs est : $val");
 

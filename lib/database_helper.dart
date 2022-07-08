@@ -53,6 +53,11 @@ Future<List<Task>> getTask() async{
   }); 
 }
 
+Future<void> updateTaskTitle(int id , String title) async{ 
+  Database _db = await database() ; 
+  await _db.rawUpdate("UPDATE tasks SET title='$title 'where id = '$id'");
+  
+}
 
 Future<List<Todo>> getTodo(int taskId) async{ 
   Database _db  = await database(); 
