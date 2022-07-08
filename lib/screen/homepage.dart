@@ -72,11 +72,16 @@ class _HomePageState extends State<HomePage> {
                         }))
               ],
             ),
-            Positioned(
+                    Positioned(
               bottom: 20,
               right: 0,
               child: GestureDetector(
-                // onTap: showMadal,
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (contex) => TaskPage(task: null ))).then((value) { setState(() {
+                        
+                      });});
+                },
                 child: Container(
                     width: 60,
                     height: 60,

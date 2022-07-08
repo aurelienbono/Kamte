@@ -58,6 +58,13 @@ Future<void> updateTaskTitle(int id , String title) async{
   await _db.rawUpdate("UPDATE tasks SET title='$title 'where id = '$id'");
   
 }
+Future<void> deleteTodo(int id ) async{ 
+  Database _db = await database() ; 
+  await _db.rawDelete("DELETE FROM  todo  WHERE id = '$id'");
+  
+}
+
+
 
 // c'est a changer 
 Future<void> updateTaskDescription(int id , String description) async{ 

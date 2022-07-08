@@ -121,8 +121,13 @@ class _TaskPageState extends State<TaskPage> {
                             itemCount: snapshot.data.length,
                             itemBuilder: (context, index) {
                               return GestureDetector(
-                                onTap: (){ 
-
+                                onTap: () async{ 
+                         await  _dbHelper.deleteTodo(snapshot.data[index].id);  
+                         print("suppresion des case"); 
+                         setState(() {
+                           
+                         });
+   
                                 },
                                 child: TodoWidget(
                                   isDone: snapshot.data[index].isDone == 0
@@ -164,6 +169,7 @@ class _TaskPageState extends State<TaskPage> {
                           ),
                           Expanded(
                               child: TextField(
+                                controller: TextEditingController()..text = '',
                             onSubmitted: (val) async {
                               print("La valeur du champs est : $val");
 
