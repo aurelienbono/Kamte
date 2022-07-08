@@ -15,9 +15,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  DataBaseHelper _dbHelper = DataBaseHelper();
+  Task _task = Task();
 
-  DataBaseHelper _dbHelper = DataBaseHelper(); 
-  Task _task = Task(); 
+
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -37,34 +40,39 @@ class _HomePageState extends State<HomePage> {
                   margin: EdgeInsets.only(bottom: 32),
                 ),
                 Expanded(
-                    child: FutureBuilder( 
-                      initialData: [],
-                      future: _dbHelper.getTask(),
-                      builder: (context , AsyncSnapshot snapshot ){ 
-                        return ScrollConfiguration(
-                          behavior: NoGlowBehaviour(),
-                          child: ListView.builder( 
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (context,index) { 
-                               return GestureDetector(
-                                onTap: (){
-                                    Navigator.push(context,
-                                MaterialPageRoute(builder: (contex) => TaskPage( task: snapshot.data[index],)));
-                                },
-                                 child: TaskCardWidget( 
-                                  title: snapshot.data[index].title,
-                                 ),
-                               ); 
-                            }, 
+                    child: FutureBuilder(
+                        initialData: [],
+                        future: _dbHelper.getTask(),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          return ScrollConfiguration(
+                            behavior: NoGlowBehaviour(),
+                            child: ListView.builder(
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (contex) => TaskPage(
+                                                  task: snapshot.data[index],
+                                                ))).then((value) { setState(() {
+                                                  
+                                                });});
+                                  },
+                                  child: TaskCardWidget(
+                                    title: snapshot.data[index].title,
+                                    // ici  je vais mettre la fonction pour afficher le prix total de chaque task 
+                                    // totalSomme: snapshot.data[index].totalSomme,
+                                  ),
+                                );
+                              },
                             ),
-                        ) ; 
-                      }
-
-                    )
-                )
+                          );
+                        }))
               ],
             ),
-            Positioned(
+                    Positioned(
               bottom: 20,
               right: 0,
               child: GestureDetector(
@@ -92,4 +100,6 @@ class _HomePageState extends State<HomePage> {
       ),
     ));
   }
+
+
 }

@@ -2,6 +2,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:keep_note/database_helper.dart';
+DataBaseHelper _dbHelper = DataBaseHelper();
+
 
 class TaskCardWidget extends StatelessWidget {
   final title;
@@ -40,13 +43,21 @@ class TaskCardWidget extends StatelessWidget {
   }
 }
 
-class TodoWidget extends StatelessWidget {
+class TodoWidget extends StatefulWidget {
   final String? text;
   final bool isDone;
   const TodoWidget({this.text, required this.isDone});
 
   @override
+  State<TodoWidget> createState() => _TodoWidgetState();
+}
+
+class _TodoWidgetState extends State<TodoWidget> {
+
+  
+  @override
   Widget build(BuildContext context) {
+    
     return Container(
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24),
       child: Row(
@@ -56,23 +67,27 @@ class TodoWidget extends StatelessWidget {
             height: 22,
             margin: EdgeInsets.only(right: 12),
             decoration: BoxDecoration(
-                color: isDone ? Color(0xff7349FE) : Colors.transparent,
+                color: widget.isDone ? Color(0xff7349FE) : Colors.transparent,
                 borderRadius: BorderRadius.circular(5),
-                border: isDone
+                border: widget.isDone
                     ? null
                     : Border.all(color: Color(0xff82869d), width: 1.4)),
-            child: Icon(
-              CupertinoIcons.checkmark_alt,
-              color: Colors.white,
-              size: 18,
+        
+              child: Icon(
+                CupertinoIcons.multiply,
+               color: Color(0xff82869d),
+                size: 20,
+              ),
             ),
-          ),
-          Text(
-            text ?? ("Tache sans nom"),
-            style: TextStyle(
-                color: isDone? Color(0xff211551):Color(0xff82869d),
-                fontSize:16, 
-                fontWeight: isDone? FontWeight.bold:FontWeight.w500),
+      
+          Flexible(
+            child: Text(
+              widget.text ?? ("Tache sans nom"),
+              style: TextStyle(
+                  color: widget.isDone? Color(0xff211551):Color(0xff82869d),
+                  fontSize:16, 
+                  fontWeight: widget.isDone? FontWeight.bold:FontWeight.w500),
+            ),
           )
         ],
       ),

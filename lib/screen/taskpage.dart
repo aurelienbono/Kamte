@@ -19,15 +19,26 @@ class _TaskPageState extends State<TaskPage> {
   String? _taskTitle = '';
   int? _taskId = 0 ; 
 
+
+
   void initState() {
     if (widget.task != null) {
       _taskTitle = widget.task?.title;
       _taskId = widget.task?.id; 
     }
+
+
     super.initState();
   }
 
+
+  bool _contentVisile = false; 
+
+
   DataBaseHelper _dbHelper = DataBaseHelper();
+
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +68,7 @@ class _TaskPageState extends State<TaskPage> {
                       ),
                       Expanded(
                           child: TextField(
+                    
                         onSubmitted: (value) async {
                           print("La valeur du champs est : $value");
 
@@ -69,9 +81,10 @@ class _TaskPageState extends State<TaskPage> {
                               print(
                                   "Un nouveau task a eté crée : ${_newTask.title}");
                             } else {
-                              print('mise a jour de l existant');
+                            await  _dbHelper.updateTaskTitle(_taskId!, value); 
+                            print("TASK UPDATE"); 
                             }
-                          }
+                          } 
                         },
                         controller: TextEditingController()..text = _taskTitle!,
                         decoration: InputDecoration(
@@ -88,12 +101,13 @@ class _TaskPageState extends State<TaskPage> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                   child: TextField(
+                   
+                    
                     decoration: InputDecoration(
                         hintText: " Entrez une description pour ....",
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(horizontal: 20)),
                     onSubmitted: (value) {
-                      print("validation value");
                     },
                   ),
                 ),
@@ -107,8 +121,13 @@ class _TaskPageState extends State<TaskPage> {
                             itemCount: snapshot.data.length,
                             itemBuilder: (context, index) {
                               return GestureDetector(
-                                onTap: (){ 
-
+                                onTap: () async{ 
+                         await  _dbHelper.deleteTodo(snapshot.data[index].id);  
+                         print("suppresion des case"); 
+                         setState(() {
+                           
+                         });
+   
                                 },
                                 child: TodoWidget(
                                   isDone: snapshot.data[index].isDone == 0
@@ -150,6 +169,7 @@ class _TaskPageState extends State<TaskPage> {
                           ),
                           Expanded(
                               child: TextField(
+                                controller: TextEditingController()..text = '',
                             onSubmitted: (val) async {
                               print("La valeur du champs est : $val");
 
@@ -180,30 +200,75 @@ class _TaskPageState extends State<TaskPage> {
                   ],
                 )
               ],
-            ),
-            Positioned(
-              bottom: 20,
-              right: 24,
-              child: GestureDetector(
-                onTap: () {
-                  // Navigator.push(context, MaterialPageRoute(builder: (contex)=>TaskPage())) ;
-                },
-                child: Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 176, 36, 80),
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Center(
-                        child: Icon(
-                      CupertinoIcons.delete_simple,
-                      color: Colors.white,
-                    ))),
-              ),
+            ),       
+             Positioned(
+                bottom: 20,
+                right: 24,
+                child: GestureDetector(
+                  onTap: () {
+                    // Navigator.push(context, MaterialPageRoute(builder: (contex)=>TaskPage())) ;
+                  },
+                  child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 176, 36, 80),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Center(
+                          child: Icon(
+                        CupertinoIcons.delete_simple,
+                        color: Colors.white,
+                      ))),
+                ),
+       
             )
           ],
         )),
       ),
     );
   }
+
+/******** le show modal pour ajouter un portefeuille actuellement  */
+// void showMadal() {
+//     showModalBottomSheet(
+//         shape: RoundedRectangleBorder(
+//           borderRadius: BorderRadius.vertical(
+//             top: Radius.circular(25.0),
+//           ),
+//         ), 
+//         backgroundColor: Color(0xfff6f6f6),
+//         context: context,
+//         builder: (BuildContext context) {
+//           return Container(
+//               child:  Expanded(
+//                           child: TextField(
+//                             focusNode: _titleFocus,
+//                         onSubmitted: (value) async {
+//                           print("La valeur du champs est : $value");
+
+//                           if (value != '') {
+//                             if (widget.task == null) {
+//                               Task _newTask = Task(title: value);
+
+//                               await _dbHelper.insertTask(_newTask);
+
+//                               print(
+//                                   "Un nouveau task a eté crée : ${_newTask.title}");
+//                             } else {
+//                               print('mise a jour de l existant');
+//                             }
+//                           } 
+//                         },
+//                         controller: TextEditingController()..text = _taskTitle!,
+//                         decoration: InputDecoration(
+//                             hintText: "  Entrez un titre ...",
+//                             border: InputBorder.none),
+//                         style: TextStyle(
+//                             fontSize: 28,
+//                             fontWeight: FontWeight.bold,
+//                             color: Color(0xff86829d)),
+//                       )));
+//         });
+//   }
+
 }
