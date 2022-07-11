@@ -64,6 +64,15 @@ Future<void> deleteTodo(int id ) async{
   
 }
 
+Future<void> deleteTask(int id ) async{ 
+  Database _db = await database() ; 
+  await _db.rawDelete("DELETE FROM  tasks  WHERE id = '$id'");
+  await _db.rawDelete("DELETE FROM  todo  WHERE id = '$id'");
+
+  
+}
+
+
 
 
 // c'est a changer 
