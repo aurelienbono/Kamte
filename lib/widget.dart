@@ -8,8 +8,8 @@ DataBaseHelper _dbHelper = DataBaseHelper();
 
 class TaskCardWidget extends StatelessWidget {
   final title;
-  final description;
-  const TaskCardWidget({this.title, this.description});
+  final total;
+  const TaskCardWidget({this.title, this.total});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class TaskCardWidget extends StatelessWidget {
             trailing:    Padding(
               padding: EdgeInsets.only(top: 10),
               child: Text(
-                description ?? ("0"),
+                "$total",
                 style: TextStyle(
                     fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xff86829d),),
               ),

@@ -11,7 +11,7 @@ class DataBaseHelper{
 
     onCreate: (db, version) async {
     // Run the CREATE TABLE statement on the database.
-    await db.execute( '''CREATE TABLE tasks(id INTEGER PRIMARY KEY, title TEXT, description TEXT)''');
+    await db.execute( '''CREATE TABLE tasks(id INTEGER PRIMARY KEY, title TEXT, total INTEGER)''');
     await db.execute('''CREATE TABLE todo(id INTEGER PRIMARY KEY,taskId  INTEGER, title TEXT, price INTEGER)''');
   },
  version: 1,
@@ -49,7 +49,7 @@ Future<List<Task>> getTask() async{
 
   List<Map<String,dynamic>> taskMap = await _db.query('tasks'); 
   return List.generate(taskMap.length, (index) { 
-    return Task( id: taskMap[index]['id'], title:taskMap[index]['title'] , description: taskMap[index]['description'] ); 
+    return Task( id: taskMap[index]['id'], title:taskMap[index]['title'] , total: taskMap[index]['total'] ); 
   }); 
 }
 
@@ -83,11 +83,38 @@ Future<void> deleteTask(int id ) async{
 
 
 // c'est a changer 
-Future<void> updateTaskDescription(int id , String description) async{ 
+// Future<void> updateTaskPriceTotal(int id , int priceTotal) async{ 
+//   Database _db = await database() ; 
+//   // List<Map<String, Object?>> value = await _db.rawQuery("SELECT total FROM tasks WHERE taskId=$id"); 
+//   await _db.rawUpdate(" UPDATE tasks SET total='$priceTotal 'where id = '$id'");
+  
+// }
+
+Future<void> updateTaskPriceTotal(int id , int priceTotal) async{ 
   Database _db = await database() ; 
-  await _db.rawUpdate("UPDATE tasks SET description='$description 'where id = '$id'");
+  List<Map<String, dynamic>> value = await _db.rawQuery("SELECT total FROM tasks WHERE id=$id"); 
+  Map<String, dynamic> theNew = value[0]; 
+  int _sum =0; 
+  int _resquestValue = 0 ; 
+  theNew.forEach((_key, _value) { 
+    if(_value ==null){ 
+       _resquestValue = 0; 
+    }else { 
+      _resquestValue = _value; 
+    }
+   
+   }); 
+   _resquestValue += priceTotal; 
+ 
+
+   print("La valeur issue de la requete : $_resquestValue"); 
+     print("La nouvelle valuer : $priceTotal"); 
+      //  print("La somme des deux valeurs : $_sum"); 
+  await _db.rawUpdate(" UPDATE tasks SET total='$_resquestValue 'where id = '$id'");
+ 
   
 }
+
 
 
 Future<List<Todo>> getTodo(int taskId) async{ 

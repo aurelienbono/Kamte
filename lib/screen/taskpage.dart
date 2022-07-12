@@ -34,6 +34,7 @@ class _TaskPageState extends State<TaskPage> {
 
 
   bool _contentVisile = false; 
+  int _totalSum = 0 ; 
 
 
   DataBaseHelper _dbHelper = DataBaseHelper();
@@ -78,7 +79,9 @@ class _TaskPageState extends State<TaskPage> {
                               Task _newTask = Task(title: value);
 
                               await _dbHelper.insertTask(_newTask);
-
+                        //       var 
+                        // await _dbHelper.updateTaskPriceTotal(_taskId!, _totalSum);
+                        
                               print(
                                   "Un nouveau task a eté crée : ${_newTask.title}");
                             } else {
@@ -101,6 +104,9 @@ class _TaskPageState extends State<TaskPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
+                  // child: Center( 
+                  //   child: Text("${_newTask.title}"),
+                  // ),
                   child: TextField(
                    
                     
@@ -183,9 +189,11 @@ class _TaskPageState extends State<TaskPage> {
                                       title: val,
                                       price: res,
                                       taskId: widget.task!.id);
-
+                                 
+                                    // await _dbHelper.updateTaskPriceTotal(_taskId!, _totalSum);
+                                      await _dbHelper.updateTaskPriceTotal(_taskId!, res);                           
                                   await _dbHelper.insertTodo(_newTodo);
-                                  setState(() {});
+                                  setState(() { });
 
                                   // print(
                                   //     "Un nouveau todo a eté crée : ${_newTodo.title}");
@@ -234,11 +242,6 @@ class _TaskPageState extends State<TaskPage> {
       ),
     );
   }
-
- void totalPriceTask() {
-   int somme = 0 ; 
-   int temp = 0 ; 
- } 
 
 
   int recoverPrice(String chaine){ 

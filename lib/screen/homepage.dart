@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                                   child: TaskCardWidget(
                                     title: snapshot.data[index].title,
                                     // ici  je vais mettre la fonction pour afficher le prix total de chaque task 
-                                    // totalSomme: snapshot.data[index].totalSomme,
+                                    total: snapshot.data[index].total,
                                   ),
                                 );
                               },

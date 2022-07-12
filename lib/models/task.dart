@@ -1,15 +1,15 @@
 class Task{ 
   final int? id ; 
   final String? title ; 
-  final String? description ; 
+  final int? total ; 
 
-  Task({this.id,this.title,this.description});
+  Task({this.id,this.title,this.total});
 
   Map<String,dynamic> toMap(){ 
     return { 
       'id': id, 
       "title": title, 
-      "description": description, 
+      "total": total, 
     }; 
   } 
 }
