@@ -6,6 +6,7 @@ import 'package:keep_note/database_helper.dart';
 import 'package:keep_note/models/task.dart';
 import 'package:keep_note/models/todo.dart';
 import 'package:keep_note/widget.dart';
+import 'dart:math'; 
 
 class TaskPage extends StatefulWidget {
   final Task? task;
@@ -170,7 +171,10 @@ class _TaskPageState extends State<TaskPage> {
                               child: TextField(
                                 controller: TextEditingController()..text = '',
                             onSubmitted: (val) async {
-                              print("La valeur du champs est : $val");
+                              print("La valeur du champs est : $val;");
+                              var res = recoverPrice(val); 
+                              print("la valeur recolter ici est : $res "); 
+
 
                               if (val != '') {
                                 if (widget.task != null) {
@@ -178,7 +182,7 @@ class _TaskPageState extends State<TaskPage> {
 
                                   Todo _newTodo = Todo(
                                       title: val,
-                                      isDone: 0,
+                                      price: res,
                                       taskId: widget.task!.id);
 
                                   await _dbHelper.insertTodo(_newTodo);
@@ -232,6 +236,35 @@ class _TaskPageState extends State<TaskPage> {
     );
   }
 
+  int recoverPrice(String chaine){ 
+      // String text = "Hello , world 2000 "; 
+
+      // String deux = " 1 voiture 2000 4000 100" ; 
+
+    final intInStr = RegExp(r'\d+');
+    var recherche = intInStr.allMatches(chaine).map((m) => m.group(0)); 
+    var theTrans = recherche.toList(); 
+    List<int> new_arary =[]; 
+
+
+    for (var number  in theTrans) {
+    var lestNumber = int.parse(number!); 
+      new_arary.add(lestNumber);  
+    }
+    // print(new_arary.runtimeType);
+    // print(new_arary);
+
+    //   print(new_arary.reduce(max)); 
+    //   print(new_arary.reduce(min));
+   int monRes = new_arary.reduce(max); 
+    return monRes; 
+  
+}
+
+  }
+
+
+
 /******** le show modal pour ajouter un portefeuille actuellement  */
 // void showMadal() {
 //     showModalBottomSheet(
@@ -275,4 +308,4 @@ class _TaskPageState extends State<TaskPage> {
 //         });
 //   }
 
-}
+

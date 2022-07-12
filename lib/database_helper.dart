@@ -95,7 +95,7 @@ Future<List<Todo>> getTodo(int taskId) async{
 
   List<Map<String,dynamic>> todoMap = await _db.rawQuery("SELECT * FROM todo WHERE taskId=$taskId"); 
   return List.generate(todoMap.length, (index) { 
-    return Todo( id: todoMap[index]['id'] , taskId:  todoMap[index]['taskId'], title:  todoMap[index]['title'], isDone:  todoMap[index]['isDone'] ); 
+    return Todo( id: todoMap[index]['id'] , taskId:  todoMap[index]['taskId'], title:  todoMap[index]['title'], price:  todoMap[index]['price'] ); 
   }); 
 }
  
