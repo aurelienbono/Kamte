@@ -72,6 +72,13 @@ Future<void> deleteTask(int id ) async{
   
 }
 
+// Cette fonction servira de lister la nombre de todo 
+// Future<void> listTodo() async{ 
+//   Database _db = await database() ; 
+//   await _db.rawUpdate("UPDATE tasks SET description='$description 'where id = '$id'");
+  
+// }
+
 
 
 

@@ -123,7 +123,6 @@ class _TaskPageState extends State<TaskPage> {
                               return GestureDetector(
                                 onTap: () async{ 
                          await  _dbHelper.deleteTodo(snapshot.data[index].id);  
-                         print("suppresion des case"); 
                          setState(() {
                            
                          });
@@ -210,7 +209,7 @@ class _TaskPageState extends State<TaskPage> {
                       if(_taskId !=0){ 
                           await  _dbHelper.deleteTask(_taskId!);  
                           print("task supprimé"); 
-                         Navigator.of(context).pop(); 
+                          Navigator.of(context).pop(); 
                           
                       }   },
                   child: Container(
