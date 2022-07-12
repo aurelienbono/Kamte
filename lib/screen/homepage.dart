@@ -18,10 +18,6 @@ class _HomePageState extends State<HomePage> {
   DataBaseHelper _dbHelper = DataBaseHelper();
   Task _task = Task();
 
-
-
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

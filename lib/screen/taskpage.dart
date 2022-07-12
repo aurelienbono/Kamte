@@ -130,9 +130,8 @@ class _TaskPageState extends State<TaskPage> {
    
                                 },
                                 child: TodoWidget(
-                                  isDone: snapshot.data[index].isDone == 0
-                                      ? false
-                                      : true,
+                                  // price: snapshot.data[index].price! == 0
+                                     
                                   text: snapshot.data[index].title,
                                 ),
                               );

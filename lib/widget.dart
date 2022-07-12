@@ -45,8 +45,8 @@ class TaskCardWidget extends StatelessWidget {
 
 class TodoWidget extends StatefulWidget {
   final String? text;
-  final bool isDone;
-  const TodoWidget({this.text, required this.isDone});
+  // final int  price;
+  const TodoWidget({this.text, });
 
   @override
   State<TodoWidget> createState() => _TodoWidgetState();
@@ -67,11 +67,9 @@ class _TodoWidgetState extends State<TodoWidget> {
             height: 22,
             margin: EdgeInsets.only(right: 12),
             decoration: BoxDecoration(
-                color: widget.isDone ? Color(0xff7349FE) : Colors.transparent,
+                color:  Colors.transparent,
                 borderRadius: BorderRadius.circular(5),
-                border: widget.isDone
-                    ? null
-                    : Border.all(color: Color(0xff82869d), width: 1.4)),
+                border:Border.all(color: Color(0xff82869d), width: 1.4)),
         
               child: Icon(
                 CupertinoIcons.multiply,
@@ -84,9 +82,9 @@ class _TodoWidgetState extends State<TodoWidget> {
             child: Text(
               widget.text ?? ("Tache sans nom"),
               style: TextStyle(
-                  color: widget.isDone? Color(0xff211551):Color(0xff82869d),
+                  color: Color(0xff82869d),
                   fontSize:16, 
-                  fontWeight: widget.isDone? FontWeight.bold:FontWeight.w500),
+                  fontWeight:  FontWeight.bold),
             ),
           )
         ],

@@ -12,7 +12,7 @@ class DataBaseHelper{
     onCreate: (db, version) async {
     // Run the CREATE TABLE statement on the database.
     await db.execute( '''CREATE TABLE tasks(id INTEGER PRIMARY KEY, title TEXT, description TEXT)''');
-    await db.execute('''CREATE TABLE todo(id INTEGER PRIMARY KEY,taskId  INTEGER, title TEXT, isDone INTEGER)''');
+    await db.execute('''CREATE TABLE todo(id INTEGER PRIMARY KEY,taskId  INTEGER, title TEXT, price INTEGER)''');
   },
  version: 1,
     ); 
