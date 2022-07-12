@@ -235,6 +235,12 @@ class _TaskPageState extends State<TaskPage> {
     );
   }
 
+ void totalPriceTask() {
+   int somme = 0 ; 
+   int temp = 0 ; 
+ } 
+
+
   int recoverPrice(String chaine){ 
       // String text = "Hello , world 2000 "; 
 
