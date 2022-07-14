@@ -231,11 +231,11 @@ class _TaskPageState extends State<TaskPage> {
                       width: 60,
                       height: 60,
                       decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 176, 36, 80),
+                          color: Color(0xff0078AA),
                           borderRadius: BorderRadius.circular(20)),
                       child: Center(
                           child: Icon(
-                        CupertinoIcons.delete_simple,
+                        CupertinoIcons.share,
                         color: Colors.white,
                       ))),
                 ),
