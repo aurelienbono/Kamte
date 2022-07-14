@@ -129,7 +129,11 @@ class _TaskPageState extends State<TaskPage> {
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () async{ 
+
                          await  _dbHelper.deleteTodo(snapshot.data[index].id);  
+                         await  _dbHelper.updateTaskRetrait(_taskId!,snapshot.data[index].price);  
+
+                         print(snapshot.data[index].price);
                          setState(() {
                            
                          });

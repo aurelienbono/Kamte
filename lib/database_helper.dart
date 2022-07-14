@@ -67,9 +67,7 @@ Future<void> deleteTodo(int id ) async{
 Future<void> deleteTask(int id ) async{ 
   Database _db = await database() ; 
   await _db.rawDelete("DELETE FROM  tasks  WHERE id = '$id'");
-  await _db.rawDelete("DELETE FROM  todo  WHERE id = '$id'");
-
-  
+  await _db.rawDelete("DELETE FROM  todo  WHERE taskId = '$id'");
 }
 
 // Cette fonction servira de lister la nombre de todo 
@@ -104,16 +102,44 @@ Future<void> updateTaskPriceTotal(int id , int priceTotal) async{
     }
    
    }); 
-   _resquestValue += priceTotal; 
- 
-
-   print("La valeur issue de la requete : $_resquestValue"); 
-     print("La nouvelle valuer : $priceTotal"); 
-      //  print("La somme des deux valeurs : $_sum"); 
+   _resquestValue += priceTotal;  
   await _db.rawUpdate(" UPDATE tasks SET total='$_resquestValue 'where id = '$id'");
  
   
 }
+
+Future<void> updateTaskRetrait(int id,int ma_value) async{ 
+  Database _db = await database() ; 
+  List<Map<String, dynamic>> value = await _db.rawQuery("SELECT total FROM tasks WHERE id=$id"); 
+
+  Map<String, dynamic> _theTotalValue = value[0]; 
+  print(_theTotalValue); 
+
+  int _resquestTotalValue =0; 
+  _theTotalValue.forEach((_key, _value) { 
+    if(_value ==null){ 
+       _resquestTotalValue = 0; 
+    }else { 
+      _resquestTotalValue = _value; 
+    }
+   }); 
+     print("Avant la soustractionn "); 
+     print(_resquestTotalValue);
+
+
+      _resquestTotalValue -= ma_value;  
+      print("Apres la soustractionn "); 
+      print(_resquestTotalValue);
+
+       print("La difference des deux valeurs : $_resquestTotalValue"); 
+       await _db.rawUpdate(" UPDATE tasks SET total='$_resquestTotalValue 'where id = '$id'");
+      
+ 
+  
+}
+
+
+
 
 
 
