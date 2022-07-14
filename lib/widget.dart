@@ -45,8 +45,8 @@ class TaskCardWidget extends StatelessWidget {
 
 class TodoWidget extends StatefulWidget {
   final String? text;
-  // final int  price;
-  const TodoWidget({this.text, });
+  final int etat;
+  const TodoWidget({this.text,required this.etat});
 
   @override
   State<TodoWidget> createState() => _TodoWidgetState();
@@ -54,12 +54,29 @@ class TodoWidget extends StatefulWidget {
 
 class _TodoWidgetState extends State<TodoWidget> {
 
+  Color? getColor(int number){ 
+    if(number ==1){ 
+      return Color(0xff82869d); 
+    }
+    if(number ==2){ 
+      return Colors.red.shade300; 
+    }
+    if(number ==3){ 
+      return Colors.green.shade300; 
+    }
+    else{ 
+      return Color(0xff82869d); 
+
+    }
+  }
+
   
   @override
   Widget build(BuildContext context) {
     
     return Container(
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+  
       child: Row(
         children: [
           Container(
@@ -67,13 +84,16 @@ class _TodoWidgetState extends State<TodoWidget> {
             height: 22,
             margin: EdgeInsets.only(right: 12),
             decoration: BoxDecoration(
-                color:  Colors.transparent,
+                color:  getColor(widget.etat), 
                 borderRadius: BorderRadius.circular(5),
-                border:Border.all(color: Color(0xff82869d), width: 1.4)),
-        
+                border:Border.all(
+                   color:    Color(0xff82869d  ),
+                   width: 1.4)),       
               child: Icon(
                 CupertinoIcons.multiply,
-               color: Color(0xff82869d),
+               color: 
+               getColor(widget.etat), 
+        
                 size: 20,
               ),
             ),
@@ -82,7 +102,7 @@ class _TodoWidgetState extends State<TodoWidget> {
             child: Text(
               widget.text ?? ("Tache sans nom"),
               style: TextStyle(
-                  color: Color(0xff82869d),
+                  color:  Color(0xff82869d),
                   fontSize:16, 
                   fontWeight:  FontWeight.bold),
             ),

@@ -2,11 +2,12 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:keep_note/database_helper.dart';
 import 'package:keep_note/models/task.dart';
 import 'package:keep_note/models/todo.dart';
 import 'package:keep_note/widget.dart';
-import 'dart:math'; 
+import 'dart:math';
 
 class TaskPage extends StatefulWidget {
   final Task? task;
@@ -18,29 +19,22 @@ class TaskPage extends StatefulWidget {
 
 class _TaskPageState extends State<TaskPage> {
   String? _taskTitle = '';
-  int? _taskId = 0 ; 
-
-
+  int? _taskId = 0;
 
   void initState() {
     if (widget.task != null) {
       _taskTitle = widget.task?.title;
-      _taskId = widget.task?.id; 
+      _taskId = widget.task?.id;
     }
-
 
     super.initState();
   }
 
-
-  bool _contentVisile = false; 
-  int _totalSum = 0 ; 
-
+  bool _contentVisile = false;
+  int _totalSum = 0;
+  int _permet = 0 ; 
 
   DataBaseHelper _dbHelper = DataBaseHelper();
-
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -70,25 +64,20 @@ class _TaskPageState extends State<TaskPage> {
                       ),
                       Expanded(
                           child: TextField(
-                    
                         onSubmitted: (value) async {
                           print("La valeur du champs est : $value");
 
                           if (value != '') {
                             if (widget.task == null) {
                               Task _newTask = Task(title: value);
-
                               await _dbHelper.insertTask(_newTask);
-                        //       var 
-                        // await _dbHelper.updateTaskPriceTotal(_taskId!, _totalSum);
-                        
                               print(
                                   "Un nouveau task a eté crée : ${_newTask.title}");
                             } else {
-                            await  _dbHelper.updateTaskTitle(_taskId!, value); 
-                            print("TASK UPDATE"); 
+                              await _dbHelper.updateTaskTitle(_taskId!, value);
+                              print("TASK UPDATE");
                             }
-                          } 
+                          }
                         },
                         controller: TextEditingController()..text = _taskTitle!,
                         decoration: InputDecoration(
@@ -104,21 +93,15 @@ class _TaskPageState extends State<TaskPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
-                  // child: Center( 
-                  //   child: Text("${_newTask.title}"),
-                  // ),
+                
                   child: TextField(
-                   
-                    
                     decoration: InputDecoration(
                         hintText: " Entrez une description pour ....",
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(horizontal: 20)),
-                    onSubmitted: (value) {
-                    },
+                    onSubmitted: (value) {},
                   ),
                 ),
-                // TodoWidget(isDone: false),
                 FutureBuilder(
                     initialData: [],
                     future: _dbHelper.getTodo(_taskId!),
@@ -128,21 +111,54 @@ class _TaskPageState extends State<TaskPage> {
                             itemCount: snapshot.data.length,
                             itemBuilder: (context, index) {
                               return GestureDetector(
-                                onTap: () async{ 
+                                onTap: () async {
+                                  await _dbHelper
+                                      .deleteTodo(snapshot.data[index].id);
+                                  await _dbHelper.updateTaskRetrait(
+                                      _taskId!, snapshot.data[index].price);
 
-                         await  _dbHelper.deleteTodo(snapshot.data[index].id);  
-                         await  _dbHelper.updateTaskRetrait(_taskId!,snapshot.data[index].price);  
-
-                         print(snapshot.data[index].price);
-                         setState(() {
-                           
-                         });
-   
+                                  print(snapshot.data[index].price);
+                                  setState(() {});
                                 },
-                                child: TodoWidget(
-                                  // price: snapshot.data[index].price! == 0
-                                     
-                                  text: snapshot.data[index].title,
+                                child: Slidable(
+                                  startActionPane:  ActionPane(motion: DrawerMotion(), 
+                                    children: [ 
+                                       SlidableAction(
+                          autoClose: true,
+                          flex: 1,
+                          onPressed: (value) {
+                           _permet = 3;
+                            setState(() {});
+                          },
+                          backgroundColor: Colors.green.shade200,
+                          foregroundColor: Colors.white,
+                          // icon: Icons.delete,
+                          label: 'Credit',
+                        ),
+                                    ],
+                                  ), 
+                                  endActionPane: 
+                                   ActionPane(motion: DrawerMotion(), 
+                                   dragDismissible: false,
+                                    children: [ 
+                                       SlidableAction(
+                          autoClose: true,
+                          flex: 1,
+                          onPressed: (value) {
+                           _permet = 2;
+                            setState(() {});
+                          },
+                          backgroundColor: Colors.red.shade200,
+                          foregroundColor: Colors.white,
+                          // icon: Icons.delete,
+                          label: 'Debit',
+                        ),
+                                    ],
+                                  ),
+                                  child: TodoWidget(
+                                    text: snapshot.data[index].title,
+                                    etat: _permet ,
+                                  ),
                                 ),
                               );
                             }),
@@ -178,12 +194,11 @@ class _TaskPageState extends State<TaskPage> {
                           ),
                           Expanded(
                               child: TextField(
-                                controller: TextEditingController()..text = '',
+                            controller: TextEditingController()..text = '',
                             onSubmitted: (val) async {
                               print("La valeur du champs est : $val;");
-                              var res = recoverPrice(val); 
-                              print("la valeur recolter ici est : $res "); 
-
+                              var res = recoverPrice(val);
+                              print("la valeur recolter ici est : $res ");
 
                               if (val != '') {
                                 if (widget.task != null) {
@@ -193,14 +208,13 @@ class _TaskPageState extends State<TaskPage> {
                                       title: val,
                                       price: res,
                                       taskId: widget.task!.id);
-                                 
-                                    // await _dbHelper.updateTaskPriceTotal(_taskId!, _totalSum);
-                                      await _dbHelper.updateTaskPriceTotal(_taskId!, res);                           
-                                  await _dbHelper.insertTodo(_newTodo);
-                                  setState(() { });
 
-                                  // print(
-                                  //     "Un nouveau todo a eté crée : ${_newTodo.title}");
+                                  await _dbHelper.updateTaskPriceTotal(
+                                      _taskId!, res);
+                                  await _dbHelper.insertTodo(_newTodo);
+                                  setState(() {});
+
+                                
                                 }
                               }
                             },
@@ -214,32 +228,29 @@ class _TaskPageState extends State<TaskPage> {
                   ],
                 )
               ],
-            ),       
-             Positioned(
-                bottom: 20,
-                right: 24,
-                child: GestureDetector(
-                     onTap: () async{ 
-
-                      if(_taskId !=0){ 
-                          await  _dbHelper.deleteTask(_taskId!);  
-                          print("task supprimé"); 
-                          Navigator.of(context).pop(); 
-                          
-                      }   },
-                  child: Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 176, 36, 80),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Center(
-                          child: Icon(
-                        CupertinoIcons.delete_simple,
-                        color: Colors.white,
-                      ))),
-                ),
-       
+            ),
+            Positioned(
+              bottom: 20,
+              right: 24,
+              child: GestureDetector(
+                onTap: () async {
+                  if (_taskId != 0) {
+                    await _dbHelper.deleteTask(_taskId!);
+                    Navigator.of(context).pop();
+                  }
+                },
+                child: Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 176, 36, 80),
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Center(
+                        child: Icon(
+                      CupertinoIcons.delete_simple,
+                      color: Colors.white,
+                    ))),
+              ),
             )
           ],
         )),
@@ -247,35 +258,21 @@ class _TaskPageState extends State<TaskPage> {
     );
   }
 
-
-  int recoverPrice(String chaine){ 
-      // String text = "Hello , world 2000 "; 
-
-      // String deux = " 1 voiture 2000 4000 100" ; 
-
+  int recoverPrice(String chaine) {
     final intInStr = RegExp(r'\d+');
-    var recherche = intInStr.allMatches(chaine).map((m) => m.group(0)); 
-    var theTrans = recherche.toList(); 
-    List<int> new_arary =[]; 
+    var recherche = intInStr.allMatches(chaine).map((m) => m.group(0));
+    var theTrans = recherche.toList();
+    List<int> new_arary = [];
 
-
-    for (var number  in theTrans) {
-    var lestNumber = int.parse(number!); 
-      new_arary.add(lestNumber);  
+    for (var number in theTrans) {
+      var lestNumber = int.parse(number!);
+      new_arary.add(lestNumber);
     }
-    // print(new_arary.runtimeType);
-    // print(new_arary);
 
-    //   print(new_arary.reduce(max)); 
-    //   print(new_arary.reduce(min));
-   int monRes = new_arary.reduce(max); 
-    return monRes; 
-  
-}
-
+    int monRes = new_arary.reduce(max);
+    return monRes;
   }
-
-
+}
 
 /******** le show modal pour ajouter un portefeuille actuellement  */
 // void showMadal() {
@@ -284,7 +281,7 @@ class _TaskPageState extends State<TaskPage> {
 //           borderRadius: BorderRadius.vertical(
 //             top: Radius.circular(25.0),
 //           ),
-//         ), 
+//         ),
 //         backgroundColor: Color(0xfff6f6f6),
 //         context: context,
 //         builder: (BuildContext context) {
@@ -306,7 +303,7 @@ class _TaskPageState extends State<TaskPage> {
 //                             } else {
 //                               print('mise a jour de l existant');
 //                             }
-//                           } 
+//                           }
 //                         },
 //                         controller: TextEditingController()..text = _taskTitle!,
 //                         decoration: InputDecoration(
@@ -319,5 +316,3 @@ class _TaskPageState extends State<TaskPage> {
 //                       )));
 //         });
 //   }
-
-
