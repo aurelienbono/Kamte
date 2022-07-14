@@ -235,7 +235,8 @@ class _TaskPageState extends State<TaskPage> {
               child: GestureDetector(
                 onTap: () async {
                   if (_taskId != 0) {
-                    await _dbHelper.deleteTask(_taskId!);
+                  //  il va permettre de partager les tasks
+                  //await _dbHelper.deleteTask(_taskId!);
                     Navigator.of(context).pop();
                   }
                 },
