@@ -130,6 +130,7 @@ Future<void> updateTaskRetrait(int id,int ma_value) async{
 }
 
 
+
 // recuperation de la valeur temporaire stocker dans le tableau 
 Future<int> getTemp(int id) async{ 
   Database _db = await database() ; 
@@ -166,6 +167,11 @@ Future<void> updateTadoEtat(int id , int etat) async{
   await _db.rawUpdate("UPDATE todo SET etat='$etat 'where id = '$id'"); 
 }
 
+
+Future<void> updateTodoPrice(int id , int price) async{ 
+  Database _db = await database() ; 
+ await _db.rawUpdate(" UPDATE todo SET price='$price 'where id = '$id'");
+}
 
 
  

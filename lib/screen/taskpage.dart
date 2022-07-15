@@ -130,6 +130,10 @@ class _TaskPageState extends State<TaskPage> {
                           flex: 1,
                           onPressed: (value) async{
                                   _permet = 2;
+                                   int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
+                                    await _dbHelper.updateTaskPriceTotal(
+                                      _taskId!, _res);
+                                            await _dbHelper.updateTodoPrice( snapshot.data[index].id, _res);     
                             await _dbHelper.updateTadoEtat(snapshot.data[index].id,_permet).then((value) { 
                               setState(() {
                                 
@@ -152,12 +156,14 @@ class _TaskPageState extends State<TaskPage> {
                           flex: 1,
                           onPressed: (value) async{
                                   _permet = 1;
+                                  int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
+                                    await _dbHelper.updateTaskRetrait(
+                                      _taskId!, _res); 
                                       await _dbHelper.updateTadoEtat(snapshot.data[index].id,_permet).then((value) { 
                                         setState(() {
                                           
                                         });
                                       }); 
-
                           
                           },
                           backgroundColor: Colors.red.shade200,
