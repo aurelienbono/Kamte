@@ -125,4 +125,49 @@ class _HomePageState extends State<HomePage> {
       ),
     ));
   }
+
+// /******** le show modal pour ajouter un portefeuille actuellement  */
+// void showMadal() {
+//     showModalBottomSheet(
+//         shape: RoundedRectangleBorder(
+//           borderRadius: BorderRadius.vertical(
+//             top: Radius.circular(25.0),
+//           ),
+//         ),
+//         backgroundColor: Color(0xfff6f6f6),
+//         context: context,
+//         builder: (BuildContext context) {
+//           return Container(
+//               child:  Expanded(
+//                           child: TextField(
+//                         onSubmitted: (value) async {
+//                           print("La valeur du champs est : $value");
+
+//                           if (value != '') {
+//                             if (widget.task == null) {
+//                               Task _newTask = Task(title: value);
+
+//                               await _dbHelper.insertTask(_newTask);
+
+//                               print(
+//                                   "Un nouveau task a eté crée : ${_newTask.title}");
+//                             } else {
+//                               print('mise a jour de l existant');
+//                             }
+//                           }
+//                         },
+//                         controller: TextEditingController()..text = _taskTitle!,
+//                         decoration: InputDecoration(
+//                             hintText: "  Entrez un titre ...",
+//                             border: InputBorder.none),
+//                         style: TextStyle(
+//                             fontSize: 28,
+//                             fontWeight: FontWeight.bold,
+//                             color: Color(0xff86829d)),
+//                       )));
+//         });
+//   }
+
+
+
 }
