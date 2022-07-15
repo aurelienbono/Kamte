@@ -117,15 +117,14 @@ Future<void> updateTaskRetrait(int id,int ma_value) async{
       _resquestTotalValue = _value; 
     }
    }); 
-     print("Avant la soustractionn "); 
      print(_resquestTotalValue);
 
 
+     
       _resquestTotalValue -= ma_value;  
-      print("Apres la soustractionn "); 
+
       print(_resquestTotalValue);
 
-       print("La difference des deux valeurs : $_resquestTotalValue"); 
        await _db.rawUpdate(" UPDATE tasks SET total='$_resquestTotalValue 'where id = '$id'");
 }
 
