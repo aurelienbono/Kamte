@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:keep_note/database_helper.dart';
 import 'package:keep_note/models/task.dart';
 import 'package:keep_note/screen/taskpage.dart';
@@ -52,14 +53,39 @@ class _HomePageState extends State<HomePage> {
                                         MaterialPageRoute(
                                             builder: (contex) => TaskPage(
                                                   task: snapshot.data[index],
-                                                ))).then((value) { setState(() {
-                                                  
-                                                });});
+                                                ))).then((value) {
+                                      setState(() {});
+                                    });
                                   },
-                                  child: TaskCardWidget(
-                                    title: snapshot.data[index].title,
-                                    // ici  je vais mettre la fonction pour afficher le prix total de chaque task 
-                                    total: snapshot.data[index].total,
+                                  child: Slidable(
+                                    endActionPane: ActionPane(
+                                      motion: DrawerMotion(),
+                                      children: [
+                                        SlidableAction(
+                                          onPressed: (value) {},
+                                          backgroundColor: Colors.red,
+                                          icon: CupertinoIcons.delete,
+                                        )
+                                      ],
+                                    ),
+                                    
+                                    startActionPane:  
+                                        ActionPane(
+                                      motion: DrawerMotion(),
+                                      children: [
+                                        SlidableAction(
+                                          flex: 1,
+                                          onPressed: (value) {},
+                                          backgroundColor: Colors.blue,
+                                          icon: CupertinoIcons.archivebox_fill,
+                                        )
+                                      ],
+                                    ),
+                                    child: TaskCardWidget(
+                                      title: snapshot.data[index].title,
+                                      // ici  je vais mettre la fonction pour afficher le prix total de chaque task
+                                      total: snapshot.data[index].total,
+                                    ),
                                   ),
                                 );
                               },
@@ -68,15 +94,18 @@ class _HomePageState extends State<HomePage> {
                         }))
               ],
             ),
-                    Positioned(
+            Positioned(
               bottom: 20,
               right: 0,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (contex) => TaskPage(task: null ))).then((value) { setState(() {
-                        
-                      });});
+                  Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (contex) => TaskPage(task: null)))
+                      .then((value) {
+                    setState(() {});
+                  });
                 },
                 child: Container(
                     width: 60,
@@ -96,6 +125,4 @@ class _HomePageState extends State<HomePage> {
       ),
     ));
   }
-
-
 }
