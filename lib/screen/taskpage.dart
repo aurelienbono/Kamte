@@ -218,13 +218,14 @@ class _TaskPageState extends State<TaskPage> {
 
                                   Todo _newTodo = Todo(
                                       title: val,
-                                      price: res,
+                                      price: 0,
                                       taskId: widget.task!.id ,  
-                                      etat: 0
+                                      etat: 0, 
+                                      temp: res, 
                                       );
 
                                   await _dbHelper.updateTaskPriceTotal(
-                                      _taskId!, res);
+                                      _taskId!, 0);
                                  await _dbHelper.insertTodo(_newTodo);
                                   // await _dbHelper.updateTadoEtat( ,0);       
                                   setState(() {});

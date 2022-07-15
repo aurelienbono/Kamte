@@ -11,8 +11,8 @@ class DataBaseHelper{
 
     onCreate: (db, version) async {
     // Run the CREATE TABLE statement on the database.
-    await db.execute( '''CREATE TABLE tasks(id INTEGER PRIMARY KEY, title TEXT, total INTEGER DEFAULT 0)''');
-    await db.execute('''CREATE TABLE todo(id INTEGER PRIMARY KEY,taskId  INTEGER, title TEXT, price INTEGER , etat INTEGER DEFAULT 0 )''');
+    await db.execute( '''CREATE TABLE tasks(id INTEGER PRIMARY KEY, title TEXT, total INTEGER )''');
+    await db.execute('''CREATE TABLE todo(id INTEGER PRIMARY KEY,taskId  INTEGER, title TEXT, price INTEGER , etat INTEGER , temp INTEGER )''');
   },
  version: 1,
     ); 
@@ -39,6 +39,7 @@ Future<void> insertTodo(Todo todo) async {
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
 }
+
 
 Future<List<Task>> getTask() async{ 
   Database _db  = await database(); 
@@ -103,6 +104,7 @@ Future<void> updateTaskPriceTotal(int id , int priceTotal) async{
 Future<void> updateTaskRetrait(int id,int ma_value) async{ 
   Database _db = await database() ; 
   List<Map<String, dynamic>> value = await _db.rawQuery("SELECT total FROM tasks WHERE id=$id"); 
+  List<Map<String, dynamic>> _value = await _db.rawQuery("SELECT temp FROM todo WHERE id=$id");  
 
   Map<String, dynamic> _theTotalValue = value[0]; 
   print(_theTotalValue); 
@@ -128,6 +130,28 @@ Future<void> updateTaskRetrait(int id,int ma_value) async{
 }
 
 
+// recuperation de la valeur temporaire stocker dans le tableau 
+Future<int> getTemp(int id) async{ 
+  Database _db = await database() ; 
+  List<Map<String, dynamic>> value = await _db.rawQuery("SELECT temp FROM todo WHERE id=$id");  
+  Map<String, dynamic> _theTotalValue = value[0]; 
+    int _resquestTotalValue =0; 
+    _theTotalValue.forEach((_key, _value) { 
+    if(_value ==null){ 
+       _resquestTotalValue = 0; 
+    }else { 
+      _resquestTotalValue = _value; 
+    }
+   }); 
+
+   return _resquestTotalValue ; 
+
+
+}
+
+
+
+
 Future<List<Todo>> getTodo(int taskId) async{ 
   Database _db  = await database(); 
 
@@ -141,5 +165,8 @@ Future<void> updateTadoEtat(int id , int etat) async{
   Database _db = await database() ; 
   await _db.rawUpdate("UPDATE todo SET etat='$etat 'where id = '$id'"); 
 }
+
+
+
  
 }

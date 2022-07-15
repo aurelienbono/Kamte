@@ -4,9 +4,10 @@ class  Todo {
  final String? title ; 
  final int? price; 
  final int? etat; 
+ final int? temp ; 
 
 
-  Todo({this.id ,this.taskId, this.title,this.price,this.etat});  
+  Todo({this.id ,this.taskId, this.title,this.price,this.etat,this.temp});  
 
   Map<String,dynamic> toMap(){ 
     return { 
@@ -15,6 +16,7 @@ class  Todo {
       "title": title, 
       "price": price, 
       "etat": etat, 
+      "temp": temp, 
     }; 
   } 
 }
