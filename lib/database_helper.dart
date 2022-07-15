@@ -11,13 +11,12 @@ class DataBaseHelper{
 
     onCreate: (db, version) async {
     // Run the CREATE TABLE statement on the database.
-    await db.execute( '''CREATE TABLE tasks(id INTEGER PRIMARY KEY, title TEXT, total INTEGER)''');
-    await db.execute('''CREATE TABLE todo(id INTEGER PRIMARY KEY,taskId  INTEGER, title TEXT, price INTEGER)''');
+    await db.execute( '''CREATE TABLE tasks(id INTEGER PRIMARY KEY, title TEXT, total INTEGER DEFAULT 0)''');
+    await db.execute('''CREATE TABLE todo(id INTEGER PRIMARY KEY,taskId  INTEGER, title TEXT, price INTEGER , etat INTEGER DEFAULT 0 )''');
   },
  version: 1,
     ); 
   }
-
 
 // Define a function that inserts Tasks into the database
 Future<void> insertTask(Task task) async {
@@ -30,7 +29,6 @@ Future<void> insertTask(Task task) async {
   );
 }
 
-
 // Define a function that inserts Todo into the database
 Future<void> insertTodo(Todo todo) async {
   Database _db = await database();
@@ -41,8 +39,6 @@ Future<void> insertTodo(Todo todo) async {
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
 }
-
-
 
 Future<List<Task>> getTask() async{ 
   Database _db  = await database(); 
@@ -77,9 +73,6 @@ Future<void> deleteTask(int id ) async{
   
 // }
 
-
-
-
 // c'est a changer 
 // Future<void> updateTaskPriceTotal(int id , int priceTotal) async{ 
 //   Database _db = await database() ; 
@@ -105,7 +98,6 @@ Future<void> updateTaskPriceTotal(int id , int priceTotal) async{
    _resquestValue += priceTotal;  
   await _db.rawUpdate(" UPDATE tasks SET total='$_resquestValue 'where id = '$id'");
  
-  
 }
 
 Future<void> updateTaskRetrait(int id,int ma_value) async{ 
@@ -133,14 +125,7 @@ Future<void> updateTaskRetrait(int id,int ma_value) async{
 
        print("La difference des deux valeurs : $_resquestTotalValue"); 
        await _db.rawUpdate(" UPDATE tasks SET total='$_resquestTotalValue 'where id = '$id'");
-      
- 
-  
 }
-
-
-
-
 
 
 Future<List<Todo>> getTodo(int taskId) async{ 
@@ -148,8 +133,13 @@ Future<List<Todo>> getTodo(int taskId) async{
 
   List<Map<String,dynamic>> todoMap = await _db.rawQuery("SELECT * FROM todo WHERE taskId=$taskId"); 
   return List.generate(todoMap.length, (index) { 
-    return Todo( id: todoMap[index]['id'] , taskId:  todoMap[index]['taskId'], title:  todoMap[index]['title'], price:  todoMap[index]['price'] ); 
+    return Todo( id: todoMap[index]['id'] , taskId:  todoMap[index]['taskId'], title:  todoMap[index]['title'], price:  todoMap[index]['price'] , etat:  todoMap[index]['etat']); 
   }); 
+}
+
+Future<void> updateTadoEtat(int id , int etat) async{ 
+  Database _db = await database() ; 
+  await _db.rawUpdate("UPDATE todo SET etat='$etat 'where id = '$id'"); 
 }
  
 }

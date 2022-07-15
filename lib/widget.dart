@@ -55,13 +55,13 @@ class TodoWidget extends StatefulWidget {
 class _TodoWidgetState extends State<TodoWidget> {
 
   Color? getColor(int number){ 
-    if(number ==1){ 
+    if(number ==0){ 
       return Color(0xff82869d); 
     }
-    if(number ==2){ 
+    if(number ==1){ 
       return Colors.red.shade300; 
     }
-    if(number ==3){ 
+    if(number ==2){ 
       return Colors.green.shade300; 
     }
     else{ 
@@ -91,8 +91,7 @@ class _TodoWidgetState extends State<TodoWidget> {
                    width: 1.4)),       
               child: Icon(
                 CupertinoIcons.multiply,
-               color: 
-               getColor(widget.etat), 
+               color: Colors.white,  
         
                 size: 20,
               ),

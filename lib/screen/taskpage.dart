@@ -69,7 +69,7 @@ class _TaskPageState extends State<TaskPage> {
 
                           if (value != '') {
                             if (widget.task == null) {
-                              Task _newTask = Task(title: value);
+                              Task _newTask = Task(title: value, total: 0);
                               await _dbHelper.insertTask(_newTask);
                               print(
                                   "Un nouveau task a eté crée : ${_newTask.title}");
@@ -94,13 +94,13 @@ class _TaskPageState extends State<TaskPage> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                 
-                  child: TextField(
-                    decoration: InputDecoration(
-                        hintText: " Entrez une description pour ....",
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 20)),
-                    onSubmitted: (value) {},
-                  ),
+                  // child: TextField(
+                  //   decoration: InputDecoration(
+                  //       hintText: " Entrez une description pour ....",
+                  //       border: InputBorder.none,
+                  //       contentPadding: EdgeInsets.symmetric(horizontal: 20)),
+                  //   onSubmitted: (value) {},
+                  // ),
                 ),
                 FutureBuilder(
                     initialData: [],
@@ -122,13 +122,19 @@ class _TaskPageState extends State<TaskPage> {
                                 },
                                 child: Slidable(
                                   startActionPane:  ActionPane(motion: DrawerMotion(), 
+                                                                     dragDismissible: false,
+
                                     children: [ 
                                        SlidableAction(
                           autoClose: true,
                           flex: 1,
-                          onPressed: (value) {
-                           _permet = 3;
-                            setState(() {});
+                          onPressed: (value) async{
+                                  _permet = 2;
+                            await _dbHelper.updateTadoEtat(snapshot.data[index].id,_permet).then((value) { 
+                              setState(() {
+                                
+                              });
+                            }); 
                           },
                           backgroundColor: Colors.green.shade200,
                           foregroundColor: Colors.white,
@@ -141,12 +147,18 @@ class _TaskPageState extends State<TaskPage> {
                                    ActionPane(motion: DrawerMotion(), 
                                    dragDismissible: false,
                                     children: [ 
-                                       SlidableAction(
+                           SlidableAction(
                           autoClose: true,
                           flex: 1,
-                          onPressed: (value) {
-                           _permet = 2;
-                            setState(() {});
+                          onPressed: (value) async{
+                                  _permet = 1;
+                                      await _dbHelper.updateTadoEtat(snapshot.data[index].id,_permet).then((value) { 
+                                        setState(() {
+                                          
+                                        });
+                                      }); 
+
+                          
                           },
                           backgroundColor: Colors.red.shade200,
                           foregroundColor: Colors.white,
@@ -157,7 +169,7 @@ class _TaskPageState extends State<TaskPage> {
                                   ),
                                   child: TodoWidget(
                                     text: snapshot.data[index].title,
-                                    etat: _permet ,
+                                    etat: snapshot.data[index].etat ,
                                   ),
                                 ),
                               );
@@ -178,14 +190,14 @@ class _TaskPageState extends State<TaskPage> {
                                   width: 22,
                                   height: 22,
                                   decoration: BoxDecoration(
-                                      color: Colors.transparent,
+                                      color: Color(0xff82869d),
                                       borderRadius: BorderRadius.circular(5),
                                       border: Border.all(
                                           color: Color(0xff82869d),
                                           width: 1.4)),
                                   child: Icon(
                                     CupertinoIcons.checkmark_alt,
-                                    color: Colors.white,
+                                    color: Colors.transparent,
                                     size: 18,
                                   ),
                                 ),
@@ -207,11 +219,14 @@ class _TaskPageState extends State<TaskPage> {
                                   Todo _newTodo = Todo(
                                       title: val,
                                       price: res,
-                                      taskId: widget.task!.id);
+                                      taskId: widget.task!.id ,  
+                                      etat: 0
+                                      );
 
                                   await _dbHelper.updateTaskPriceTotal(
                                       _taskId!, res);
-                                  await _dbHelper.insertTodo(_newTodo);
+                                 await _dbHelper.insertTodo(_newTodo);
+                                  // await _dbHelper.updateTadoEtat( ,0);       
                                   setState(() {});
 
                                 
@@ -236,7 +251,7 @@ class _TaskPageState extends State<TaskPage> {
                 onTap: () async {
                   if (_taskId != 0) {
                   //  il va permettre de partager les tasks
-                  //await _dbHelper.deleteTask(_taskId!);
+                  await _dbHelper.deleteTask(_taskId!);
                     Navigator.of(context).pop();
                   }
                 },
