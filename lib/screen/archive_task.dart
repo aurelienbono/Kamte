@@ -5,18 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:keep_note/database_helper.dart';
 import 'package:keep_note/models/task.dart';
-import 'package:keep_note/screen/archive_task.dart';
 import 'package:keep_note/screen/taskpage.dart';
 import 'package:keep_note/widget.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+class ArchivePage extends StatefulWidget {
+  ArchivePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<ArchivePage> createState() => _ArchivePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ArchivePageState extends State<ArchivePage> {
   DataBaseHelper _dbHelper = DataBaseHelper();
   Task _task = Task();
 
@@ -34,16 +33,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  child: Row(
-                    children: [
-                      Image.asset('assets/images/image1.png'),
-                      RaisedButton(onPressed: (){ 
-                      Navigator.push(context, MaterialPageRoute(builder: ((context) {
-                       return  ArchivePage(); 
-                      }))); 
-                      } , child: Text("CORBEILLE"),)
-                    ],
-                  ),
+                  child: Text("Holla"), 
                   margin: EdgeInsets.only(bottom: 32),
                 ),
                 Expanded(

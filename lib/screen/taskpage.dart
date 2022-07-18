@@ -244,8 +244,6 @@ class _TaskPageState extends State<TaskPage> {
                                  await _dbHelper.insertTodo(_newTodo);
                                   // await _dbHelper.updateTadoEtat( ,0);       
                                   setState(() {});
-
-                                
                                 }
                               }
                             },
@@ -265,11 +263,7 @@ class _TaskPageState extends State<TaskPage> {
               right: 24,
               child: GestureDetector(
                 onTap: () async {
-                  if (_taskId != 0) {
-                  //  il va permettre de partager les tasks
-                  await _dbHelper.deleteTask(_taskId!);
-                    Navigator.of(context).pop();
-                  }
+         // share your portefeuille 
                 },
                 child: Container(
                     width: 60,
