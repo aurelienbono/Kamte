@@ -62,20 +62,42 @@ class _HomePageState extends State<HomePage> {
                                       motion: DrawerMotion(),
                                       children: [
                                         SlidableAction(
-                                          onPressed: (value) {},
+                                          autoClose: true,
+                                          onPressed: (value) async {
+                                             if (snapshot.data[index].id != 0) {
+                  //  il va permettre de partager les tasks
+                  await _dbHelper.deleteTask(snapshot.data[index].id!).then((value) {setState(() {
+                    
+                  });});
+                
+                  }
+                                          },
                                           backgroundColor: Colors.red,
                                           icon: CupertinoIcons.delete,
                                         )
                                       ],
                                     ),
-                                    
-                                    startActionPane:  
-                                        ActionPane(
+                                    startActionPane: ActionPane(
                                       motion: DrawerMotion(),
                                       children: [
                                         SlidableAction(
                                           flex: 1,
-                                          onPressed: (value) {},
+                                          autoClose: true,
+                                          onPressed: (value) async {
+                                            int _permet = 1;
+                                          
+                                            await _dbHelper
+                                                .updateTastStatus(
+                                                    snapshot.data[index].id,
+                                                    _permet)
+                                                .then((value) {
+                                              setState(() {});
+                                            });
+                                              print(_dbHelper.getStatus(
+                                                snapshot.data[index].id));
+                                            print(
+                                                "Le status de ${snapshot.data[index].title} : =>${snapshot.data[index].status}");
+                                          },
                                           backgroundColor: Colors.blue,
                                           icon: CupertinoIcons.archivebox_fill,
                                         )

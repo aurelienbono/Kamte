@@ -69,10 +69,18 @@ class _TaskPageState extends State<TaskPage> {
 
                           if (value != '') {
                             if (widget.task == null) {
-                              Task _newTask = Task(title: value, total: 0);
+                              Task _newTask = Task(title: value, total: 0,status: 0);
                               await _dbHelper.insertTask(_newTask);
                               print(
                                   "Un nouveau task a eté crée : ${_newTask.title}");
+                                  if(_newTask.status ==0){ 
+                                print(" Le status de ${_newTask.title} : => ${_newTask.status} "); 
+
+                                  }
+                                  else { 
+                       print(" Le status de ${_newTask.title} : => ${_newTask.status} "); 
+
+                                  }
                             } else {
                               await _dbHelper.updateTaskTitle(_taskId!, value);
                               print("TASK UPDATE");
@@ -135,7 +143,7 @@ class _TaskPageState extends State<TaskPage> {
                                     await _dbHelper.updateTaskPriceTotal(
                                       _taskId!, _res);
                                             await _dbHelper.updateTodoPrice( snapshot.data[index].id, _res);     
-                            await _dbHelper.updateTadoEtat(snapshot.data[index].id,_permet).then((value) { 
+                            await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
                               setState(() {
                                 
                               });
@@ -160,7 +168,7 @@ class _TaskPageState extends State<TaskPage> {
                                   int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
                                     await _dbHelper.updateTaskRetrait(
                                       _taskId!, _res); 
-                                      await _dbHelper.updateTadoEtat(snapshot.data[index].id,_permet).then((value) { 
+                                      await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
                                         setState(() {
                                           
                                         });
