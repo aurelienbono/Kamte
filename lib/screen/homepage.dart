@@ -108,8 +108,7 @@ class _HomePageState extends State<HomePage> {
                                                   }
                                                 } else {
                                                   _alert(snapshot.data[index].title,res);
-                                                  print(
-                                                      "Impossible de supprimer");
+                                                
                                                 }
                                               },
                                               backgroundColor: Colors.red,
@@ -143,9 +142,16 @@ class _HomePageState extends State<HomePage> {
                                                     Text(
                                                         " Votre porte feuille viens d'etre archivé "),
                                                     TextButton(
-                                                        onPressed: () {
-                                                          print(
-                                                              "Annulation d'archivage de ton porte feuille");
+                                                        onPressed: ()  async{
+                                                          int _temp =0; 
+                                                          await _dbHelper
+                                                      .updateTastStatus(
+                                                        snapshot.data[index].id,
+                                                        _temp).then((value) { 
+                                                          setState(() {
+                                                            
+                                                          });
+                                                        }); 
                                                         },
                                                         child: Text("Annuler"))
                                                   ],

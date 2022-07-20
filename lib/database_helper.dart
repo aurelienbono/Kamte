@@ -45,8 +45,18 @@ Future<void> insertTodo(Todo todo) async {
 
 Future<List<Task>> getTask() async{ 
   Database _db  = await database(); 
+  List<Map<String,dynamic>> taskMap = await _db.query('tasks',where: "status=0"); 
+   print(taskMap);
+  return List.generate(taskMap.length, (index) { 
+    return Task( id: taskMap[index]['id'], title:taskMap[index]['title'] , total: taskMap[index]['total'],status: taskMap[index]['status']); 
+  }); 
+}
 
-  List<Map<String,dynamic>> taskMap = await _db.query('tasks'); 
+Future<List<Task>> getTaskArchive() async{ 
+  Database _db  = await database(); 
+
+  List<Map<String,dynamic>> taskMap = await _db.query('tasks',where: "status=1"); 
+  print(taskMap); 
   return List.generate(taskMap.length, (index) { 
     return Task( id: taskMap[index]['id'], title:taskMap[index]['title'] , total: taskMap[index]['total'],status: taskMap[index]['status']); 
   }); 
@@ -62,6 +72,9 @@ Future<void> deleteTodo(int id ) async{
   await _db.rawDelete("DELETE FROM  todo  WHERE id = '$id'");
   
 }
+
+
+
 
 Future<void> deleteTask(int id ) async{ 
   Database _db = await database() ; 
@@ -201,7 +214,5 @@ Future<void> updateTodoPrice(int id , int price) async{
   Database _db = await database() ; 
  await _db.rawUpdate(" UPDATE todo SET price='$price 'where id = '$id'");
 }
-
-
  
 }
