@@ -182,8 +182,20 @@ Future<int> getStatus(int id) async{
    return _resquestTotalValue ; 
 }
 
-
-
+Future<int> getCount(int id) async{ 
+  Database _db = await database() ; 
+ List<Map<String, Object?>> number = await _db.rawQuery("SELECT COUNT(*) FROM todo where taskId=$id"); 
+  Map<String, dynamic> _tempNumber = number[0]; 
+    int _resquestTempNumber =0; 
+    _tempNumber.forEach((_key, _value) { 
+    if(_value ==null){ 
+       _resquestTempNumber = 0; 
+    }else { 
+      _resquestTempNumber = _value; 
+    }
+   }); 
+   return _resquestTempNumber ; 
+}
 
 Future<void> updateTodoPrice(int id , int price) async{ 
   Database _db = await database() ; 

@@ -38,14 +38,14 @@ class _HomePageState extends State<HomePage> {
                     Container(
                       child: Row(
                         children: [
-                          GestureDetector( 
-                            onTap: () { 
-                              Navigator.push(context, MaterialPageRoute(builder: ((context) {
-                                return ArchivePage(); 
-                              }))); 
-                            },
-                            child: Image.asset('assets/images/image1.png')),
-                
+                          GestureDetector(
+                              onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: ((context) {
+                                  return ArchivePage();
+                                })));
+                              },
+                              child: Image.asset('assets/images/image1.png')),
                         ],
                       ),
                       margin: EdgeInsets.only(bottom: 32),
@@ -79,15 +79,37 @@ class _HomePageState extends State<HomePage> {
                                             SlidableAction(
                                               autoClose: true,
                                               onPressed: (value) async {
-                                                if (snapshot.data[index].id !=
-                                                    0) {
-                                                  //  il va permettre de partager les tasks
-                                                  await _dbHelper
-                                                      .deleteTask(snapshot
-                                                          .data[index].id!)
-                                                      .then((value) {
-                                                    setState(() {});
-                                                  });
+                                                int res = await _dbHelper
+                                                    .getCount(snapshot
+                                                        .data[index].id);
+                                                if (res == 0) {
+                                                  if (snapshot.data[index].id !=
+                                                      0) {
+                                                    //  il va permettre de partager les tasks
+                                                    await _dbHelper
+                                                        .deleteTask(snapshot
+                                                            .data[index].id!)
+                                                        .then((value) {
+                                                      setState(() {});
+                                                    });
+
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(SnackBar(
+                                                            content: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                      children: [
+                                                        Text(
+                                                            " Votre portefeuille ${snapshot.data[index].title} est supprimé"),
+                                                      ],
+                                                    )));
+                                                  }
+                                                } else {
+                                                  _alert(snapshot.data[index].title,res);
+                                                  print(
+                                                      "Impossible de supprimer");
                                                 }
                                               },
                                               backgroundColor: Colors.red,
@@ -178,5 +200,32 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ));
+  }
+
+  void _alert(String title , int nbr) {
+    showCupertinoDialog(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+              title: Row( 
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Icon(Icons.dangerous,color: Colors.red,) , 
+                  Text("Impossible de Supprimer".toUpperCase(),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),)
+                ],
+              ),
+              content: Column(
+                children: [
+                  Text(" Impossible de Supprimer le portefeuille "),
+               Text(" $title ".toUpperCase(),style: TextStyle(fontSize: 15,fontWeight: FontWeight.w400),),
+               Text("car il contient $nbr elements ")
+
+                ],
+              ),
+              actions: [ 
+                TextButton(onPressed: (){ 
+                  Navigator.pop(context); 
+                }, child: Text("OK"))
+              ],
+            ));
   }
 }
