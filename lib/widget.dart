@@ -9,7 +9,8 @@ DataBaseHelper _dbHelper = DataBaseHelper();
 class TaskCardWidget extends StatelessWidget {
   final title;
   final total;
-  const TaskCardWidget({this.title, this.total});
+  final status;
+  const TaskCardWidget({this.title, this.total,this.status});
 
   @override
   Widget build(BuildContext context) {

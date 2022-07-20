@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:keep_note/models/todo.dart';
 import 'package:path/path.dart';
 import 'package:keep_note/models/task.dart';
@@ -11,7 +13,7 @@ class DataBaseHelper{
 
     onCreate: (db, version) async {
     // Run the CREATE TABLE statement on the database.
-    await db.execute( '''CREATE TABLE tasks(id INTEGER PRIMARY KEY, title TEXT, total INTEGER )''');
+    await db.execute( '''CREATE TABLE tasks(id INTEGER PRIMARY KEY, title TEXT, total INTEGER , status INTEGER )''');
     await db.execute('''CREATE TABLE todo(id INTEGER PRIMARY KEY,taskId  INTEGER, title TEXT, price INTEGER , etat INTEGER , temp INTEGER )''');
   },
  version: 1,
@@ -46,7 +48,7 @@ Future<List<Task>> getTask() async{
 
   List<Map<String,dynamic>> taskMap = await _db.query('tasks'); 
   return List.generate(taskMap.length, (index) { 
-    return Task( id: taskMap[index]['id'], title:taskMap[index]['title'] , total: taskMap[index]['total'] ); 
+    return Task( id: taskMap[index]['id'], title:taskMap[index]['title'] , total: taskMap[index]['total'],status: taskMap[index]['status']); 
   }); 
 }
 
@@ -118,9 +120,6 @@ Future<void> updateTaskRetrait(int id,int ma_value) async{
     }
    }); 
      print(_resquestTotalValue);
-
-
-     
       _resquestTotalValue -= ma_value;  
 
       print(_resquestTotalValue);
@@ -143,10 +142,7 @@ Future<int> getTemp(int id) async{
       _resquestTotalValue = _value; 
     }
    }); 
-
    return _resquestTotalValue ; 
-
-
 }
 
 
@@ -161,11 +157,45 @@ Future<List<Todo>> getTodo(int taskId) async{
   }); 
 }
 
-Future<void> updateTadoEtat(int id , int etat) async{ 
+Future<void> updateTodoEtat(int id , int etat) async{ 
   Database _db = await database() ; 
   await _db.rawUpdate("UPDATE todo SET etat='$etat 'where id = '$id'"); 
 }
 
+Future<void> updateTastStatus(int id , int status) async{ 
+  Database _db = await database() ; 
+  await _db.rawUpdate("UPDATE tasks SET status='$status 'where id = '$id'"); 
+}
+
+Future<int> getStatus(int id) async{ 
+  Database _db = await database() ; 
+  List<Map<String, dynamic>> value = await _db.rawQuery("SELECT status FROM tasks WHERE id=$id");  
+  Map<String, dynamic> _theTotalValue = value[0]; 
+    int _resquestTotalValue =0; 
+    _theTotalValue.forEach((_key, _value) { 
+    if(_value ==null){ 
+       _resquestTotalValue = 0; 
+    }else { 
+      _resquestTotalValue = _value; 
+    }
+   }); 
+   return _resquestTotalValue ; 
+}
+
+Future<int> getCount(int id) async{ 
+  Database _db = await database() ; 
+ List<Map<String, Object?>> number = await _db.rawQuery("SELECT COUNT(*) FROM todo where taskId=$id"); 
+  Map<String, dynamic> _tempNumber = number[0]; 
+    int _resquestTempNumber =0; 
+    _tempNumber.forEach((_key, _value) { 
+    if(_value ==null){ 
+       _resquestTempNumber = 0; 
+    }else { 
+      _resquestTempNumber = _value; 
+    }
+   }); 
+   return _resquestTempNumber ; 
+}
 
 Future<void> updateTodoPrice(int id , int price) async{ 
   Database _db = await database() ; 
