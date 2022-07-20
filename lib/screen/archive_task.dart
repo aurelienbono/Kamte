@@ -1,10 +1,11 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, sort_child_properties_last, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, sort_child_properties_last, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:keep_note/database_helper.dart';
 import 'package:keep_note/models/task.dart';
+import 'package:keep_note/screen/homepage.dart';
 import 'package:keep_note/screen/taskpage.dart';
 import 'package:keep_note/widget.dart';
 
@@ -22,6 +23,18 @@ class _ArchivePageState extends State<ArchivePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar( 
+        title: Padding(
+          padding: const EdgeInsets.symmetric( 
+            vertical: 15,
+          ),
+          child: Text("ARCHIVES" ,style: TextStyle( color:Color(0xff86829d),fontSize: 25),),
+        ) ,
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0, 
+
+      ),
         body: SafeArea(
       child: Container(
         width: double.infinity,
@@ -33,7 +46,7 @@ class _ArchivePageState extends State<ArchivePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  child: Text("Holla"), 
+                  child: Text(""), 
                   margin: EdgeInsets.only(bottom: 32),
                 ),
                 Expanded(
@@ -58,33 +71,15 @@ class _ArchivePageState extends State<ArchivePage> {
                                     });
                                   },
                                   child: Slidable(
+                                    
                                     endActionPane: ActionPane(
-                                      motion: DrawerMotion(),
-                                      children: [
-                                        SlidableAction(
-                                          autoClose: true,
-                                          onPressed: (value) async {
-                                             if (snapshot.data[index].id != 0) {
-                  //  il va permettre de partager les tasks
-                  await _dbHelper.deleteTask(snapshot.data[index].id!).then((value) {setState(() {
-                    
-                  });});
-                
-                  }
-                                          },
-                                          backgroundColor: Colors.red,
-                                          icon: CupertinoIcons.delete,
-                                        )
-                                      ],
-                                    ),
-                                    startActionPane: ActionPane(
                                       motion: DrawerMotion(),
                                       children: [
                                         SlidableAction(
                                           flex: 1,
                                           autoClose: true,
                                           onPressed: (value) async {
-                                            int _permet = 1;
+                                            int _permet = 0;
                                           
                                             await _dbHelper
                                                 .updateTastStatus(
@@ -92,7 +87,18 @@ class _ArchivePageState extends State<ArchivePage> {
                                                     _permet)
                                                 .then((value) {
                                               setState(() {});
-                                            });                               
+                                            });        
+                                               
+                                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Row(children: [ 
+                                              Text(" Votre porte feuille viens d'etre desarchive "), 
+                                        TextButton(onPressed: (){ print("Annulation d'archivage de ton porte feuille");}, child: Text("Annuler"))
+                                            ],))) ; 
+                                              Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (contex) => HomePage())).then((value) {
+                                      setState(() {});
+                                    }); 
                                           },
                                           backgroundColor: Colors.blue,
                                           icon: CupertinoIcons.archivebox_fill,
@@ -112,32 +118,7 @@ class _ArchivePageState extends State<ArchivePage> {
                         }))
               ],
             ),
-            Positioned(
-              bottom: 20,
-              right: 0,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (contex) => TaskPage(task: null)))
-                      .then((value) {
-                    setState(() {});
-                  });
-                },
-                child: Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                        color: Color(0xff0078AA),
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Center(
-                        child: Icon(
-                      CupertinoIcons.add,
-                      color: Colors.white,
-                    ))),
-              ),
-            )
+           
           ],
         ),
       ),

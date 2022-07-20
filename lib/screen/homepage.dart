@@ -19,138 +19,164 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   DataBaseHelper _dbHelper = DataBaseHelper();
   Task _task = Task();
+  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _key,
         body: SafeArea(
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 24),
-        color: Color(0xfff6f6f6),
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          child: Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            color: Color(0xfff6f6f6),
+            child: Stack(
               children: [
-                Container(
-                  child: Row(
-                    children: [
-                      Image.asset('assets/images/image1.png'),
-                      RaisedButton(onPressed: (){ 
-                      Navigator.push(context, MaterialPageRoute(builder: ((context) {
-                       return  ArchivePage(); 
-                      }))); 
-                      } , child: Text("CORBEILLE"),)
-                    ],
-                  ),
-                  margin: EdgeInsets.only(bottom: 32),
-                ),
-                Expanded(
-                    child: FutureBuilder(
-                        initialData: [],
-                        future: _dbHelper.getTask(),
-                        builder: (context, AsyncSnapshot snapshot) {
-                          return ScrollConfiguration(
-                            behavior: NoGlowBehaviour(),
-                            child: ListView.builder(
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (contex) => TaskPage(
-                                                  task: snapshot.data[index],
-                                                ))).then((value) {
-                                      setState(() {});
-                                    });
-                                  },
-                                  child: Slidable(
-                                    endActionPane: ActionPane(
-                                      motion: DrawerMotion(),
-                                      children: [
-                                        SlidableAction(
-                                          autoClose: true,
-                                          onPressed: (value) async {
-                                             if (snapshot.data[index].id != 0) {
-                  //  il va permettre de partager les tasks
-                  await _dbHelper.deleteTask(snapshot.data[index].id!).then((value) {setState(() {
-                    
-                  });});
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: Row(
+                        children: [
+                          GestureDetector( 
+                            onTap: () { 
+                              Navigator.push(context, MaterialPageRoute(builder: ((context) {
+                                return ArchivePage(); 
+                              }))); 
+                            },
+                            child: Image.asset('assets/images/image1.png')),
                 
-                  }
-                                          },
-                                          backgroundColor: Colors.red,
-                                          icon: CupertinoIcons.delete,
-                                        )
-                                      ],
-                                    ),
-                                    startActionPane: ActionPane(
-                                      motion: DrawerMotion(),
-                                      children: [
-                                        SlidableAction(
-                                          flex: 1,
-                                          autoClose: true,
-                                          onPressed: (value) async {
-                                            int _permet = 1;
-                                          
-                                            await _dbHelper
-                                                .updateTastStatus(
-                                                    snapshot.data[index].id,
-                                                    _permet)
-                                                .then((value) {
-                                              setState(() {});
-                                            });                               
-                                          },
-                                          backgroundColor: Colors.blue,
-                                          icon: CupertinoIcons.archivebox_fill,
-                                        )
-                                      ],
-                                    ),
-                                    child: TaskCardWidget(
-                                      title: snapshot.data[index].title,
-                                      // ici  je vais mettre la fonction pour afficher le prix total de chaque task
-                                      total: snapshot.data[index].total,
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          );
-                        }))
+                        ],
+                      ),
+                      margin: EdgeInsets.only(bottom: 32),
+                    ),
+                    Expanded(
+                        child: FutureBuilder(
+                            initialData: [],
+                            future: _dbHelper.getTask(),
+                            builder: (context, AsyncSnapshot snapshot) {
+                              return ScrollConfiguration(
+                                behavior: NoGlowBehaviour(),
+                                child: ListView.builder(
+                                  itemCount: snapshot.data.length,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (contex) => TaskPage(
+                                                      task:
+                                                          snapshot.data[index],
+                                                    ))).then((value) {
+                                          setState(() {});
+                                        });
+                                      },
+                                      child: Slidable(
+                                        endActionPane: ActionPane(
+                                          motion: DrawerMotion(),
+                                          children: [
+                                            SlidableAction(
+                                              autoClose: true,
+                                              onPressed: (value) async {
+                                                if (snapshot.data[index].id !=
+                                                    0) {
+                                                  //  il va permettre de partager les tasks
+                                                  await _dbHelper
+                                                      .deleteTask(snapshot
+                                                          .data[index].id!)
+                                                      .then((value) {
+                                                    setState(() {});
+                                                  });
+                                                }
+                                              },
+                                              backgroundColor: Colors.red,
+                                              icon: CupertinoIcons.delete,
+                                            )
+                                          ],
+                                        ),
+                                        startActionPane: ActionPane(
+                                          motion: DrawerMotion(),
+                                          children: [
+                                            SlidableAction(
+                                              flex: 1,
+                                              autoClose: true,
+                                              onPressed: (value) async {
+                                                int _permet = 1;
+
+                                                await _dbHelper
+                                                    .updateTastStatus(
+                                                        snapshot.data[index].id,
+                                                        _permet)
+                                                    .then((value) {
+                                                  setState(() {});
+                                                });
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(SnackBar(
+                                                        content: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  children: [
+                                                    Text(
+                                                        " Votre porte feuille viens d'etre archivé "),
+                                                    TextButton(
+                                                        onPressed: () {
+                                                          print(
+                                                              "Annulation d'archivage de ton porte feuille");
+                                                        },
+                                                        child: Text("Annuler"))
+                                                  ],
+                                                )));
+                                              },
+                                              backgroundColor: Colors.blue,
+                                              icon: CupertinoIcons
+                                                  .archivebox_fill,
+                                            )
+                                          ],
+                                        ),
+                                        child: TaskCardWidget(
+                                          title: snapshot.data[index].title,
+                                          // ici  je vais mettre la fonction pour afficher le prix total de chaque task
+                                          total: snapshot.data[index].total,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            }))
+                  ],
+                ),
+                Positioned(
+                  bottom: 20,
+                  right: 0,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (contex) => TaskPage(task: null)))
+                          .then((value) {
+                        setState(() {});
+                      });
+                    },
+                    child: Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                            color: Color(0xff0078AA),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Center(
+                            child: Icon(
+                          CupertinoIcons.add,
+                          color: Colors.white,
+                        ))),
+                  ),
+                )
               ],
             ),
-            Positioned(
-              bottom: 20,
-              right: 0,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (contex) => TaskPage(task: null)))
-                      .then((value) {
-                    setState(() {});
-                  });
-                },
-                child: Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                        color: Color(0xff0078AA),
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Center(
-                        child: Icon(
-                      CupertinoIcons.add,
-                      color: Colors.white,
-                    ))),
-              ),
-            )
-          ],
-        ),
-      ),
-    ));
+          ),
+        ));
   }
 }
