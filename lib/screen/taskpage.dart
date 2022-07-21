@@ -9,6 +9,8 @@ import 'package:keep_note/models/todo.dart';
 import 'package:keep_note/widget.dart';
 import 'dart:math';
 
+import 'package:share_plus/share_plus.dart';
+
 class TaskPage extends StatefulWidget {
   final Task? task;
   TaskPage({required this.task});
@@ -263,7 +265,7 @@ class _TaskPageState extends State<TaskPage> {
               right: 24,
               child: GestureDetector(
                 onTap: () async {
-         // share your portefeuille 
+                  await Share.share("Bonjour share "); 
                 },
                 child: Container(
                     width: 60,
