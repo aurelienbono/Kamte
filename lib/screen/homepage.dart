@@ -234,7 +234,7 @@ class _HomePageState extends State<HomePage> {
                                         } else {
                                           Navigator.pop(context);
                                         }
-                               nameController.clear();
+                                        nameController.clear();
 
                                       })
                                 ],
