@@ -104,13 +104,6 @@ class _TaskPageState extends State<TaskPage> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                 
-                  // child: TextField(
-                  //   decoration: InputDecoration(
-                  //       hintText: " Entrez une description pour ....",
-                  //       border: InputBorder.none,
-                  //       contentPadding: EdgeInsets.symmetric(horizontal: 20)),
-                  //   onSubmitted: (value) {},
-                  // ),
                 ),
                 FutureBuilder(
                     initialData: [],
@@ -122,14 +115,7 @@ class _TaskPageState extends State<TaskPage> {
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () async {
-                                  // suppression des depenses 
-                                  // await _dbHelper
-                                  //     .deleteTodo(snapshot.data[index].id);
-                                  // await _dbHelper.updateTaskRetrait(
-                                  //     _taskId!, snapshot.data[index].price);
-
-                                  // print(snapshot.data[index].price);
-                                  // setState(() {});
+                                
                                 },
                                 child: Slidable(
                                   startActionPane:  ActionPane(motion: DrawerMotion(), 
@@ -225,9 +211,7 @@ class _TaskPageState extends State<TaskPage> {
                               child: TextField(
                             controller: TextEditingController()..text = '',
                             onSubmitted: (val) async {
-                              print("La valeur du champs est : $val;");
                               var res = recoverPrice(val);
-                              print("la valeur recolter ici est : $res ");
 
                               if (val != '') {
                                 if (widget.task != null) {
@@ -244,7 +228,6 @@ class _TaskPageState extends State<TaskPage> {
                                   await _dbHelper.updateTaskPriceTotal(
                                       _taskId!, 0);
                                  await _dbHelper.insertTodo(_newTodo);
-                                  // await _dbHelper.updateTadoEtat( ,0);       
                                   setState(() {});
                                 }
                               }
@@ -267,10 +250,7 @@ class _TaskPageState extends State<TaskPage> {
                 onTap: () async {
                   int index ; 
                Future<List<Map<String, dynamic>>> valueShare =    
-               _dbHelper.getTodoShare(_taskId!); 
-
-                 
-
+               _dbHelper.getTodoShare(_taskId!);           
                   await Share.share(getMsgShare(1)); 
                   getMsgShare(1); 
 
@@ -316,4 +296,3 @@ class _TaskPageState extends State<TaskPage> {
     return monRes;
   }
 }
-

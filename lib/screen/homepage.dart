@@ -20,6 +20,8 @@ class _HomePageState extends State<HomePage> {
   DataBaseHelper _dbHelper = DataBaseHelper();
   Task _task = Task();
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+  String? _taskTitle = '';
+  TextEditingController nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -107,8 +109,10 @@ class _HomePageState extends State<HomePage> {
                                                     )));
                                                   }
                                                 } else {
-                                                  _alert(snapshot.data[index].title,res);
-                                                
+                                                  _alert(
+                                                      snapshot
+                                                          .data[index].title,
+                                                      res);
                                                 }
                                               },
                                               backgroundColor: Colors.red,
@@ -142,16 +146,18 @@ class _HomePageState extends State<HomePage> {
                                                     Text(
                                                         " Votre porte feuille viens d'etre archivé "),
                                                     TextButton(
-                                                        onPressed: ()  async{
-                                                          int _temp =0; 
+                                                        onPressed: () async {
+                                                          int _temp = 0;
                                                           await _dbHelper
-                                                      .updateTastStatus(
-                                                        snapshot.data[index].id,
-                                                        _temp).then((value) { 
-                                                          setState(() {
-                                                            
+                                                              .updateTastStatus(
+                                                                  snapshot
+                                                                      .data[
+                                                                          index]
+                                                                      .id,
+                                                                  _temp)
+                                                              .then((value) {
+                                                            setState(() {});
                                                           });
-                                                        }); 
                                                         },
                                                         child: Text("Annuler"))
                                                   ],
@@ -181,17 +187,62 @@ class _HomePageState extends State<HomePage> {
                   right: 0,
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (contex) => TaskPage(task: null)))
-                          .then((value) {
-                        setState(() {});
-                      });
+                      showCupertinoDialog(
+                          context: context,
+                          builder: (context) => CupertinoAlertDialog(
+                                title:
+                                    Text("Creer Un PorteFeuille".toUpperCase()),
+                                content: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 10,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      CupertinoTextField(
+                                        placeholder: "Ex:Marche Noel",
+                                        controller: nameController,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        "Annuler".toUpperCase(),
+                                        style: TextStyle(color: Colors.red),
+                                      )),
+                                  CupertinoButton(
+                                      child: Text("Valider".toUpperCase()),
+                                      onPressed: () async {
+                                        if (nameController.text != '') {
+                                          Task _newTask = Task(
+                                              title: nameController.text,
+                                              total: 0,
+                                              status: 0);
+                                          await _dbHelper
+                                              .insertTask(_newTask)
+                                              .then((value) {
+                                            setState(() { 
+                                            });
+                                          });
+                                              nameController.clear();
+
+                                          Navigator.pop(context);
+                                        } else {
+                                          Navigator.pop(context);
+                                        }
+                               nameController.clear();
+
+                                      })
+                                ],
+                              ));
                     },
                     child: Container(
-                        width: 60,
-                        height: 60,
+                        width: 55,
+                        height: 55,
                         decoration: BoxDecoration(
                             color: Color(0xff0078AA),
                             borderRadius: BorderRadius.circular(20)),
@@ -208,30 +259,43 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 
-  void _alert(String title , int nbr) {
+  void _alert(String title, int nbr) {
     showCupertinoDialog(
         context: context,
         builder: (context) => CupertinoAlertDialog(
-              title: Row( 
+              title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Icon(Icons.dangerous,color: Colors.red,) , 
-                  Text("Impossible de Supprimer".toUpperCase(),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),)
+                  // Icon(Icons.dangerous,color: Colors.red,) ,
+                  Text(
+                    "Impossible de Supprimer".toUpperCase(),
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                  )
                 ],
               ),
               content: Column(
                 children: [
                   Text(" Impossible de Supprimer le portefeuille "),
-               Text(" $title ".toUpperCase(),style: TextStyle(fontSize: 15,fontWeight: FontWeight.w400),),
-               Text("car il contient $nbr elements ")
-
+                  Text(
+                    " $title ".toUpperCase(),
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                  ),
+                  Text("car il contient $nbr elements ")
                 ],
               ),
-              actions: [ 
-                TextButton(onPressed: (){ 
-                  Navigator.pop(context); 
-                }, child: Text("OK"))
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text("OK"))
               ],
             ));
+  }
+
+  void showModal(context) {
+    showBottomSheet(
+        context: context,
+        builder: (BuildContext context) => BottomSheetWidget());
   }
 }
