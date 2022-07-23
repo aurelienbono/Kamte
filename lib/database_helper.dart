@@ -159,12 +159,27 @@ Future<int> getTemp(int id) async{
 }
 
 
+Future<List<Map<String, dynamic>>> getTodoShare(int taskId) async{ 
+  Database _db  = await database(); 
+
+  List<Map<String,dynamic>> todoMap = await _db.rawQuery("SELECT * FROM todo WHERE taskId=$taskId"); 
+    //  todoMap.forEach((k,v) => print('${k}: ${v}')); 
+      for (var item in todoMap) {
+    todoMap[item['_id']] = {'name': item['name'], 'age': item['age']};
+  }
+
+  return todoMap; 
+ 
+}
+
+
 
 
 Future<List<Todo>> getTodo(int taskId) async{ 
   Database _db  = await database(); 
 
   List<Map<String,dynamic>> todoMap = await _db.rawQuery("SELECT * FROM todo WHERE taskId=$taskId"); 
+  print(todoMap); 
   return List.generate(todoMap.length, (index) { 
     return Todo( id: todoMap[index]['id'] , taskId:  todoMap[index]['taskId'], title:  todoMap[index]['title'], price:  todoMap[index]['price'] , etat:  todoMap[index]['etat']); 
   }); 

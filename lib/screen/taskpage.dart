@@ -265,8 +265,15 @@ class _TaskPageState extends State<TaskPage> {
               right: 24,
               child: GestureDetector(
                 onTap: () async {
+                  int index ; 
+               Future<List<Map<String, dynamic>>> valueShare =    
+               _dbHelper.getTodoShare(_taskId!); 
+
+                 
+
                   await Share.share(getMsgShare(1)); 
                   getMsgShare(1); 
+
                 },
                 child: Container(
                     width: 60,

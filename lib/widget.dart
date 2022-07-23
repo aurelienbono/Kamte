@@ -25,7 +25,7 @@ class TaskCardWidget extends StatelessWidget {
         child: ListTile( title:   Text(
               title ?? ("sans nom"),
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 20,
                 color: Color(0xff211551),
                 fontWeight: FontWeight.bold,
               ),
@@ -35,7 +35,7 @@ class TaskCardWidget extends StatelessWidget {
               child: Text(
                 "$total",
                 style: TextStyle(
-                    fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xff86829d),),
+                    fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xff86829d),),
               ),
             ),
             )
