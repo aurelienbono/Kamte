@@ -126,7 +126,9 @@ class _TaskPageState extends State<TaskPage> {
                           autoClose: true,
                           flex: 1,
                           onPressed: (value) async{
-                                  _permet = 2;
+                int _etat =  await _dbHelper.getEtatTodo(snapshot.data[index].id); 
+                if(_etat==0){ 
+                             _permet = 2;
                                    int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
                                     await _dbHelper.updateTaskPriceTotal(
                                       _taskId!, _res);
@@ -136,6 +138,7 @@ class _TaskPageState extends State<TaskPage> {
                                 
                               });
                             }); 
+                }
                           },
                           backgroundColor: Colors.green.shade200,
                           foregroundColor: Colors.white,
@@ -152,7 +155,9 @@ class _TaskPageState extends State<TaskPage> {
                           autoClose: true,
                           flex: 1,
                           onPressed: (value) async{
-                                  _permet = 1;
+                            int _etat =  await _dbHelper.getEtatTodo(snapshot.data[index].id); 
+                            if(_etat==0){ 
+                                _permet = 1;
                                   int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
                                     await _dbHelper.updateTaskRetrait(
                                       _taskId!, _res); 
@@ -161,6 +166,8 @@ class _TaskPageState extends State<TaskPage> {
                                           
                                         });
                                       }); 
+                            }
+                             
                           
                           },
                           backgroundColor: Colors.red.shade200,
@@ -217,7 +224,8 @@ class _TaskPageState extends State<TaskPage> {
                                 if (widget.task != null) {
                                   DataBaseHelper _dbHelper = DataBaseHelper();
 
-                                  Todo _newTodo = Todo(
+                                 if(res!=0){ 
+                                   Todo _newTodo = Todo(
                                       title: val,
                                       price: 0,
                                       taskId: widget.task!.id ,  
@@ -229,6 +237,22 @@ class _TaskPageState extends State<TaskPage> {
                                       _taskId!, 0);
                                  await _dbHelper.insertTodo(_newTodo);
                                   setState(() {});
+                                 }
+                                 else { 
+                                  Todo _newTodo = Todo(
+                                      title: val,
+                                      price: 0,
+                                      taskId: widget.task!.id ,  
+                                      etat: 0, 
+                                      temp: 0, 
+                                      );
+
+                                  await _dbHelper.updateTaskPriceTotal(
+                                      _taskId!, 0);
+                                 await _dbHelper.insertTodo(_newTodo);
+                                  setState(() {});
+                                 }
+
                                 }
                               }
                             },
@@ -285,14 +309,25 @@ class _TaskPageState extends State<TaskPage> {
     final intInStr = RegExp(r'\d+');
     var recherche = intInStr.allMatches(chaine).map((m) => m.group(0));
     var theTrans = recherche.toList();
-    List<int> new_arary = [];
-
+     int monRes ; 
+    
+  
+  if(theTrans.isNotEmpty) { 
+  List<int> new_arary = [];
     for (var number in theTrans) {
       var lestNumber = int.parse(number!);
       new_arary.add(lestNumber);
     }
 
-    int monRes = new_arary.reduce(max);
-    return monRes;
+    monRes = new_arary.reduce(max);
+  
+
+  }
+  else { 
+   monRes = 0; 
+  }
+ 
+  return monRes;
+
   }
 }

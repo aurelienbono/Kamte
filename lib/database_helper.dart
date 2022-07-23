@@ -158,6 +158,23 @@ Future<int> getTemp(int id) async{
    return _resquestTotalValue ; 
 }
 
+Future<int> getEtatTodo(int id) async{ 
+  Database _db = await database() ; 
+  List<Map<String, dynamic>> value = await _db.rawQuery("SELECT etat FROM todo WHERE id=$id");  
+  Map<String, dynamic> _theEtatValue = value[0]; 
+    int _resquestEtatValue =0; 
+    _theEtatValue.forEach((_key, _value) { 
+    if(_value ==null){ 
+       _resquestEtatValue = 0; 
+    }else { 
+      _resquestEtatValue = _value; 
+    }
+   }); 
+   return _resquestEtatValue ; 
+}
+
+
+
 
 Future<List<Map<String, dynamic>>> getTodoShare(int taskId) async{ 
   Database _db  = await database(); 
