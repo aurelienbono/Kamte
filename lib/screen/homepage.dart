@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, sort_child_properties_last, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, sort_child_properties_last, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,18 +26,28 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar( 
-        backgroundColor: Color(0xff0078AA),
-        title: Text("PorteFeuille personnel".toUpperCase())  , 
-        centerTitle: true, 
-         leading: GestureDetector(child: Icon(Icons.short_text) , onTap: (){},), 
-         actions: [ 
-          GestureDetector(child: Icon(Icons.person_outline) , onTap: (){},),
-         ]
-        ,
-        elevation: 0,
+        drawer: Drawer(),
+        appBar: AppBar(
+          backgroundColor: Color(0xff0078AA),
+          title: Text("PorteFeuille personnel".toUpperCase()),
+          centerTitle: true,
+          leading: Builder(
+            builder: (context) => GestureDetector(
+              child: Icon(Icons.short_text),
+              onTap: () {
+                return Scaffold.of(context).openDrawer();
+              },
+            ),
           ),
-        key: _key,
+          actions: [
+            GestureDetector(
+              child: Icon(Icons.person_outline),
+              onTap: () async {
+              },
+            ),
+          ],
+          elevation: 0,
+        ),
         body: SafeArea(
           child: Container(
             width: double.infinity,
@@ -48,30 +58,16 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Container(
-                    //   child: Row(
-                    //     children: [
-                    //       GestureDetector(
-                    //           onTap: () {                         
-                    //             Navigator.push(context,
-                    //                 MaterialPageRoute(builder: ((context) {
-                    //               return ArchivePage();
-                    //             })));
-                    //           },
-                    //           child: Image.asset('assets/images/image1.png')),
-                    //     ],
-                    //   ),
-                    //   margin: EdgeInsets.only(bottom: 32),
-                    // ),
-                Padding(padding: EdgeInsets.only(bottom: 32)  ), 
-                Expanded(
+                    Padding(padding: EdgeInsets.only(bottom: 32)),
+                    Expanded(
                         child: FutureBuilder(
                             initialData: [],
                             future: _dbHelper.getTask(),
                             builder: (context, AsyncSnapshot snapshot) {
                               return ScrollConfiguration(
                                 behavior: NoGlowBehaviour(),
-                                child: ListView.builder(
+                                child:  snapshot.data.length ==0 ?    Image.asset("assets/images/image2.png") :                                
+                                ListView.builder(
                                   itemCount: snapshot.data.length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
@@ -197,8 +193,7 @@ class _HomePageState extends State<HomePage> {
                               );
                             }))
                   ],
-                ), 
-                
+                ),
                 Positioned(
                   bottom: 20,
                   right: 0,
@@ -242,17 +237,15 @@ class _HomePageState extends State<HomePage> {
                                           await _dbHelper
                                               .insertTask(_newTask)
                                               .then((value) {
-                                            setState(() { 
-                                            });
+                                            setState(() {});
                                           });
-                                              nameController.clear();
+                                          nameController.clear();
 
                                           Navigator.pop(context);
                                         } else {
                                           Navigator.pop(context);
                                         }
                                         nameController.clear();
-
                                       })
                                 ],
                               ));

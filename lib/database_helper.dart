@@ -1,4 +1,4 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, prefer_conditional_assignment, unnecessary_null_comparison
 
 import 'package:keep_note/models/todo.dart';
 import 'package:path/path.dart';
@@ -231,5 +231,26 @@ Future<void> updateTodoPrice(int id , int price) async{
   Database _db = await database() ; 
  await _db.rawUpdate(" UPDATE todo SET price='$price 'where id = '$id'");
 }
+
+
+Future<int> getCountTask() async{ 
+  Database _db = await database() ; 
+ List<Map> result =  await _db.query("tasks"); 
+  int _totalTasks = result.length; 
+  return _totalTasks; 
+
+}
+ 
+
+Future<int> getCountTodo() async{ 
+
+   Database _db = await database() ; 
+  List<Map> result =  await _db.query("tasks"); 
+  int _totalTodo = result.length; 
+  return _totalTodo; 
+}
+ 
+ 
+ 
  
 }

@@ -8,7 +8,6 @@ version: 1.0.0+1
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
-
 dependencies:
   flutter:
     sdk: flutter
@@ -34,6 +33,8 @@ flutter:
 
   assets:
     - assets/images/image1.png
+    - assets/images/image2.png
+    - assets/images/image3.png
     # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

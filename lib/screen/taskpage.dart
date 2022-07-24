@@ -102,7 +102,9 @@ class _TaskPageState extends State<TaskPage> {
                     future: _dbHelper.getTodo(_taskId!),
                     builder: (context, AsyncSnapshot snapshot) {
                       return Expanded(
-                        child: ListView.builder(
+                        child:   snapshot.data.length ==0 ?  Image.asset("assets/images/image3.png") : 
+                        
+                        ListView.builder(
                             itemCount: snapshot.data.length,
                             itemBuilder: (context, index) {
                               return GestureDetector(
