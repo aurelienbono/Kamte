@@ -9,6 +9,8 @@ import 'package:keep_note/models/todo.dart';
 import 'package:keep_note/widget.dart';
 import 'dart:math';
 
+import 'package:share_plus/share_plus.dart';
+
 class TaskPage extends StatefulWidget {
   final Task? task;
   TaskPage({required this.task});
@@ -65,25 +67,17 @@ class _TaskPageState extends State<TaskPage> {
                       Expanded(
                           child: TextField(
                         onSubmitted: (value) async {
-                          print("La valeur du champs est : $value");
-
                           if (value != '') {
                             if (widget.task == null) {
                               Task _newTask = Task(title: value, total: 0,status: 0);
                               await _dbHelper.insertTask(_newTask);
-                              print(
-                                  "Un nouveau task a eté crée : ${_newTask.title}");
+                         
                                   if(_newTask.status ==0){ 
-                                print(" Le status de ${_newTask.title} : => ${_newTask.status} "); 
-
                                   }
                                   else { 
-                       print(" Le status de ${_newTask.title} : => ${_newTask.status} "); 
-
                                   }
                             } else {
                               await _dbHelper.updateTaskTitle(_taskId!, value);
-                              print("TASK UPDATE");
                             }
                           }
                         },
@@ -102,32 +96,20 @@ class _TaskPageState extends State<TaskPage> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                 
-                  // child: TextField(
-                  //   decoration: InputDecoration(
-                  //       hintText: " Entrez une description pour ....",
-                  //       border: InputBorder.none,
-                  //       contentPadding: EdgeInsets.symmetric(horizontal: 20)),
-                  //   onSubmitted: (value) {},
-                  // ),
                 ),
                 FutureBuilder(
                     initialData: [],
                     future: _dbHelper.getTodo(_taskId!),
                     builder: (context, AsyncSnapshot snapshot) {
                       return Expanded(
-                        child: ListView.builder(
+                        child:   snapshot.data.length ==0 ?  Image.asset("assets/images/image3.png") : 
+                        
+                        ListView.builder(
                             itemCount: snapshot.data.length,
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () async {
-                                  // suppression des depenses 
-                                  // await _dbHelper
-                                  //     .deleteTodo(snapshot.data[index].id);
-                                  // await _dbHelper.updateTaskRetrait(
-                                  //     _taskId!, snapshot.data[index].price);
-
-                                  // print(snapshot.data[index].price);
-                                  // setState(() {});
+                                
                                 },
                                 child: Slidable(
                                   startActionPane:  ActionPane(motion: DrawerMotion(), 
@@ -138,7 +120,9 @@ class _TaskPageState extends State<TaskPage> {
                           autoClose: true,
                           flex: 1,
                           onPressed: (value) async{
-                                  _permet = 2;
+                int _etat =  await _dbHelper.getEtatTodo(snapshot.data[index].id); 
+                if(_etat==0){ 
+                             _permet = 2;
                                    int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
                                     await _dbHelper.updateTaskPriceTotal(
                                       _taskId!, _res);
@@ -148,6 +132,7 @@ class _TaskPageState extends State<TaskPage> {
                                 
                               });
                             }); 
+                }
                           },
                           backgroundColor: Colors.green.shade200,
                           foregroundColor: Colors.white,
@@ -164,7 +149,9 @@ class _TaskPageState extends State<TaskPage> {
                           autoClose: true,
                           flex: 1,
                           onPressed: (value) async{
-                                  _permet = 1;
+                            int _etat =  await _dbHelper.getEtatTodo(snapshot.data[index].id); 
+                            if(_etat==0){ 
+                                _permet = 1;
                                   int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
                                     await _dbHelper.updateTaskRetrait(
                                       _taskId!, _res); 
@@ -173,6 +160,19 @@ class _TaskPageState extends State<TaskPage> {
                                           
                                         });
                                       }); 
+                            }
+                            else { 
+                                _permet = 2;
+                                  int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
+                                    await _dbHelper.updateTodoPrice(
+                                      _taskId!, _res); 
+                                      await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
+                                        setState(() {
+                                          
+                                        });
+                                      }); 
+                            }
+                             
                           
                           },
                           backgroundColor: Colors.red.shade200,
@@ -184,6 +184,7 @@ class _TaskPageState extends State<TaskPage> {
                                   ),
                                   child: TodoWidget(
                                     text: snapshot.data[index].title,
+                                    id: snapshot.data[index].id,
                                     etat: snapshot.data[index].etat ,
                                   ),
                                 ),
@@ -223,15 +224,14 @@ class _TaskPageState extends State<TaskPage> {
                               child: TextField(
                             controller: TextEditingController()..text = '',
                             onSubmitted: (val) async {
-                              print("La valeur du champs est : $val;");
                               var res = recoverPrice(val);
-                              print("la valeur recolter ici est : $res ");
 
                               if (val != '') {
                                 if (widget.task != null) {
                                   DataBaseHelper _dbHelper = DataBaseHelper();
 
-                                  Todo _newTodo = Todo(
+                                 if(res!=0){ 
+                                   Todo _newTodo = Todo(
                                       title: val,
                                       price: 0,
                                       taskId: widget.task!.id ,  
@@ -242,8 +242,23 @@ class _TaskPageState extends State<TaskPage> {
                                   await _dbHelper.updateTaskPriceTotal(
                                       _taskId!, 0);
                                  await _dbHelper.insertTodo(_newTodo);
-                                  // await _dbHelper.updateTadoEtat( ,0);       
                                   setState(() {});
+                                 }
+                                 else { 
+                                  Todo _newTodo = Todo(
+                                      title: val,
+                                      price: 0,
+                                      taskId: widget.task!.id ,  
+                                      etat: 0, 
+                                      temp: 0, 
+                                      );
+
+                                  await _dbHelper.updateTaskPriceTotal(
+                                      _taskId!, 0);
+                                 await _dbHelper.insertTodo(_newTodo);
+                                  setState(() {});
+                                 }
+
                                 }
                               }
                             },
@@ -263,7 +278,12 @@ class _TaskPageState extends State<TaskPage> {
               right: 24,
               child: GestureDetector(
                 onTap: () async {
-         // share your portefeuille 
+                  int index ; 
+               Future<List<Map<String, dynamic>>> valueShare =    
+               _dbHelper.getTodoShare(_taskId!);           
+                  await Share.share(getMsgShare(1)); 
+                  getMsgShare(1); 
+
                 },
                 child: Container(
                     width: 60,
@@ -284,18 +304,36 @@ class _TaskPageState extends State<TaskPage> {
     );
   }
 
+  String getMsgShare(int id){ 
+     
+
+       String message = "\t NAME APP \n\n\n  ---------------------------------------------- \n PorteFeuille NameUser-$id \n Du 20/03/2022 08:56 \n Client : 69x xxx xxx \n ---------------------------------------------- \n DetailPorteFeuille : 300 xaf \n DetailPorteFeuille1 : 300 xaf \n ----------------------------------------------\n Total HT 300 \n ----------------------------------------------";
+       return message;  
+  }
+
   int recoverPrice(String chaine) {
     final intInStr = RegExp(r'\d+');
     var recherche = intInStr.allMatches(chaine).map((m) => m.group(0));
     var theTrans = recherche.toList();
-    List<int> new_arary = [];
-
+     int monRes ; 
+    
+  
+  if(theTrans.isNotEmpty) { 
+  List<int> new_arary = [];
     for (var number in theTrans) {
       var lestNumber = int.parse(number!);
       new_arary.add(lestNumber);
     }
 
-    int monRes = new_arary.reduce(max);
-    return monRes;
+    monRes = new_arary.reduce(max);
+  
+
+  }
+  else { 
+   monRes = 0; 
+  }
+ 
+  return monRes;
+
   }
 }

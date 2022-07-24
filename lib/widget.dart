@@ -11,12 +11,13 @@ class TaskCardWidget extends StatelessWidget {
   final total;
   final status;
   const TaskCardWidget({this.title, this.total,this.status});
+  
 
   @override
   Widget build(BuildContext context) {
     return Container(
         width: double.infinity, 
-        padding: EdgeInsets.symmetric( vertical: 10),
+        padding: EdgeInsets.symmetric( vertical: 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.white,
@@ -25,7 +26,7 @@ class TaskCardWidget extends StatelessWidget {
         child: ListTile( title:   Text(
               title ?? ("sans nom"),
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 17,
                 color: Color(0xff211551),
                 fontWeight: FontWeight.bold,
               ),
@@ -35,7 +36,7 @@ class TaskCardWidget extends StatelessWidget {
               child: Text(
                 "$total",
                 style: TextStyle(
-                    fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xff86829d),),
+                    fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xff86829d),),
               ),
             ),
             )
@@ -47,7 +48,8 @@ class TaskCardWidget extends StatelessWidget {
 class TodoWidget extends StatefulWidget {
   final String? text;
   final int etat;
-  const TodoWidget({this.text,required this.etat});
+  final int? id; 
+  const TodoWidget({this.text,required this.etat , required this.id});
 
   @override
   State<TodoWidget> createState() => _TodoWidgetState();
@@ -90,11 +92,16 @@ class _TodoWidgetState extends State<TodoWidget> {
                 border:Border.all(
                    color:    Color(0xff82869d  ),
                    width: 1.4)),       
-              child: Icon(
-                CupertinoIcons.multiply,
-               color: Colors.white,  
-        
-                size: 20,
+              child: GestureDetector(
+                onTap: () async{ 
+                  await _dbHelper.deleteTodo(widget.id!) ; 
+                },
+                child: Icon(
+                  CupertinoIcons.multiply,
+                  color: Colors.white,  
+                      
+                  size: 20,
+                ),
               ),
             ),
       

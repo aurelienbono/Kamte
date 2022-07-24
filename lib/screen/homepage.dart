@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, sort_child_properties_last, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, sort_child_properties_last, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,11 +20,34 @@ class _HomePageState extends State<HomePage> {
   DataBaseHelper _dbHelper = DataBaseHelper();
   Task _task = Task();
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+  String? _taskTitle = '';
+  TextEditingController nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _key,
+        drawer: Drawer(),
+        appBar: AppBar(
+          backgroundColor: Color(0xff0078AA),
+          title: Text("PorteFeuille personnel".toUpperCase()),
+          centerTitle: true,
+          leading: Builder(
+            builder: (context) => GestureDetector(
+              child: Icon(Icons.short_text),
+              onTap: () {
+                return Scaffold.of(context).openDrawer();
+              },
+            ),
+          ),
+          actions: [
+            GestureDetector(
+              child: Icon(Icons.person_outline),
+              onTap: () async {
+              },
+            ),
+          ],
+          elevation: 0,
+        ),
         body: SafeArea(
           child: Container(
             width: double.infinity,
@@ -35,21 +58,7 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                              onTap: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: ((context) {
-                                  return ArchivePage();
-                                })));
-                              },
-                              child: Image.asset('assets/images/image1.png')),
-                        ],
-                      ),
-                      margin: EdgeInsets.only(bottom: 32),
-                    ),
+                    Padding(padding: EdgeInsets.only(bottom: 32)),
                     Expanded(
                         child: FutureBuilder(
                             initialData: [],
@@ -57,7 +66,8 @@ class _HomePageState extends State<HomePage> {
                             builder: (context, AsyncSnapshot snapshot) {
                               return ScrollConfiguration(
                                 behavior: NoGlowBehaviour(),
-                                child: ListView.builder(
+                                child:  snapshot.data.length ==0 ?    Image.asset("assets/images/image2.png") :                                
+                                ListView.builder(
                                   itemCount: snapshot.data.length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
@@ -101,15 +111,18 @@ class _HomePageState extends State<HomePage> {
                                                           MainAxisAlignment
                                                               .spaceAround,
                                                       children: [
-                                                        Text(
-                                                            " Votre portefeuille ${snapshot.data[index].title} est supprimé"),
+                                                        Flexible(
+                                                          child: Text(
+                                                              " Votre portefeuille ${snapshot.data[index].title} est supprimé"),
+                                                        ),
                                                       ],
                                                     )));
                                                   }
                                                 } else {
-                                                  _alert(snapshot.data[index].title,res);
-                                                  print(
-                                                      "Impossible de supprimer");
+                                                  _alert(
+                                                      snapshot
+                                                          .data[index].title,
+                                                      res);
                                                 }
                                               },
                                               backgroundColor: Colors.red,
@@ -140,12 +153,23 @@ class _HomePageState extends State<HomePage> {
                                                       MainAxisAlignment
                                                           .spaceAround,
                                                   children: [
-                                                    Text(
-                                                        " Votre porte feuille viens d'etre archivé "),
+                                                    Flexible(
+                                                      child: Text(
+                                                          " Votre porte feuille viens d'etre archivé "),
+                                                    ),
                                                     TextButton(
-                                                        onPressed: () {
-                                                          print(
-                                                              "Annulation d'archivage de ton porte feuille");
+                                                        onPressed: () async {
+                                                          int _temp = 0;
+                                                          await _dbHelper
+                                                              .updateTastStatus(
+                                                                  snapshot
+                                                                      .data[
+                                                                          index]
+                                                                      .id,
+                                                                  _temp)
+                                                              .then((value) {
+                                                            setState(() {});
+                                                          });
                                                         },
                                                         child: Text("Annuler"))
                                                   ],
@@ -175,17 +199,60 @@ class _HomePageState extends State<HomePage> {
                   right: 0,
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (contex) => TaskPage(task: null)))
-                          .then((value) {
-                        setState(() {});
-                      });
+                      showCupertinoDialog(
+                          context: context,
+                          builder: (context) => CupertinoAlertDialog(
+                                title:
+                                    Text("Creer Un PorteFeuille".toUpperCase()),
+                                content: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 10,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      CupertinoTextField(
+                                        placeholder: "Ex:Marche Noel",
+                                        controller: nameController,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        "Annuler".toUpperCase(),
+                                        style: TextStyle(color: Colors.red),
+                                      )),
+                                  CupertinoButton(
+                                      child: Text("Valider".toUpperCase()),
+                                      onPressed: () async {
+                                        if (nameController.text != '') {
+                                          Task _newTask = Task(
+                                              title: nameController.text,
+                                              total: 0,
+                                              status: 0);
+                                          await _dbHelper
+                                              .insertTask(_newTask)
+                                              .then((value) {
+                                            setState(() {});
+                                          });
+                                          nameController.clear();
+
+                                          Navigator.pop(context);
+                                        } else {
+                                          Navigator.pop(context);
+                                        }
+                                        nameController.clear();
+                                      })
+                                ],
+                              ));
                     },
                     child: Container(
-                        width: 60,
-                        height: 60,
+                        width: 55,
+                        height: 55,
                         decoration: BoxDecoration(
                             color: Color(0xff0078AA),
                             borderRadius: BorderRadius.circular(20)),
@@ -202,29 +269,36 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 
-  void _alert(String title , int nbr) {
+  void _alert(String title, int nbr) {
     showCupertinoDialog(
         context: context,
         builder: (context) => CupertinoAlertDialog(
-              title: Row( 
+              title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Icon(Icons.dangerous,color: Colors.red,) , 
-                  Text("Impossible de Supprimer".toUpperCase(),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),)
+                  // Icon(Icons.dangerous,color: Colors.red,) ,
+                  Text(
+                    "Impossible de Supprimer".toUpperCase(),
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                  )
                 ],
               ),
               content: Column(
                 children: [
                   Text(" Impossible de Supprimer le portefeuille "),
-               Text(" $title ".toUpperCase(),style: TextStyle(fontSize: 15,fontWeight: FontWeight.w400),),
-               Text("car il contient $nbr elements ")
-
+                  Text(
+                    " $title ".toUpperCase(),
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                  ),
+                  Text("car il contient $nbr elements ")
                 ],
               ),
-              actions: [ 
-                TextButton(onPressed: (){ 
-                  Navigator.pop(context); 
-                }, child: Text("OK"))
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text("OK"))
               ],
             ));
   }

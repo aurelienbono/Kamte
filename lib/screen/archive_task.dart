@@ -23,105 +23,115 @@ class _ArchivePageState extends State<ArchivePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar( 
-        title: Padding(
-          padding: const EdgeInsets.symmetric( 
-            vertical: 15,
+        appBar: AppBar(
+          title: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 15,
+            ),
+            child: Text(
+              "ARCHIVES",
+              style: TextStyle(color: Color(0xff86829d), fontSize: 25),
+            ),
           ),
-          child: Text("ARCHIVES" ,style: TextStyle( color:Color(0xff86829d),fontSize: 25),),
-        ) ,
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0, 
-
-      ),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
         body: SafeArea(
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 24),
-        color: Color(0xfff6f6f6),
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          child: Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            color: Color(0xfff6f6f6),
+            child: Stack(
               children: [
-                Container(
-                  child: Text(""), 
-                  margin: EdgeInsets.only(bottom: 32),
-                ),
-                Expanded(
-                    child: FutureBuilder(
-                        initialData: [],
-                        future: _dbHelper.getTask(),
-                        builder: (context, AsyncSnapshot snapshot) {
-                          return ScrollConfiguration(
-                            behavior: NoGlowBehaviour(),
-                            child: ListView.builder(
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (contex) => TaskPage(
-                                                  task: snapshot.data[index],
-                                                ))).then((value) {
-                                      setState(() {});
-                                    });
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: Text(""),
+                      margin: EdgeInsets.only(bottom: 32),
+                    ),
+                    Expanded(
+                        child: FutureBuilder(
+                            initialData: [],
+                            future: _dbHelper.getTaskArchive(),
+                            builder: (context, AsyncSnapshot snapshot) {
+                              return ScrollConfiguration(
+                                behavior: NoGlowBehaviour(),
+                                child: ListView.builder(
+                                  itemCount: snapshot.data.length,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (contex) => TaskPage(
+                                                      task:
+                                                          snapshot.data[index],
+                                                    ))).then((value) {
+                                          setState(() {});
+                                        });
+                                      },
+                                      child: Slidable(
+                                        endActionPane: ActionPane(
+                                          motion: DrawerMotion(),
+                                          children: [
+                                            SlidableAction(
+                                              flex: 1,
+                                              autoClose: true,
+                                              onPressed: (value) async {
+                                                int _permet = 0;
+
+                                                await _dbHelper
+                                                    .updateTastStatus(
+                                                        snapshot.data[index].id,
+                                                        _permet)
+                                                    .then((value) {
+                                                  setState(() {});
+                                                });
+
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(SnackBar(
+                                                        content: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                        " Votre portefeuille ${snapshot.data[index].title} viens d'etre désarchivé "),
+                                                 
+                                                  ],
+                                                )));
+                                                Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (contex) =>
+                                                                HomePage()))
+                                                    .then((value) {
+                                                  setState(() {});
+                                                });
+                                              },
+                                              backgroundColor: Colors.blue,
+                                              icon: CupertinoIcons
+                                                  .archivebox_fill,
+                                            )
+                                          ],
+                                        ),
+                                        child: TaskCardWidget(
+                                          title: snapshot.data[index].title,
+                                          // ici  je vais mettre la fonction pour afficher le prix total de chaque task
+                                          total: snapshot.data[index].total,
+                                        ),
+                                      ),
+                                    );
                                   },
-                                  child: Slidable(
-                                    
-                                    endActionPane: ActionPane(
-                                      motion: DrawerMotion(),
-                                      children: [
-                                        SlidableAction(
-                                          flex: 1,
-                                          autoClose: true,
-                                          onPressed: (value) async {
-                                            int _permet = 0;
-                                          
-                                            await _dbHelper
-                                                .updateTastStatus(
-                                                    snapshot.data[index].id,
-                                                    _permet)
-                                                .then((value) {
-                                              setState(() {});
-                                            });        
-                                               
-                                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Row(children: [ 
-                                              Text(" Votre porte feuille viens d'etre desarchive "), 
-                                        TextButton(onPressed: (){ print("Annulation d'archivage de ton porte feuille");}, child: Text("Annuler"))
-                                            ],))) ; 
-                                              Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (contex) => HomePage())).then((value) {
-                                      setState(() {});
-                                    }); 
-                                          },
-                                          backgroundColor: Colors.blue,
-                                          icon: CupertinoIcons.archivebox_fill,
-                                        )
-                                      ],
-                                    ),
-                                    child: TaskCardWidget(
-                                      title: snapshot.data[index].title,
-                                      // ici  je vais mettre la fonction pour afficher le prix total de chaque task
-                                      total: snapshot.data[index].total,
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          );
-                        }))
+                                ),
+                              );
+                            }))
+                  ],
+                ),
               ],
             ),
-           
-          ],
-        ),
-      ),
-    ));
+          ),
+        ));
   }
 }

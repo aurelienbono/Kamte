@@ -1,4 +1,4 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, prefer_conditional_assignment, unnecessary_null_comparison
 
 import 'package:keep_note/models/todo.dart';
 import 'package:path/path.dart';
@@ -45,8 +45,18 @@ Future<void> insertTodo(Todo todo) async {
 
 Future<List<Task>> getTask() async{ 
   Database _db  = await database(); 
+  List<Map<String,dynamic>> taskMap = await _db.query('tasks',where: "status=0"); 
+   print(taskMap);
+  return List.generate(taskMap.length, (index) { 
+    return Task( id: taskMap[index]['id'], title:taskMap[index]['title'] , total: taskMap[index]['total'],status: taskMap[index]['status']); 
+  }); 
+}
 
-  List<Map<String,dynamic>> taskMap = await _db.query('tasks'); 
+Future<List<Task>> getTaskArchive() async{ 
+  Database _db  = await database(); 
+
+  List<Map<String,dynamic>> taskMap = await _db.query('tasks',where: "status=1"); 
+  print(taskMap); 
   return List.generate(taskMap.length, (index) { 
     return Task( id: taskMap[index]['id'], title:taskMap[index]['title'] , total: taskMap[index]['total'],status: taskMap[index]['status']); 
   }); 
@@ -63,26 +73,14 @@ Future<void> deleteTodo(int id ) async{
   
 }
 
+
+
+
 Future<void> deleteTask(int id ) async{ 
   Database _db = await database() ; 
   await _db.rawDelete("DELETE FROM  tasks  WHERE id = '$id'");
   await _db.rawDelete("DELETE FROM  todo  WHERE taskId = '$id'");
 }
-
-// Cette fonction servira de lister la nombre de todo 
-// Future<void> listTodo() async{ 
-//   Database _db = await database() ; 
-//   await _db.rawUpdate("UPDATE tasks SET description='$description 'where id = '$id'");
-  
-// }
-
-// c'est a changer 
-// Future<void> updateTaskPriceTotal(int id , int priceTotal) async{ 
-//   Database _db = await database() ; 
-//   // List<Map<String, Object?>> value = await _db.rawQuery("SELECT total FROM tasks WHERE taskId=$id"); 
-//   await _db.rawUpdate(" UPDATE tasks SET total='$priceTotal 'where id = '$id'");
-  
-// }
 
 Future<void> updateTaskPriceTotal(int id , int priceTotal) async{ 
   Database _db = await database() ; 
@@ -145,6 +143,37 @@ Future<int> getTemp(int id) async{
    return _resquestTotalValue ; 
 }
 
+Future<int> getEtatTodo(int id) async{ 
+  Database _db = await database() ; 
+  List<Map<String, dynamic>> value = await _db.rawQuery("SELECT etat FROM todo WHERE id=$id");  
+  Map<String, dynamic> _theEtatValue = value[0]; 
+    int _resquestEtatValue =0; 
+    _theEtatValue.forEach((_key, _value) { 
+    if(_value ==null){ 
+       _resquestEtatValue = 0; 
+    }else { 
+      _resquestEtatValue = _value; 
+    }
+   }); 
+   return _resquestEtatValue ; 
+}
+
+
+
+
+Future<List<Map<String, dynamic>>> getTodoShare(int taskId) async{ 
+  Database _db  = await database(); 
+
+  List<Map<String,dynamic>> todoMap = await _db.rawQuery("SELECT * FROM todo WHERE taskId=$taskId"); 
+    //  todoMap.forEach((k,v) => print('${k}: ${v}')); 
+      for (var item in todoMap) {
+    todoMap[item['_id']] = {'name': item['name'], 'age': item['age']};
+  }
+
+  return todoMap; 
+ 
+}
+
 
 
 
@@ -152,6 +181,7 @@ Future<List<Todo>> getTodo(int taskId) async{
   Database _db  = await database(); 
 
   List<Map<String,dynamic>> todoMap = await _db.rawQuery("SELECT * FROM todo WHERE taskId=$taskId"); 
+  print(todoMap); 
   return List.generate(todoMap.length, (index) { 
     return Todo( id: todoMap[index]['id'] , taskId:  todoMap[index]['taskId'], title:  todoMap[index]['title'], price:  todoMap[index]['price'] , etat:  todoMap[index]['etat']); 
   }); 
@@ -203,5 +233,24 @@ Future<void> updateTodoPrice(int id , int price) async{
 }
 
 
+Future<int> getCountTask() async{ 
+  Database _db = await database() ; 
+ List<Map> result =  await _db.query("tasks"); 
+  int _totalTasks = result.length; 
+  return _totalTasks; 
+
+}
+ 
+
+Future<int> getCountTodo() async{ 
+
+   Database _db = await database() ; 
+  List<Map> result =  await _db.query("tasks"); 
+  int _totalTodo = result.length; 
+  return _totalTodo; 
+}
+ 
+ 
+ 
  
 }
