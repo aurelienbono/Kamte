@@ -67,25 +67,17 @@ class _TaskPageState extends State<TaskPage> {
                       Expanded(
                           child: TextField(
                         onSubmitted: (value) async {
-                          print("La valeur du champs est : $value");
-
                           if (value != '') {
                             if (widget.task == null) {
                               Task _newTask = Task(title: value, total: 0,status: 0);
                               await _dbHelper.insertTask(_newTask);
-                              print(
-                                  "Un nouveau task a eté crée : ${_newTask.title}");
+                         
                                   if(_newTask.status ==0){ 
-                                print(" Le status de ${_newTask.title} : => ${_newTask.status} "); 
-
                                   }
                                   else { 
-                       print(" Le status de ${_newTask.title} : => ${_newTask.status} "); 
-
                                   }
                             } else {
                               await _dbHelper.updateTaskTitle(_taskId!, value);
-                              print("TASK UPDATE");
                             }
                           }
                         },

@@ -26,6 +26,17 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar( 
+        backgroundColor: Color(0xff0078AA),
+        title: Text("PorteFeuille personnel".toUpperCase())  , 
+        centerTitle: true, 
+         leading: GestureDetector(child: Icon(Icons.short_text) , onTap: (){},), 
+         actions: [ 
+          GestureDetector(child: Icon(Icons.person_outline) , onTap: (){},),
+         ]
+        ,
+        elevation: 0,
+          ),
         key: _key,
         body: SafeArea(
           child: Container(
@@ -37,22 +48,23 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                              onTap: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: ((context) {
-                                  return ArchivePage();
-                                })));
-                              },
-                              child: Image.asset('assets/images/image1.png')),
-                        ],
-                      ),
-                      margin: EdgeInsets.only(bottom: 32),
-                    ),
-                    Expanded(
+                    // Container(
+                    //   child: Row(
+                    //     children: [
+                    //       GestureDetector(
+                    //           onTap: () {                         
+                    //             Navigator.push(context,
+                    //                 MaterialPageRoute(builder: ((context) {
+                    //               return ArchivePage();
+                    //             })));
+                    //           },
+                    //           child: Image.asset('assets/images/image1.png')),
+                    //     ],
+                    //   ),
+                    //   margin: EdgeInsets.only(bottom: 32),
+                    // ),
+                Padding(padding: EdgeInsets.only(bottom: 32)  ), 
+                Expanded(
                         child: FutureBuilder(
                             initialData: [],
                             future: _dbHelper.getTask(),
@@ -103,8 +115,10 @@ class _HomePageState extends State<HomePage> {
                                                           MainAxisAlignment
                                                               .spaceAround,
                                                       children: [
-                                                        Text(
-                                                            " Votre portefeuille ${snapshot.data[index].title} est supprimé"),
+                                                        Flexible(
+                                                          child: Text(
+                                                              " Votre portefeuille ${snapshot.data[index].title} est supprimé"),
+                                                        ),
                                                       ],
                                                     )));
                                                   }
@@ -143,8 +157,10 @@ class _HomePageState extends State<HomePage> {
                                                       MainAxisAlignment
                                                           .spaceAround,
                                                   children: [
-                                                    Text(
-                                                        " Votre porte feuille viens d'etre archivé "),
+                                                    Flexible(
+                                                      child: Text(
+                                                          " Votre porte feuille viens d'etre archivé "),
+                                                    ),
                                                     TextButton(
                                                         onPressed: () async {
                                                           int _temp = 0;
@@ -181,7 +197,8 @@ class _HomePageState extends State<HomePage> {
                               );
                             }))
                   ],
-                ),
+                ), 
+                
                 Positioned(
                   bottom: 20,
                   right: 0,
