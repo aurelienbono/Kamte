@@ -167,6 +167,17 @@ class _TaskPageState extends State<TaskPage> {
                                         });
                                       }); 
                             }
+                            else { 
+                                _permet = 2;
+                                  int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
+                                    await _dbHelper.updateTodoPrice(
+                                      _taskId!, _res); 
+                                      await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
+                                        setState(() {
+                                          
+                                        });
+                                      }); 
+                            }
                              
                           
                           },
@@ -179,6 +190,7 @@ class _TaskPageState extends State<TaskPage> {
                                   ),
                                   child: TodoWidget(
                                     text: snapshot.data[index].title,
+                                    id: snapshot.data[index].id,
                                     etat: snapshot.data[index].etat ,
                                   ),
                                 ),

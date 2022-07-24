@@ -292,10 +292,4 @@ class _HomePageState extends State<HomePage> {
               ],
             ));
   }
-
-  void showModal(context) {
-    showBottomSheet(
-        context: context,
-        builder: (BuildContext context) => BottomSheetWidget());
-  }
 }

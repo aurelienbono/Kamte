@@ -11,6 +11,7 @@ class TaskCardWidget extends StatelessWidget {
   final total;
   final status;
   const TaskCardWidget({this.title, this.total,this.status});
+  
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,8 @@ class TaskCardWidget extends StatelessWidget {
 class TodoWidget extends StatefulWidget {
   final String? text;
   final int etat;
-  const TodoWidget({this.text,required this.etat});
+  final int? id; 
+  const TodoWidget({this.text,required this.etat , required this.id});
 
   @override
   State<TodoWidget> createState() => _TodoWidgetState();
@@ -90,11 +92,16 @@ class _TodoWidgetState extends State<TodoWidget> {
                 border:Border.all(
                    color:    Color(0xff82869d  ),
                    width: 1.4)),       
-              child: Icon(
-                CupertinoIcons.multiply,
-               color: Colors.white,  
-        
-                size: 20,
+              child: GestureDetector(
+                onTap: () async{ 
+                  await _dbHelper.deleteTodo(widget.id!) ; 
+                },
+                child: Icon(
+                  CupertinoIcons.multiply,
+                  color: Colors.white,  
+                      
+                  size: 20,
+                ),
               ),
             ),
       
@@ -120,38 +127,5 @@ class NoGlowBehaviour extends ScrollBehavior{
     BuildContext context , Widget child , AxisDirection  axisDirection
   ) { 
     return child; 
-  }
-}
-
-
-
-class BottomSheetWidget extends StatefulWidget {
-  @override
-  _BottomSheetWidgetState createState() => _BottomSheetWidgetState();
-}class _BottomSheetWidgetState extends State<BottomSheetWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 5, left: 15, right: 15),
-      height: 160,
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [ 
-          Container(
-        height: 50,
-        alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        decoration: BoxDecoration(
-            color: Colors.grey[300], borderRadius: BorderRadius.circular(10)),
-        child: TextField(
-          decoration: InputDecoration.collapsed(
-            hintText: 'Enter your reference number',
-          ),
-        ))
-        ]
-      ),
-    );
   }
 }

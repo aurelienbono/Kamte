@@ -82,21 +82,6 @@ Future<void> deleteTask(int id ) async{
   await _db.rawDelete("DELETE FROM  todo  WHERE taskId = '$id'");
 }
 
-// Cette fonction servira de lister la nombre de todo 
-// Future<void> listTodo() async{ 
-//   Database _db = await database() ; 
-//   await _db.rawUpdate("UPDATE tasks SET description='$description 'where id = '$id'");
-  
-// }
-
-// c'est a changer 
-// Future<void> updateTaskPriceTotal(int id , int priceTotal) async{ 
-//   Database _db = await database() ; 
-//   // List<Map<String, Object?>> value = await _db.rawQuery("SELECT total FROM tasks WHERE taskId=$id"); 
-//   await _db.rawUpdate(" UPDATE tasks SET total='$priceTotal 'where id = '$id'");
-  
-// }
-
 Future<void> updateTaskPriceTotal(int id , int priceTotal) async{ 
   Database _db = await database() ; 
   List<Map<String, dynamic>> value = await _db.rawQuery("SELECT total FROM tasks WHERE id=$id"); 
