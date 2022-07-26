@@ -101,14 +101,11 @@ Future<void> updateTaskPriceTotal(int id , int priceTotal) async{
  
 }
 
-Future<void> updateTaskRetrait(int id,int ma_value) async{ 
+Future<void> updateTaskRetrait(int id, int _idTodo , int ma_value) async{ 
   Database _db = await database() ; 
   List<Map<String, dynamic>> value = await _db.rawQuery("SELECT total FROM tasks WHERE id=$id"); 
-  List<Map<String, dynamic>> _value = await _db.rawQuery("SELECT temp FROM todo WHERE id=$id");  
 
   Map<String, dynamic> _theTotalValue = value[0]; 
-  print(_theTotalValue); 
-
   int _resquestTotalValue =0; 
   _theTotalValue.forEach((_key, _value) { 
     if(_value ==null){ 
@@ -117,12 +114,14 @@ Future<void> updateTaskRetrait(int id,int ma_value) async{
       _resquestTotalValue = _value; 
     }
    }); 
-     print(_resquestTotalValue);
       _resquestTotalValue -= ma_value;  
-
-      print(_resquestTotalValue);
+      int _nulVal = 0;
 
        await _db.rawUpdate(" UPDATE tasks SET total='$_resquestTotalValue 'where id = '$id'");
+       await _db.rawUpdate(" UPDATE todo SET price='$ma_value 'where id = '$_idTodo'");
+       await _db.rawUpdate(" UPDATE todo SET temp='$_nulVal' where id = '$_idTodo'");
+
+
 }
 
 
@@ -142,6 +141,26 @@ Future<int> getTemp(int id) async{
    }); 
    return _resquestTotalValue ; 
 }
+
+
+// recuperation de la valeur temporaire stocker dans le tableau 
+Future<int> getPrice(int id) async{ 
+  Database _db = await database() ; 
+  List<Map<String, dynamic>> value = await _db.rawQuery("SELECT price FROM todo WHERE id=$id");  
+  Map<String, dynamic> _theTotalValue = value[0]; 
+    int _resquestTotalValue =0; 
+    _theTotalValue.forEach((_key, _value) { 
+    if(_value ==null){ 
+       _resquestTotalValue = 0; 
+    }else { 
+      _resquestTotalValue = _value; 
+    }
+   }); 
+   return _resquestTotalValue ; 
+}
+
+
+
 
 Future<int> getEtatTodo(int id) async{ 
   Database _db = await database() ; 

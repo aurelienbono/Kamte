@@ -192,14 +192,15 @@ class _TaskPageState extends State<TaskPage> {
                               else { 
                                 print("Vous venez de changer d'etat :${_etat} "); 
                                   _permet = 2;
-                                  int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
-                                    await _dbHelper.updateTodoPrice(
-                                      _taskId!, _res); 
-                                      await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
-                                        setState(() {
+                                  int _res =  await _dbHelper.getPrice(snapshot.data[index].id); 
+                                  print(_res) ; 
+                                  //   await _dbHelper.updateTodoPrice(
+                                  //     _taskId!, _res); 
+                                  //     await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
+                                  //       setState(() {
                                           
-                                        });
-                                      }); 
+                                  //       });
+                                  //     }); 
                               }
                               
                               
