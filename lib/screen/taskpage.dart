@@ -281,12 +281,12 @@ class _TaskPageState extends State<TaskPage> {
                   int index ; 
                print(await _dbHelper.getTodoShare(_taskId!)); 
 
-           List valueShare =    
+               List valueShare =    
                await _dbHelper.getTodoShare(_taskId!);         
-print(valueShare.runtimeType); 
-  var _message = getMsgShare(_taskId! ,valueShare); 
-  print(_message); 
-                  await Share.share(_message); 
+                print(valueShare.runtimeType); 
+              var _message = getMsgShare(_taskId! ,valueShare); 
+               print(_message); 
+                    await Share.share(_message); 
 
                 },
                 child: Container(
@@ -314,11 +314,11 @@ print(valueShare.runtimeType);
         var _value =''; 
       for( var i in _list){ 
 
-       _value  = _value + ' \n' + i; 
+       _value =_value + ' \n' +"[ ] "+ i; 
 
   }
 
-       String message = "\t NAME APP \n\n\n  ---------------------------------------------- \n PorteFeuille NameUser-$id \n Du 20/03/2022 08:56 \n Client : 69x xxx xxx \n ---------------------------------------------- \n  $_value \n ----------------------------------------------\n Total HT 300 \n ----------------------------------------------";
+       String message = "\t MyMix01 \n\n\n  ---------------------------------------------- \n PorteFeuille NameUser-$id \n Du 20/03/2022 08:56 \n Client : 69x xxx xxx \n ---------------------------------------------- \n  $_value \n ----------------------------------------------\n Total HT 300 \n ----------------------------------------------";
        return message;  
        
   }

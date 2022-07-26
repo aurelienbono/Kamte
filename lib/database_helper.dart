@@ -167,10 +167,9 @@ Future<List> getTodoShare(int taskId) async{
   List<Map<String, Object?>> todoMap = await _db.rawQuery("SELECT title FROM todo WHERE taskId=$taskId"); 
   List _theList = []; 
   for(var i  in  todoMap){ 
-    print(i.values); 
     _theList.add(i.values.toString()); 
   }
-
+  print(_theList.runtimeType); 
     return _theList; 
 
 }
