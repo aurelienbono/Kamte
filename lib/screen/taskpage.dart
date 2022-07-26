@@ -200,14 +200,14 @@ class _TaskPageState extends State<TaskPage> {
                                   _res = _res - (_res*2); 
                                   print("Avant l'operation : ${_res}"); 
                        
-                                    //  await _dbHelper.updateTaskPriceTotal(_taskId! ,_res); 
-                                    // await _dbHelper.getFinalTotal(
-                                    //   _taskId!, _res); 
-                                    //   await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
-                                    //     setState(() {
+                                     await _dbHelper.updateTaskPriceTotal(_taskId! ,_res); 
+                                    await _dbHelper.getFinalTotal(
+                                      _taskId!, _res); 
+                                      await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
+                                        setState(() {
                                           
-                                    //     });
-                                    //   }); 
+                                        });
+                                      }); 
                               }
                               
                             }
@@ -323,7 +323,7 @@ class _TaskPageState extends State<TaskPage> {
                List valueShare =    
                await _dbHelper.getTodoShare(_taskId!);         
                 print(valueShare.runtimeType); 
-              var _message = getMsgShare(_taskId! ,valueShare); 
+              var _message = getMsgShare(_taskTitle! ,valueShare); 
                print(_message); 
                     await Share.share(_message); 
 
@@ -347,7 +347,7 @@ class _TaskPageState extends State<TaskPage> {
     );
   }
 
-  String getMsgShare(int id,  List _list){ 
+  String getMsgShare(String title,  List _list){ 
     //  _dbHelper.getTodoShare(id);
       // List _name = ['Aurelien', 'clovis','amour', 'vie']; 
         var _value =''; 
@@ -357,7 +357,7 @@ class _TaskPageState extends State<TaskPage> {
 
   }
 
-       String message = "\t MyMix01 \n\n\n  ---------------------------------------------- \n PorteFeuille NameUser-$id \n Du 20/03/2022 08:56 \n Client : 69x xxx xxx \n ---------------------------------------------- \n  $_value \n ----------------------------------------------\n Total HT 300 \n ----------------------------------------------";
+       String message = "\t MyMix01 \n\n\n  ---------------------------------------------- \n PorteFeuille : $title   \n ---------------------------------------------- \n  $_value \n\n ----------------------------------------------";
        return message;  
        
   }
