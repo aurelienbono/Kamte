@@ -176,7 +176,7 @@ class _TaskPageState extends State<TaskPage> {
                                 _permet = 1;
                                   int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
                                     await _dbHelper.updateTaskRetrait(
-                                      _taskId!,_res); 
+                                      _taskId!,snapshot.data[index].id , _res); 
                                       await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
                                         setState(() {
                                           
@@ -186,21 +186,20 @@ class _TaskPageState extends State<TaskPage> {
                             else { 
                           int _etat =  await _dbHelper.getEtatTodo(snapshot.data[index].id); 
 
-
                               if(_etat==1){ 
                                 print("on ne fais rien "); 
                               }
                               else { 
                                 print("Vous venez de changer d'etat :${_etat} "); 
-                                  // _permet = 2;
-                                  // int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
-                                  //   await _dbHelper.updateTodoPrice(
-                                  //     _taskId!, _res); 
-                                  //     await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
-                                  //       setState(() {
+                                  _permet = 2;
+                                  int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
+                                    await _dbHelper.updateTodoPrice(
+                                      _taskId!, _res); 
+                                      await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
+                                        setState(() {
                                           
-                                  //       });
-                                  //     }); 
+                                        });
+                                      }); 
                               }
                               
                               
