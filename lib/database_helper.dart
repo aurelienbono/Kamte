@@ -101,6 +101,8 @@ Future<void> updateTaskPriceTotal(int id , int priceTotal) async{
  
 }
 
+
+
 Future<void> updateTaskRetrait(int id, int _idTodo , int ma_value) async{ 
   Database _db = await database() ; 
   List<Map<String, dynamic>> value = await _db.rawQuery("SELECT total FROM tasks WHERE id=$id"); 
@@ -157,6 +159,31 @@ Future<int> getPrice(int id) async{
     }
    }); 
    return _resquestTotalValue ; 
+}
+
+// recuperation le prix total d'un task stocker dans le tableau 
+Future<void> getFinalTotal(int id, int nbr) async{ 
+  Database _db = await database() ; 
+  List<Map<String, dynamic>> value = await _db.rawQuery("SELECT total FROM tasks WHERE id=$id");  
+  Map<String, dynamic> _theTotalValue = value[0]; 
+    int _resquestTotalValue =0; 
+    _theTotalValue.forEach((_key, _value) { 
+    if(_value ==null){ 
+       _resquestTotalValue = 0; 
+    }else { 
+      _resquestTotalValue = _value; 
+    }
+   }); 
+  if(nbr<0){ 
+ _resquestTotalValue -= nbr ; 
+
+  }
+  else { 
+ _resquestTotalValue += nbr ; 
+
+  }
+
+    await _db.rawUpdate(" UPDATE tasks SET total='$_resquestTotalValue 'where id = '$id'");
 }
 
 

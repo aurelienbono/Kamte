@@ -141,19 +141,22 @@ class _TaskPageState extends State<TaskPage> {
                                 print("on ne fais rien "); 
                               }
                               else { 
-                                print("Vous venez de changer d'etat :${_etat} "); 
-                                  // _permet = 2;
-                                  // int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
-                                  //   await _dbHelper.updateTodoPrice(
-                                  //     _taskId!, _res); 
+                              _permet = 1;
+                                  int _res =  await _dbHelper.getPrice(snapshot.data[index].id); 
+                                     print("apres l'operation : ${_res}"); 
+                                  _res = _res - (_res*2); 
+                                  print("Avant l'operation : ${_res}"); 
+
+
+                                  // await _dbHelper.getFinalTotal(
+                                  //     _taskId!, _res);  
                                   //     await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
                                   //       setState(() {
                                           
                                   //       });
-                                  //     }); 
+                                  //     });       
                               }
-                              
-                              
+                               
                             }
                           },
                           backgroundColor: Colors.green.shade200,
@@ -193,20 +196,23 @@ class _TaskPageState extends State<TaskPage> {
                                 print("Vous venez de changer d'etat :${_etat} "); 
                                   _permet = 2;
                                   int _res =  await _dbHelper.getPrice(snapshot.data[index].id); 
-                                  _res = _res + (_res*2); 
-                         
-                                    await _dbHelper.updateTodoPrice(
-                                      snapshot.data[index].id, _res); 
-                                      await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
-                                        setState(() {
+                                print("apres l'operation : ${_res}"); 
+                                  _res = _res - (_res*2); 
+                                  print("Avant l'operation : ${_res}"); 
+                       
+                                    //  await _dbHelper.updateTaskPriceTotal(_taskId! ,_res); 
+                                    // await _dbHelper.getFinalTotal(
+                                    //   _taskId!, _res); 
+                                    //   await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
+                                    //     setState(() {
                                           
-                                        });
-                                      }); 
+                                    //     });
+                                    //   }); 
                               }
                               
                             }
                              
-                     
+        
                           },
                           backgroundColor: Colors.red.shade200,
                           foregroundColor: Colors.white,
