@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -279,10 +279,14 @@ class _TaskPageState extends State<TaskPage> {
               child: GestureDetector(
                 onTap: () async {
                   int index ; 
-               Future<List<Map<String, dynamic>>> valueShare =    
-               _dbHelper.getTodoShare(_taskId!);           
-                  await Share.share(getMsgShare(1)); 
-                  getMsgShare(1); 
+               print(await _dbHelper.getTodoShare(_taskId!)); 
+
+           List valueShare =    
+               await _dbHelper.getTodoShare(_taskId!);         
+print(valueShare.runtimeType); 
+  var _message = getMsgShare(_taskId! ,valueShare); 
+  print(_message); 
+                  await Share.share(_message); 
 
                 },
                 child: Container(
@@ -304,11 +308,19 @@ class _TaskPageState extends State<TaskPage> {
     );
   }
 
-  String getMsgShare(int id){ 
-     
+  String getMsgShare(int id,  List _list){ 
+    //  _dbHelper.getTodoShare(id);
+      // List _name = ['Aurelien', 'clovis','amour', 'vie']; 
+        var _value =''; 
+      for( var i in _list){ 
 
-       String message = "\t NAME APP \n\n\n  ---------------------------------------------- \n PorteFeuille NameUser-$id \n Du 20/03/2022 08:56 \n Client : 69x xxx xxx \n ---------------------------------------------- \n DetailPorteFeuille : 300 xaf \n DetailPorteFeuille1 : 300 xaf \n ----------------------------------------------\n Total HT 300 \n ----------------------------------------------";
+       _value  = _value + ' \n' + i; 
+
+  }
+
+       String message = "\t NAME APP \n\n\n  ---------------------------------------------- \n PorteFeuille NameUser-$id \n Du 20/03/2022 08:56 \n Client : 69x xxx xxx \n ---------------------------------------------- \n  $_value \n ----------------------------------------------\n Total HT 300 \n ----------------------------------------------";
        return message;  
+       
   }
 
   int recoverPrice(String chaine) {

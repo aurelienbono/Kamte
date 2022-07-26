@@ -161,20 +161,19 @@ Future<int> getEtatTodo(int id) async{
 
 
 
-Future<List<Map<String, dynamic>>> getTodoShare(int taskId) async{ 
+Future<List> getTodoShare(int taskId) async{ 
   Database _db  = await database(); 
 
-  List<Map<String,dynamic>> todoMap = await _db.rawQuery("SELECT * FROM todo WHERE taskId=$taskId"); 
-    //  todoMap.forEach((k,v) => print('${k}: ${v}')); 
-      for (var item in todoMap) {
-    todoMap[item['_id']] = {'name': item['name'], 'age': item['age']};
+  List<Map<String, Object?>> todoMap = await _db.rawQuery("SELECT title FROM todo WHERE taskId=$taskId"); 
+  List _theList = []; 
+  for(var i  in  todoMap){ 
+    print(i.values); 
+    _theList.add(i.values.toString()); 
   }
 
-  return todoMap; 
- 
+    return _theList; 
+
 }
-
-
 
 
 Future<List<Todo>> getTodo(int taskId) async{ 
@@ -186,6 +185,8 @@ Future<List<Todo>> getTodo(int taskId) async{
     return Todo( id: todoMap[index]['id'] , taskId:  todoMap[index]['taskId'], title:  todoMap[index]['title'], price:  todoMap[index]['price'] , etat:  todoMap[index]['etat']); 
   }); 
 }
+
+
 
 Future<void> updateTodoEtat(int id , int etat) async{ 
   Database _db = await database() ; 
