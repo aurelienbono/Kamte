@@ -1,4 +1,6 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
+
+import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -120,19 +122,39 @@ class _TaskPageState extends State<TaskPage> {
                           autoClose: true,
                           flex: 1,
                           onPressed: (value) async{
-                int _etat =  await _dbHelper.getEtatTodo(snapshot.data[index].id); 
-                if(_etat==0){ 
+                      int _etat =  await _dbHelper.getEtatTodo(snapshot.data[index].id); 
+                       if(_etat==0){ 
                              _permet = 2;
                                    int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
-                                    await _dbHelper.updateTaskPriceTotal(
-                                      _taskId!, _res);
-                                            await _dbHelper.updateTodoPrice( snapshot.data[index].id, _res);     
+                                    await _dbHelper.updateTaskCredit(
+                                      _taskId!,snapshot.data[index].id ,_res);
                             await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
                               setState(() {
                                 
                               });
                             }); 
-                }
+                    }
+                      else { 
+                            int _etat =  await _dbHelper.getEtatTodo(snapshot.data[index].id); 
+
+
+                              if(_etat==2){ 
+                                print("on ne fais rien "); 
+                              }
+                              else { 
+                           int  etat_todo1  = 2;
+                                 int _res =  await _dbHelper.getPrice(snapshot.data[index].id);                           
+                                    await _dbHelper.getFinalTotalCredit(
+                                      _taskId!, _res); 
+                                      await _dbHelper.updateTodoEtat(snapshot.data[index].id,etat_todo1). 
+                                      then((value) { 
+                                      setState(() {
+                                          
+                                        });
+                                      });      
+                              }
+                               
+                            }
                           },
                           backgroundColor: Colors.green.shade200,
                           foregroundColor: Colors.white,
@@ -154,7 +176,8 @@ class _TaskPageState extends State<TaskPage> {
                                 _permet = 1;
                                   int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
                                     await _dbHelper.updateTaskRetrait(
-                                      _taskId!, _res); 
+                                      _taskId!,snapshot.data[index].id , _res); 
+                                      
                                       await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
                                         setState(() {
                                           
@@ -162,18 +185,25 @@ class _TaskPageState extends State<TaskPage> {
                                       }); 
                             }
                             else { 
-                                _permet = 2;
-                                  int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
-                                    await _dbHelper.updateTodoPrice(
-                                      _taskId!, _res); 
-                                      await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
+                          int _etat =  await _dbHelper.getEtatTodo(snapshot.data[index].id); 
+
+                              if(_etat==1){ 
+                                print("on ne fais rien "); 
+                              }
+                              else { 
+                                int  etat_todo  = 1;
+                                  int _res =  await _dbHelper.getPrice(snapshot.data[index].id);                           
+                                    await _dbHelper.getFinalTotalDebit(
+                                      _taskId!, _res);   
+                                      await _dbHelper.updateTodoEtat(snapshot.data[index].id, etat_todo).then((value) { 
                                         setState(() {
                                           
                                         });
                                       }); 
+
+                              }
+                              
                             }
-                             
-                          
                           },
                           backgroundColor: Colors.red.shade200,
                           foregroundColor: Colors.white,
@@ -279,10 +309,12 @@ class _TaskPageState extends State<TaskPage> {
               child: GestureDetector(
                 onTap: () async {
                   int index ; 
-               Future<List<Map<String, dynamic>>> valueShare =    
-               _dbHelper.getTodoShare(_taskId!);           
-                  await Share.share(getMsgShare(1)); 
-                  getMsgShare(1); 
+               print(await _dbHelper.getTodoShare(_taskId!)); 
+
+               List valueShare =    
+               await _dbHelper.getTodoShare(_taskId!);         
+              var _message = getMsgShare(_taskTitle! ,valueShare); 
+                    await Share.share(_message); 
 
                 },
                 child: Container(
@@ -304,11 +336,37 @@ class _TaskPageState extends State<TaskPage> {
     );
   }
 
-  String getMsgShare(int id){ 
-     
+  String getMsgShare(String title,  List _list){ 
+        var _value =''; 
+        String arraySel = ''; 
+      for( var i in _list){       
+       arraySel = i; 
+       i =    i.toString().replaceAll("(", '').replaceAll(")", ""); 
+       List _tempList =[]; 
+       int _tempValue ; 
+       _tempList  =  i.split(','); 
+       i =  _tempList[0];  
+       _tempValue = int.parse(_tempList[1]); 
+       print("La valeur et le type de ma variable  : ${_tempValue} : ${_tempValue.runtimeType} "); 
+      if(_tempValue ==0) { 
+       _value =_value + ' \n' +"[  ]    "+ i.toString().replaceAll("(", '').replaceAll(")", ""); 
 
-       String message = "\t NAME APP \n\n\n  ---------------------------------------------- \n PorteFeuille NameUser-$id \n Du 20/03/2022 08:56 \n Client : 69x xxx xxx \n ---------------------------------------------- \n DetailPorteFeuille : 300 xaf \n DetailPorteFeuille1 : 300 xaf \n ----------------------------------------------\n Total HT 300 \n ----------------------------------------------";
+      }
+       if(_tempValue ==1) { 
+       _value =_value + ' \n' +"[ + ]    "+ i.toString().replaceAll("(", '').replaceAll(")", ""); 
+
+      }
+       if(_tempValue ==2) { 
+       _value =_value + ' \n' +"[ - ]   "+ i.toString().replaceAll("(", '').replaceAll(")", ""); 
+
+      }
+
+
+
+  }
+       String message = "\t MyMix01 \n\n\n  ---------------------------------------------- \n PorteFeuille : $title   \n ---------------------------------------------- \n  $_value \n\n ----------------------------------------------";
        return message;  
+       
   }
 
   int recoverPrice(String chaine) {

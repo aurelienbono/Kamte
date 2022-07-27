@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
         drawer: Drawer(),
         appBar: AppBar(
           backgroundColor: Color(0xff0078AA),
-          title: Text("PorteFeuille personnel".toUpperCase()),
+          title: Text("MyMix01".toUpperCase()),
           centerTitle: true,
           leading: Builder(
             builder: (context) => GestureDetector(
@@ -41,7 +41,10 @@ class _HomePageState extends State<HomePage> {
           ),
           actions: [
             GestureDetector(
-              child: Icon(Icons.person_outline),
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: Icon(Icons.person_outline),
+              ),
               onTap: () async {
               },
             ),
