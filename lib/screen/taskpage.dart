@@ -124,9 +124,8 @@ class _TaskPageState extends State<TaskPage> {
                        if(_etat==0){ 
                              _permet = 2;
                                    int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
-                                    await _dbHelper.updateTaskPriceTotal(
-                                      _taskId!, _res);
-                                            await _dbHelper.updateTodoPrice( snapshot.data[index].id, _res);     
+                                    await _dbHelper.updateTaskCredit(
+                                      _taskId!,snapshot.data[index].id ,_res);
                             await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
                               setState(() {
                                 
@@ -142,19 +141,14 @@ class _TaskPageState extends State<TaskPage> {
                               }
                               else { 
                               _permet = 1;
-                                  int _res =  await _dbHelper.getPrice(snapshot.data[index].id); 
-                                     print("apres l'operation : ${_res}"); 
-                                  _res = _res - (_res*2); 
-                                  print("Avant l'operation : ${_res}"); 
-
-
-                                  // await _dbHelper.getFinalTotal(
-                                  //     _taskId!, _res);  
-                                  //     await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
-                                  //       setState(() {
+                                 int _res =  await _dbHelper.getPrice(snapshot.data[index].id);                           
+                                    await _dbHelper.getFinalTotalCredit(
+                                      _taskId!, _res); 
+                                      await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
+                                        setState(() {
                                           
-                                  //       });
-                                  //     });       
+                                        });
+                                      });      
                               }
                                
                             }
@@ -180,6 +174,7 @@ class _TaskPageState extends State<TaskPage> {
                                   int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
                                     await _dbHelper.updateTaskRetrait(
                                       _taskId!,snapshot.data[index].id , _res); 
+                                      
                                       await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
                                         setState(() {
                                           
@@ -193,16 +188,10 @@ class _TaskPageState extends State<TaskPage> {
                                 print("on ne fais rien "); 
                               }
                               else { 
-                                print("Vous venez de changer d'etat :${_etat} "); 
                                   _permet = 2;
-                                  int _res =  await _dbHelper.getPrice(snapshot.data[index].id); 
-                                print("apres l'operation : ${_res}"); 
-                                  _res = _res - (_res*2); 
-                                  print("Avant l'operation : ${_res}"); 
-                       
-                                     await _dbHelper.updateTaskPriceTotal(_taskId! ,_res); 
-                                    await _dbHelper.getFinalTotal(
-                                      _taskId!, _res); 
+                                  int _res =  await _dbHelper.getPrice(snapshot.data[index].id);                           
+                                    await _dbHelper.getFinalTotalDebit(
+                                      _taskId!, _res);            
                                       await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
                                         setState(() {
                                           
