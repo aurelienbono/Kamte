@@ -196,8 +196,8 @@ Future<void> getFinalTotalDebit(int id, int nbr) async{
    }); 
 
   _resquestTotalValue -= nbr*2 ; 
-
-    await _db.rawUpdate(" UPDATE tasks SET total='$_resquestTotalValue 'where id = '$id'");}
+  
+  await _db.rawUpdate(" UPDATE tasks SET total='$_resquestTotalValue 'where id = '$id'");}
 
 // recuperation le prix total d'un task stocker dans le tableau 
 Future<void> getFinalTotalCredit(int id, int nbr) async{ 
@@ -215,10 +215,7 @@ Future<void> getFinalTotalCredit(int id, int nbr) async{
 
   _resquestTotalValue += nbr*2 ; 
 
-    await _db.rawUpdate(" UPDATE tasks SET total='$_resquestTotalValue 'where id = '$id'");}
-
-
-
+  await _db.rawUpdate(" UPDATE tasks SET total='$_resquestTotalValue 'where id = '$id'");}
 
 
 Future<int> getEtatTodo(int id) async{ 
@@ -267,12 +264,12 @@ Future<List<Todo>> getTodo(int taskId) async{
 
 Future<void> updateTodoEtat(int id , int etat) async{ 
   Database _db = await database() ; 
-  await _db.rawUpdate("UPDATE todo SET etat='$etat 'where id = '$id'"); 
+  await _db.rawUpdate("UPDATE todo SET etat='$etat' where id = '$id'"); 
 }
 
 Future<void> updateTastStatus(int id , int status) async{ 
   Database _db = await database() ; 
-  await _db.rawUpdate("UPDATE tasks SET status='$status 'where id = '$id'"); 
+  await _db.rawUpdate("UPDATE tasks SET status='$status' where id = '$id'"); 
 }
 
 Future<int> getStatus(int id) async{ 

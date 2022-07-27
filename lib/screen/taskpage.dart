@@ -140,12 +140,13 @@ class _TaskPageState extends State<TaskPage> {
                                 print("on ne fais rien "); 
                               }
                               else { 
-                              _permet = 1;
+                           int  etat_todo1  = 1;
                                  int _res =  await _dbHelper.getPrice(snapshot.data[index].id);                           
                                     await _dbHelper.getFinalTotalCredit(
                                       _taskId!, _res); 
-                                      await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
-                                        setState(() {
+                                      await _dbHelper.updateTodoEtat(snapshot.data[index].id,etat_todo1). 
+                                      then((value) { 
+                                      setState(() {
                                           
                                         });
                                       });      
@@ -188,11 +189,11 @@ class _TaskPageState extends State<TaskPage> {
                                 print("on ne fais rien "); 
                               }
                               else { 
-                                  _permet = 2;
+                                int  etat_todo  = 2;
                                   int _res =  await _dbHelper.getPrice(snapshot.data[index].id);                           
                                     await _dbHelper.getFinalTotalDebit(
                                       _taskId!, _res);            
-                                      await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
+                                      await _dbHelper.updateTodoEtat(snapshot.data[index].id, etat_todo).then((value) { 
                                         setState(() {
                                           
                                         });
@@ -200,8 +201,6 @@ class _TaskPageState extends State<TaskPage> {
                               }
                               
                             }
-                             
-        
                           },
                           backgroundColor: Colors.red.shade200,
                           foregroundColor: Colors.white,
