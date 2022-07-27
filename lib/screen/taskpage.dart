@@ -140,7 +140,7 @@ class _TaskPageState extends State<TaskPage> {
                                 print("on ne fais rien "); 
                               }
                               else { 
-                           int  etat_todo1  = 1;
+                           int  etat_todo1  = 2;
                                  int _res =  await _dbHelper.getPrice(snapshot.data[index].id);                           
                                     await _dbHelper.getFinalTotalCredit(
                                       _taskId!, _res); 
@@ -189,15 +189,16 @@ class _TaskPageState extends State<TaskPage> {
                                 print("on ne fais rien "); 
                               }
                               else { 
-                                int  etat_todo  = 2;
+                                int  etat_todo  = 1;
                                   int _res =  await _dbHelper.getPrice(snapshot.data[index].id);                           
                                     await _dbHelper.getFinalTotalDebit(
-                                      _taskId!, _res);            
+                                      _taskId!, _res);   
                                       await _dbHelper.updateTodoEtat(snapshot.data[index].id, etat_todo).then((value) { 
                                         setState(() {
                                           
                                         });
                                       }); 
+
                               }
                               
                             }
