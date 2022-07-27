@@ -311,9 +311,7 @@ class _TaskPageState extends State<TaskPage> {
 
                List valueShare =    
                await _dbHelper.getTodoShare(_taskId!);         
-                print(valueShare.runtimeType); 
               var _message = getMsgShare(_taskTitle! ,valueShare); 
-               print(_message); 
                     await Share.share(_message); 
 
                 },
@@ -337,15 +335,12 @@ class _TaskPageState extends State<TaskPage> {
   }
 
   String getMsgShare(String title,  List _list){ 
-    //  _dbHelper.getTodoShare(id);
-      // List _name = ['Aurelien', 'clovis','amour', 'vie']; 
         var _value =''; 
-      for( var i in _list){ 
-
-       _value =_value + ' \n' +"[ ] "+ i; 
+        print(_list); 
+      for( var i in _list){         
+       _value =_value + ' \n' +"[ ]    "+ i.toString().replaceAll("(", '').replaceAll(")", ""); 
 
   }
-
        String message = "\t MyMix01 \n\n\n  ---------------------------------------------- \n PorteFeuille : $title   \n ---------------------------------------------- \n  $_value \n\n ----------------------------------------------";
        return message;  
        
