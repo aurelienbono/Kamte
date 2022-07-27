@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
 
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -336,9 +338,30 @@ class _TaskPageState extends State<TaskPage> {
 
   String getMsgShare(String title,  List _list){ 
         var _value =''; 
-        print(_list); 
-      for( var i in _list){         
-       _value =_value + ' \n' +"[ ]    "+ i.toString().replaceAll("(", '').replaceAll(")", ""); 
+        String arraySel = ''; 
+      for( var i in _list){       
+       arraySel = i; 
+       i =    i.toString().replaceAll("(", '').replaceAll(")", ""); 
+       List _tempList =[]; 
+       int _tempValue ; 
+       _tempList  =  i.split(','); 
+       i =  _tempList[0];  
+       _tempValue = int.parse(_tempList[1]); 
+       print("La valeur et le type de ma variable  : ${_tempValue} : ${_tempValue.runtimeType} "); 
+      if(_tempValue ==0) { 
+       _value =_value + ' \n' +"[  ]    "+ i.toString().replaceAll("(", '').replaceAll(")", ""); 
+
+      }
+       if(_tempValue ==1) { 
+       _value =_value + ' \n' +"[ + ]    "+ i.toString().replaceAll("(", '').replaceAll(")", ""); 
+
+      }
+       if(_tempValue ==2) { 
+       _value =_value + ' \n' +"[ - ]   "+ i.toString().replaceAll("(", '').replaceAll(")", ""); 
+
+      }
+
+
 
   }
        String message = "\t MyMix01 \n\n\n  ---------------------------------------------- \n PorteFeuille : $title   \n ---------------------------------------------- \n  $_value \n\n ----------------------------------------------";
