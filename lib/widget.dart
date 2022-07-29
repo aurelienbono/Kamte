@@ -83,14 +83,14 @@ class _TodoWidgetState extends State<TodoWidget> {
       child: Row(
         children: [
           Container(
-            width: 22,
-            height: 22,
+            width: 23,
+            height: 23,
             margin: EdgeInsets.only(right: 12),
             decoration: BoxDecoration(
                 color:  getColor(widget.etat), 
-                // borderRadius: BorderRadius.circular(5),
+                // borderRadius: BorderRadius.circular(50),
                 border:Border.all(
-                   color:    Color(0xff82869d  ),
+                   color:    Colors.white,
                    width: 1.4)),       
               child: GestureDetector(
                 onTap: () async{ 

@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
         drawer: Drawer(),
         appBar: AppBar(
           backgroundColor: Color(0xff0078AA),
-          title: Text("MyMix01".toUpperCase()),
+          title: Text("FIZZ".toUpperCase()),
           centerTitle: true,
           leading: Builder(
             builder: (context) => GestureDetector(

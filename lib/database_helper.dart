@@ -88,6 +88,13 @@ Future<void> deleteTodo(int id, int _idTodo , int ma_value) async{
       _resquestTotalValue = _value; 
     }
    }); 
+   if(ma_value<0) { 
+    print("Le nombre est negatif : ${ma_value}"); 
+   _resquestTotalValue -= (ma_value);  
+   await _db.rawUpdate(" UPDATE tasks SET total='$_resquestTotalValue 'where id = '$id'");
+  await _db.rawDelete("DELETE FROM  todo  WHERE id = '$_idTodo'");
+
+   }
       _resquestTotalValue -= ma_value;  
   await _db.rawUpdate(" UPDATE tasks SET total='$_resquestTotalValue 'where id = '$id'");
   await _db.rawDelete("DELETE FROM  todo  WHERE id = '$_idTodo'");

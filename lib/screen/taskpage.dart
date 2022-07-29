@@ -29,10 +29,13 @@ class _TaskPageState extends State<TaskPage> {
     if (widget.task != null) {
       _taskTitle = widget.task?.title;
       _taskId = widget.task?.id;
+    
     }
 
     super.initState();
   }
+
+
 
   bool _contentVisile = false;
   int _totalSum = 0;
@@ -115,15 +118,19 @@ class _TaskPageState extends State<TaskPage> {
                                         dragDismissible: false,
                                         children: [                             
                                           SlidableAction(onPressed: (val) async{ 
-                                            // print("LE PRIX : ${snapshot.data[index].price} , L'ETAT : ${snapshot.data[index].etat}"); 
-                                          int nbr  =   snapshot.data[index].price; 
-                                            if(nbr==1) { 
-                                              nbr= (-1)*nbr; 
-                                              print("changement de signe : ${nbr}"); 
-                                            } 
-                                            await  _dbHelper.deleteTodo(
-                                              _taskId!, snapshot.data[index].id ,  nbr); 
-                                                          
+                                      int _tempEtat =   await  _dbHelper.getEtatTodo(snapshot.data[index].id); 
+                                       if(_tempEtat ==1){ 
+                                      int nbr = snapshot.data[index].price ; 
+
+                                        nbr = nbr*(-1); 
+                                         await  _dbHelper.deleteTodo(
+                                        _taskId!, snapshot.data[index].id , nbr); 
+                                       }  
+                                       // sinon 
+                                         await  _dbHelper.deleteTodo(
+                                        _taskId!, snapshot.data[index].id ,  snapshot.data[index].price);   
+
+
                                                   setState(() {                
                                                   }); 
                                           },icon:Icons.delete , 
@@ -169,6 +176,7 @@ class _TaskPageState extends State<TaskPage> {
                                                 if (_etat == 1) {
                                                   // aucune action 
                                                 } else {
+                                                 
                                                   int etat_todo = 1;
                                                   int _res = await _dbHelper
                                                       .getPrice(snapshot
