@@ -177,8 +177,7 @@ class _TaskPageState extends State<TaskPage> {
                                             backgroundColor:
                                                 Colors.red.shade200,
                                             foregroundColor: Colors.white,
-                                            icon: Icons.remove,
-                                            // label: 'Debit',
+                                            icon: CupertinoIcons.cart_fill_badge_minus,
                                           ),
                                              
 
@@ -235,8 +234,7 @@ class _TaskPageState extends State<TaskPage> {
                                             backgroundColor:
                                                 Colors.green.shade200,
                                             foregroundColor: Colors.white,
-                                            icon: Icons.add,
-                                            // label: 'Credit',
+                                            icon: CupertinoIcons.cart_badge_plus,
                                           ),     
                                         ],
                                       ),
