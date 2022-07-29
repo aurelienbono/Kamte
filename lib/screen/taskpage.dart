@@ -349,22 +349,20 @@ class _TaskPageState extends State<TaskPage> {
        _tempValue = int.parse(_tempList[1]); 
        print("La valeur et le type de ma variable  : ${_tempValue} : ${_tempValue.runtimeType} "); 
       if(_tempValue ==0) { 
-       _value =_value + ' \n' +"[  ]    "+ i.toString().replaceAll("(", '').replaceAll(")", ""); 
+       _value =_value + ' \n' +"[ ] "+ i.toString().replaceAll("(", '').replaceAll(")", ""); 
 
       }
        if(_tempValue ==1) { 
-       _value =_value + ' \n' +"[ + ]    "+ i.toString().replaceAll("(", '').replaceAll(")", ""); 
+       _value =_value + ' \n' +"[-] "+ i.toString().replaceAll("(", '').replaceAll(")", ""); 
 
       }
        if(_tempValue ==2) { 
-       _value =_value + ' \n' +"[ - ]   "+ i.toString().replaceAll("(", '').replaceAll(")", ""); 
+       _value =_value + ' \n' +"[+] "+ i.toString().replaceAll("(", '').replaceAll(")", ""); 
 
       }
 
-
-
   }
-       String message = "\t MyMix01 \n\n\n  ---------------------------------------------- \n PorteFeuille : $title   \n ---------------------------------------------- \n  $_value \n\n ----------------------------------------------";
+       String message = "\t FIZZ :  $title   \n ----------------------------------------------  $_value \n ----------------------------------------------";
        return message;  
        
   }
