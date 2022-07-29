@@ -36,7 +36,7 @@ class _TaskPageState extends State<TaskPage> {
 
   bool _contentVisile = false;
   int _totalSum = 0;
-  int _permet = 0 ; 
+  int _permet = 0;
 
   DataBaseHelper _dbHelper = DataBaseHelper();
 
@@ -71,13 +71,12 @@ class _TaskPageState extends State<TaskPage> {
                         onSubmitted: (value) async {
                           if (value != '') {
                             if (widget.task == null) {
-                              Task _newTask = Task(title: value, total: 0,status: 0);
+                              Task _newTask =
+                                  Task(title: value, total: 0, status: 0);
                               await _dbHelper.insertTask(_newTask);
-                         
-                                  if(_newTask.status ==0){ 
-                                  }
-                                  else { 
-                                  }
+
+                              if (_newTask.status == 0) {
+                              } else {}
                             } else {
                               await _dbHelper.updateTaskTitle(_taskId!, value);
                             }
@@ -97,129 +96,158 @@ class _TaskPageState extends State<TaskPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
-                
                 ),
                 FutureBuilder(
                     initialData: [],
                     future: _dbHelper.getTodo(_taskId!),
                     builder: (context, AsyncSnapshot snapshot) {
                       return Expanded(
-                        child:   snapshot.data.length ==0 ?  Image.asset("assets/images/image3.png") : 
-                        
-                        ListView.builder(
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () async {
-                                
-                                },
-                                child: Slidable(
-                                  startActionPane:  ActionPane(motion: DrawerMotion(), 
-                                                                     dragDismissible: false,
+                        child: snapshot.data.length == 0
+                            ? Image.asset("assets/images/image3.png")
+                            : ListView.builder(
+                                itemCount: snapshot.data.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () async {},
+                                    child: Slidable(
+                                      startActionPane: ActionPane(
+                                        motion: DrawerMotion(),
+                                        dragDismissible: false,
+                                        children: [                             
+                                          SlidableAction(onPressed: (val){ 
+                                            print("suppression de la todo"); 
+                                          },icon:Icons.delete)
+                                        ],
+                                      ),
+                                      endActionPane: ActionPane(
+                                        motion: DrawerMotion(),
+                                        dragDismissible: false,
+                                        children: [
+                                          SlidableAction(
+                                            autoClose: true,
+                                            flex: 1,
+                                            onPressed: (value) async {
+                                              int _etat =
+                                                  await _dbHelper.getEtatTodo(
+                                                      snapshot.data[index].id);
+                                              if (_etat == 0) {
+                                                _permet = 1;
+                                                int _res = await _dbHelper
+                                                    .getTemp(snapshot
+                                                        .data[index].id);
+                                                await _dbHelper
+                                                    .updateTaskRetrait(
+                                                        _taskId!,
+                                                        snapshot.data[index].id,
+                                                        _res);
 
-                                    children: [ 
-                                       SlidableAction(
-                          autoClose: true,
-                          flex: 1,
-                          onPressed: (value) async{
-                      int _etat =  await _dbHelper.getEtatTodo(snapshot.data[index].id); 
-                       if(_etat==0){ 
-                             _permet = 2;
-                                   int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
-                                    await _dbHelper.updateTaskCredit(
-                                      _taskId!,snapshot.data[index].id ,_res);
-                            await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
-                              setState(() {
-                                
-                              });
-                            }); 
-                    }
-                      else { 
-                            int _etat =  await _dbHelper.getEtatTodo(snapshot.data[index].id); 
+                                                await _dbHelper
+                                                    .updateTodoEtat(
+                                                        snapshot.data[index].id,
+                                                        _permet)
+                                                    .then((value) {
+                                                  setState(() {});
+                                                });
+                                              } else {
+                                                int _etat = await _dbHelper
+                                                    .getEtatTodo(snapshot
+                                                        .data[index].id);
 
+                                                if (_etat == 1) {
+                                                  print("on ne fais rien ");
+                                                } else {
+                                                  int etat_todo = 1;
+                                                  int _res = await _dbHelper
+                                                      .getPrice(snapshot
+                                                          .data[index].id);
+                                                  await _dbHelper
+                                                      .getFinalTotalDebit(
+                                                          _taskId!, _res);
+                                                  await _dbHelper
+                                                      .updateTodoEtat(
+                                                          snapshot
+                                                              .data[index].id,
+                                                          etat_todo)
+                                                      .then((value) {
+                                                    setState(() {});
+                                                  });
+                                                }
+                                              }
+                                            },
+                                            backgroundColor:
+                                                Colors.red.shade200,
+                                            foregroundColor: Colors.white,
+                                            icon: Icons.remove,
+                                            // label: 'Debit',
+                                          ),
+                                             
 
-                              if(_etat==2){ 
-                                print("on ne fais rien "); 
-                              }
-                              else { 
-                           int  etat_todo1  = 2;
-                                 int _res =  await _dbHelper.getPrice(snapshot.data[index].id);                           
-                                    await _dbHelper.getFinalTotalCredit(
-                                      _taskId!, _res); 
-                                      await _dbHelper.updateTodoEtat(snapshot.data[index].id,etat_todo1). 
-                                      then((value) { 
-                                      setState(() {
-                                          
-                                        });
-                                      });      
-                              }
-                               
-                            }
-                          },
-                          backgroundColor: Colors.green.shade200,
-                          foregroundColor: Colors.white,
-                          // icon: Icons.delete,
-                          label: 'Credit',
-                        ),
-                                    ],
-                                  ), 
-                                  endActionPane: 
-                                   ActionPane(motion: DrawerMotion(), 
-                                   dragDismissible: false,
-                                    children: [ 
-                           SlidableAction(
-                          autoClose: true,
-                          flex: 1,
-                          onPressed: (value) async{
-                            int _etat =  await _dbHelper.getEtatTodo(snapshot.data[index].id); 
-                            if(_etat==0){ 
-                                _permet = 1;
-                                  int _res =  await _dbHelper.getTemp(snapshot.data[index].id); 
-                                    await _dbHelper.updateTaskRetrait(
-                                      _taskId!,snapshot.data[index].id , _res); 
-                                      
-                                      await _dbHelper.updateTodoEtat(snapshot.data[index].id,_permet).then((value) { 
-                                        setState(() {
-                                          
-                                        });
-                                      }); 
-                            }
-                            else { 
-                          int _etat =  await _dbHelper.getEtatTodo(snapshot.data[index].id); 
+                                        SlidableAction(
+                                            autoClose: true,
+                                            flex: 1,
+                                            onPressed: (value) async {
+                                              int _etat =
+                                                  await _dbHelper.getEtatTodo(
+                                                      snapshot.data[index].id);
+                                              if (_etat == 0) {
+                                                _permet = 2;
+                                                int _res = await _dbHelper
+                                                    .getTemp(snapshot
+                                                        .data[index].id);
+                                                await _dbHelper
+                                                    .updateTaskCredit(
+                                                        _taskId!,
+                                                        snapshot.data[index].id,
+                                                        _res);
+                                                await _dbHelper
+                                                    .updateTodoEtat(
+                                                        snapshot.data[index].id,
+                                                        _permet)
+                                                    .then((value) {
+                                                  setState(() {});
+                                                });
+                                              } else {
+                                                int _etat = await _dbHelper
+                                                    .getEtatTodo(snapshot
+                                                        .data[index].id);
 
-                              if(_etat==1){ 
-                                print("on ne fais rien "); 
-                              }
-                              else { 
-                                int  etat_todo  = 1;
-                                  int _res =  await _dbHelper.getPrice(snapshot.data[index].id);                           
-                                    await _dbHelper.getFinalTotalDebit(
-                                      _taskId!, _res);   
-                                      await _dbHelper.updateTodoEtat(snapshot.data[index].id, etat_todo).then((value) { 
-                                        setState(() {
-                                          
-                                        });
-                                      }); 
-
-                              }
-                              
-                            }
-                          },
-                          backgroundColor: Colors.red.shade200,
-                          foregroundColor: Colors.white,
-                          // icon: Icons.delete,
-                          label: 'Debit',
-                        ),
-                                    ],
-                                  ),
-                                  child: TodoWidget(
-                                    text: snapshot.data[index].title,
-                                    id: snapshot.data[index].id,
-                                    etat: snapshot.data[index].etat ,
-                                  ),
-                                ),
-                              );
-                            }),
+                                                if (_etat == 2) {
+                                                  print("on ne fais rien ");
+                                                } else {
+                                                  int etat_todo1 = 2;
+                                                  int _res = await _dbHelper
+                                                      .getPrice(snapshot
+                                                          .data[index].id);
+                                                  await _dbHelper
+                                                      .getFinalTotalCredit(
+                                                          _taskId!, _res);
+                                                  await _dbHelper
+                                                      .updateTodoEtat(
+                                                          snapshot
+                                                              .data[index].id,
+                                                          etat_todo1)
+                                                      .then((value) {
+                                                    setState(() {});
+                                                  });
+                                                }
+                                              }
+                                            },
+                                            backgroundColor:
+                                                Colors.green.shade200,
+                                            foregroundColor: Colors.white,
+                                            icon: Icons.add,
+                                            // label: 'Credit',
+                                          ),     
+                                        ],
+                                      ),
+                                      child: TodoWidget(
+                                        text: snapshot.data[index].title,
+                                        id: snapshot.data[index].id,
+                                        etat: snapshot.data[index].etat,
+                                      ),
+                                    ),
+                                  );
+                                }),
                       );
                     }),
                 Column(
@@ -260,35 +288,33 @@ class _TaskPageState extends State<TaskPage> {
                                 if (widget.task != null) {
                                   DataBaseHelper _dbHelper = DataBaseHelper();
 
-                                 if(res!=0){ 
-                                   Todo _newTodo = Todo(
+                                  if (res != 0) {
+                                    Todo _newTodo = Todo(
                                       title: val,
                                       price: 0,
-                                      taskId: widget.task!.id ,  
-                                      etat: 0, 
-                                      temp: res, 
-                                      );
+                                      taskId: widget.task!.id,
+                                      etat: 0,
+                                      temp: res,
+                                    );
 
-                                  await _dbHelper.updateTaskPriceTotal(
-                                      _taskId!, 0);
-                                 await _dbHelper.insertTodo(_newTodo);
-                                  setState(() {});
-                                 }
-                                 else { 
-                                  Todo _newTodo = Todo(
+                                    await _dbHelper.updateTaskPriceTotal(
+                                        _taskId!, 0);
+                                    await _dbHelper.insertTodo(_newTodo);
+                                    setState(() {});
+                                  } else {
+                                    Todo _newTodo = Todo(
                                       title: val,
                                       price: 0,
-                                      taskId: widget.task!.id ,  
-                                      etat: 0, 
-                                      temp: 0, 
-                                      );
+                                      taskId: widget.task!.id,
+                                      etat: 0,
+                                      temp: 0,
+                                    );
 
-                                  await _dbHelper.updateTaskPriceTotal(
-                                      _taskId!, 0);
-                                 await _dbHelper.insertTodo(_newTodo);
-                                  setState(() {});
-                                 }
-
+                                    await _dbHelper.updateTaskPriceTotal(
+                                        _taskId!, 0);
+                                    await _dbHelper.insertTodo(_newTodo);
+                                    setState(() {});
+                                  }
                                 }
                               }
                             },
@@ -308,14 +334,12 @@ class _TaskPageState extends State<TaskPage> {
               right: 24,
               child: GestureDetector(
                 onTap: () async {
-                  int index ; 
-               print(await _dbHelper.getTodoShare(_taskId!)); 
+                  int index;
+                  print(await _dbHelper.getTodoShare(_taskId!));
 
-               List valueShare =    
-               await _dbHelper.getTodoShare(_taskId!);         
-              var _message = getMsgShare(_taskTitle! ,valueShare); 
-                    await Share.share(_message); 
-
+                  List valueShare = await _dbHelper.getTodoShare(_taskId!);
+                  var _message = getMsgShare(_taskTitle!, valueShare);
+                  await Share.share(_message);
                 },
                 child: Container(
                     width: 60,
@@ -336,60 +360,61 @@ class _TaskPageState extends State<TaskPage> {
     );
   }
 
-  String getMsgShare(String title,  List _list){ 
-        var _value =''; 
-        String arraySel = ''; 
-      for( var i in _list){       
-       arraySel = i; 
-       i =    i.toString().replaceAll("(", '').replaceAll(")", ""); 
-       List _tempList =[]; 
-       int _tempValue ; 
-       _tempList  =  i.split(','); 
-       i =  _tempList[0];  
-       _tempValue = int.parse(_tempList[1]); 
-       print("La valeur et le type de ma variable  : ${_tempValue} : ${_tempValue.runtimeType} "); 
-      if(_tempValue ==0) { 
-       _value =_value + ' \n' +"[ ] "+ i.toString().replaceAll("(", '').replaceAll(")", ""); 
-
+  String getMsgShare(String title, List _list) {
+    var _value = '';
+    String arraySel = '';
+    for (var i in _list) {
+      arraySel = i;
+      i = i.toString().replaceAll("(", '').replaceAll(")", "");
+      List _tempList = [];
+      int _tempValue;
+      _tempList = i.split(',');
+      i = _tempList[0];
+      _tempValue = int.parse(_tempList[1]);
+      print(
+          "La valeur et le type de ma variable  : ${_tempValue} : ${_tempValue.runtimeType} ");
+      if (_tempValue == 0) {
+        _value = _value +
+            ' \n' +
+            "[ ] " +
+            i.toString().replaceAll("(", '').replaceAll(")", "");
       }
-       if(_tempValue ==1) { 
-       _value =_value + ' \n' +"[-] "+ i.toString().replaceAll("(", '').replaceAll(")", ""); 
-
+      if (_tempValue == 1) {
+        _value = _value +
+            ' \n' +
+            "[-] " +
+            i.toString().replaceAll("(", '').replaceAll(")", "");
       }
-       if(_tempValue ==2) { 
-       _value =_value + ' \n' +"[+] "+ i.toString().replaceAll("(", '').replaceAll(")", ""); 
-
+      if (_tempValue == 2) {
+        _value = _value +
+            ' \n' +
+            "[+] " +
+            i.toString().replaceAll("(", '').replaceAll(")", "");
       }
-
-  }
-       String message = "\t FIZZ :  $title   \n ----------------------------------------------  $_value \n ----------------------------------------------";
-       return message;  
-       
+    }
+    String message =
+        "\t FIZZ :  $title   \n ----------------------------------------------  $_value \n ----------------------------------------------";
+    return message;
   }
 
   int recoverPrice(String chaine) {
     final intInStr = RegExp(r'\d+');
     var recherche = intInStr.allMatches(chaine).map((m) => m.group(0));
     var theTrans = recherche.toList();
-     int monRes ; 
-    
-  
-  if(theTrans.isNotEmpty) { 
-  List<int> new_arary = [];
-    for (var number in theTrans) {
-      var lestNumber = int.parse(number!);
-      new_arary.add(lestNumber);
+    int monRes;
+
+    if (theTrans.isNotEmpty) {
+      List<int> new_arary = [];
+      for (var number in theTrans) {
+        var lestNumber = int.parse(number!);
+        new_arary.add(lestNumber);
+      }
+
+      monRes = new_arary.reduce(max);
+    } else {
+      monRes = 0;
     }
 
-    monRes = new_arary.reduce(max);
-  
-
-  }
-  else { 
-   monRes = 0; 
-  }
- 
-  return monRes;
-
+    return monRes;
   }
 }
