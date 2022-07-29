@@ -88,20 +88,19 @@ class _TodoWidgetState extends State<TodoWidget> {
             margin: EdgeInsets.only(right: 12),
             decoration: BoxDecoration(
                 color:  getColor(widget.etat), 
-                borderRadius: BorderRadius.circular(5),
+                // borderRadius: BorderRadius.circular(5),
                 border:Border.all(
                    color:    Color(0xff82869d  ),
                    width: 1.4)),       
               child: GestureDetector(
                 onTap: () async{ 
-                  await _dbHelper.deleteTodo(widget.id!) ; 
                 },
-                child: Icon(
-                  CupertinoIcons.multiply,
-                  color: Colors.white,  
+                // child: Icon(
+                //   CupertinoIcons.multiply,
+                //   color: Colors.white,  
                       
-                  size: 20,
-                ),
+                //   size: 20,
+                // ),
               ),
             ),
       

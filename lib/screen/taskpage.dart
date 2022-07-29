@@ -114,9 +114,22 @@ class _TaskPageState extends State<TaskPage> {
                                         motion: DrawerMotion(),
                                         dragDismissible: false,
                                         children: [                             
-                                          SlidableAction(onPressed: (val){ 
-                                            print("suppression de la todo"); 
-                                          },icon:Icons.delete)
+                                          SlidableAction(onPressed: (val) async{ 
+                                            // print("LE PRIX : ${snapshot.data[index].price} , L'ETAT : ${snapshot.data[index].etat}"); 
+                                          int nbr  =   snapshot.data[index].price; 
+                                            if(nbr==1) { 
+                                              nbr= (-1)*nbr; 
+                                              print("changement de signe : ${nbr}"); 
+                                            } 
+                                            await  _dbHelper.deleteTodo(
+                                              _taskId!, snapshot.data[index].id ,  nbr); 
+                                                          
+                                                  setState(() {                
+                                                  }); 
+                                          },icon:Icons.delete , 
+                                             backgroundColor:
+                                                Colors.red,
+                                            foregroundColor: Colors.white)
                                         ],
                                       ),
                                       endActionPane: ActionPane(
@@ -154,7 +167,7 @@ class _TaskPageState extends State<TaskPage> {
                                                         .data[index].id);
 
                                                 if (_etat == 1) {
-                                                  print("on ne fais rien ");
+                                                  // aucune action 
                                                 } else {
                                                   int etat_todo = 1;
                                                   int _res = await _dbHelper
@@ -180,7 +193,6 @@ class _TaskPageState extends State<TaskPage> {
                                             icon: CupertinoIcons.cart_fill_badge_minus,
                                           ),
                                              
-
                                         SlidableAction(
                                             autoClose: true,
                                             flex: 1,
@@ -211,7 +223,7 @@ class _TaskPageState extends State<TaskPage> {
                                                         .data[index].id);
 
                                                 if (_etat == 2) {
-                                                  print("on ne fais rien ");
+                                                // aucune action                                                   
                                                 } else {
                                                   int etat_todo1 = 2;
                                                   int _res = await _dbHelper
@@ -333,8 +345,6 @@ class _TaskPageState extends State<TaskPage> {
               child: GestureDetector(
                 onTap: () async {
                   int index;
-                  print(await _dbHelper.getTodoShare(_taskId!));
-
                   List valueShare = await _dbHelper.getTodoShare(_taskId!);
                   var _message = getMsgShare(_taskTitle!, valueShare);
                   await Share.share(_message);
@@ -369,8 +379,6 @@ class _TaskPageState extends State<TaskPage> {
       _tempList = i.split(',');
       i = _tempList[0];
       _tempValue = int.parse(_tempList[1]);
-      print(
-          "La valeur et le type de ma variable  : ${_tempValue} : ${_tempValue.runtimeType} ");
       if (_tempValue == 0) {
         _value = _value +
             ' \n' +

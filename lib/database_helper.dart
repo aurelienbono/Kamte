@@ -46,7 +46,7 @@ Future<void> insertTodo(Todo todo) async {
 Future<List<Task>> getTask() async{ 
   Database _db  = await database(); 
   List<Map<String,dynamic>> taskMap = await _db.query('tasks',where: "status=0"); 
-   print(taskMap);
+
   return List.generate(taskMap.length, (index) { 
     return Task( id: taskMap[index]['id'], title:taskMap[index]['title'] , total: taskMap[index]['total'],status: taskMap[index]['status']); 
   }); 
@@ -56,7 +56,6 @@ Future<List<Task>> getTaskArchive() async{
   Database _db  = await database(); 
 
   List<Map<String,dynamic>> taskMap = await _db.query('tasks',where: "status=1"); 
-  print(taskMap); 
   return List.generate(taskMap.length, (index) { 
     return Task( id: taskMap[index]['id'], title:taskMap[index]['title'] , total: taskMap[index]['total'],status: taskMap[index]['status']); 
   }); 
@@ -67,14 +66,6 @@ Future<void> updateTaskTitle(int id , String title) async{
   await _db.rawUpdate("UPDATE tasks SET title='$title 'where id = '$id'");
   
 }
-Future<void> deleteTodo(int id ) async{ 
-  Database _db = await database() ; 
-  await _db.rawDelete("DELETE FROM  todo  WHERE id = '$id'");
-  
-}
-
-
-
 
 Future<void> deleteTask(int id ) async{ 
   Database _db = await database() ; 
@@ -82,11 +73,34 @@ Future<void> deleteTask(int id ) async{
   await _db.rawDelete("DELETE FROM  todo  WHERE taskId = '$id'");
 }
 
+
+Future<void> deleteTodo(int id, int _idTodo , int ma_value) async{ 
+  Database _db = await database() ; 
+
+  List<Map<String, dynamic>> value = await _db.rawQuery("SELECT total FROM tasks WHERE id=$id"); 
+
+  Map<String, dynamic> _theTotalValue = value[0]; 
+  int _resquestTotalValue =0; 
+  _theTotalValue.forEach((_key, _value) { 
+    if(_value ==null){ 
+       _resquestTotalValue = 0; 
+    }else { 
+      _resquestTotalValue = _value; 
+    }
+   }); 
+      _resquestTotalValue -= ma_value;  
+  await _db.rawUpdate(" UPDATE tasks SET total='$_resquestTotalValue 'where id = '$id'");
+  await _db.rawDelete("DELETE FROM  todo  WHERE id = '$_idTodo'");
+
+
+  
+}
+
+
 Future<void> updateTaskPriceTotal(int id , int priceTotal) async{ 
   Database _db = await database() ; 
   List<Map<String, dynamic>> value = await _db.rawQuery("SELECT total FROM tasks WHERE id=$id"); 
   Map<String, dynamic> theNew = value[0]; 
-  print("La valeur total au depart : ${theNew}"); 
   int _sum =0; 
   int _resquestValue = 0 ; 
   theNew.forEach((_key, _value) { 
@@ -98,7 +112,6 @@ Future<void> updateTaskPriceTotal(int id , int priceTotal) async{
    
    }); 
    _resquestValue += priceTotal;  
-     print("La valeur total a la fin  : ${_resquestValue}"); 
   await _db.rawUpdate(" UPDATE tasks SET total='$_resquestValue 'where id = '$id'");
  
 }
@@ -253,7 +266,6 @@ Future<List<Todo>> getTodo(int taskId) async{
   Database _db  = await database(); 
 
   List<Map<String,dynamic>> todoMap = await _db.rawQuery("SELECT * FROM todo WHERE taskId=$taskId"); 
-  print(todoMap); 
   return List.generate(todoMap.length, (index) { 
     return Todo( id: todoMap[index]['id'] , taskId:  todoMap[index]['taskId'], title:  todoMap[index]['title'], price:  todoMap[index]['price'] , etat:  todoMap[index]['etat']); 
   }); 
