@@ -29,7 +29,7 @@ class _AboutPageState extends State<AboutPage> {
           child: Text(
             "A PROPOS",
             style: TextStyle(
-                color: Colors.black, fontSize: 25, fontWeight: FontWeight.w600),
+                color: Colors.black54, fontSize: 25, fontWeight: FontWeight.w600),
           ),
         ),
         centerTitle: true,
