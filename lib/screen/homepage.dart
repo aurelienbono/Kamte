@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:keep_note/database_helper.dart';
 import 'package:keep_note/models/task.dart';
+import 'package:keep_note/screen/about.dart';
 import 'package:keep_note/screen/archive_task.dart';
 import 'package:keep_note/screen/taskpage.dart';
 import 'package:keep_note/widget.dart';
@@ -26,10 +27,45 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: Drawer(),
+        drawer: Drawer( 
+          child: ListView( 
+            children: [ 
+             UserAccountsDrawerHeader(accountName: Text("John Doe "), 
+                decoration: BoxDecoration( 
+                  color: Color(0xff00c4d5),
+                ), accountEmail: Text("johndoe@example.com") , 
+                currentAccountPicture: 
+                  CircleAvatar( 
+                    backgroundColor: Color(0xff00c4d5), 
+                    child: Icon(Icons.person ,  size: 50,))
+                
+                 ) , 
+              
+              GestureDetector( 
+                onTap: (){ 
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> ArchivePage())); 
+                },
+                child: ListTile( 
+                  title: Text("Archives",style: TextStyle(fontWeight: FontWeight.bold),),
+                  leading: Icon(Icons.archive), 
+                          
+                ),
+              ), 
+              GestureDetector(
+                onTap: (){ 
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>AboutPage())); 
+                },
+                child: ListTile( 
+                  title: Text("A propos",style: TextStyle(fontWeight: FontWeight.bold),),
+                  leading: Icon(Icons.help_center ),      
+                ),
+              ), 
+            ],
+           ),
+        ),
         appBar: AppBar(
-          backgroundColor: Color(0xff0078AA),
-          title: Text("FIZZ".toUpperCase()),
+          backgroundColor: Color(0xff00c4d5),
+          title: Text("Kamte".toUpperCase()),
           centerTitle: true,
           leading: Builder(
             builder: (context) => GestureDetector(
@@ -158,7 +194,7 @@ class _HomePageState extends State<HomePage> {
                                                   children: [
                                                     Flexible(
                                                       child: Text(
-                                                          " Votre porte feuille viens d'etre archivé "),
+                                                          " Portefeuille archivé "),
                                                     ),
                                                     TextButton(
                                                         onPressed: () async {
@@ -257,7 +293,7 @@ class _HomePageState extends State<HomePage> {
                         width: 55,
                         height: 55,
                         decoration: BoxDecoration(
-                            color: Color(0xff0078AA),
+                            color: Color(0xff00c4d5),
                             borderRadius: BorderRadius.circular(20)),
                         child: Center(
                             child: Icon(

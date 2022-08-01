@@ -30,11 +30,11 @@ class _ArchivePageState extends State<ArchivePage> {
             ),
             child: Text(
               "ARCHIVES",
-              style: TextStyle(color: Color(0xff86829d), fontSize: 25),
+              style: TextStyle(color: Color(0xff86829d), fontSize: 25, fontWeight: FontWeight.w600),
             ),
           ),
           centerTitle: true,
-          backgroundColor: Colors.transparent,
+          backgroundColor: Color(0xfff6f6f6),
           elevation: 0,
         ),
         body: SafeArea(

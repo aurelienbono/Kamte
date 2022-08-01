@@ -20,7 +20,7 @@ class TaskCardWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric( vertical: 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
+          color: Color(0xffcaf1f5),
         ),
         margin: EdgeInsets.only(bottom: 18),
         child: ListTile( title:   Text(
@@ -83,24 +83,18 @@ class _TodoWidgetState extends State<TodoWidget> {
       child: Row(
         children: [
           Container(
-            width: 23,
-            height: 23,
+            width: 24,
+            height: 24,
             margin: EdgeInsets.only(right: 12),
             decoration: BoxDecoration(
                 color:  getColor(widget.etat), 
-                // borderRadius: BorderRadius.circular(50),
+                borderRadius: BorderRadius.circular(50),
                 border:Border.all(
                    color:    Colors.white,
                    width: 1.4)),       
               child: GestureDetector(
                 onTap: () async{ 
-                },
-                // child: Icon(
-                //   CupertinoIcons.multiply,
-                //   color: Colors.white,  
-                      
-                //   size: 20,
-                // ),
+                }, 
               ),
             ),
       

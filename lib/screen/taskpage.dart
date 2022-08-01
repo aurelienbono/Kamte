@@ -129,8 +129,6 @@ class _TaskPageState extends State<TaskPage> {
                                        // sinon 
                                          await  _dbHelper.deleteTodo(
                                         _taskId!, snapshot.data[index].id ,  snapshot.data[index].price);   
-
-
                                                   setState(() {                
                                                   }); 
                                           },icon:Icons.delete , 
@@ -361,7 +359,7 @@ class _TaskPageState extends State<TaskPage> {
                     width: 60,
                     height: 60,
                     decoration: BoxDecoration(
-                        color: Color(0xff0078AA),
+                        color: Color(0xff00c4d5),
                         borderRadius: BorderRadius.circular(20)),
                     child: Center(
                         child: Icon(
