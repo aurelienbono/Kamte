@@ -1,9 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:keep_note/screen/homepage.dart';
 import 'package:keep_note/screen/onboard.dart';
 
 class SplashPage extends StatefulWidget {
@@ -18,8 +16,6 @@ class _SplashPageState extends State<SplashPage> {
 
   void initState(){ 
     super.initState();
-
-    // Timer(Duration(seconds: 4), ()=>  Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage())));  
     Timer(Duration(seconds: 4), ()=>  Navigator.push(context, MaterialPageRoute(builder: (context)=>OnboardingPage())));  
 
     

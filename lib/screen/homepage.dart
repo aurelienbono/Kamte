@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
             GestureDetector(
               child: Padding(
                 padding: const EdgeInsets.only(right: 10),
-                child: Icon(Icons.person_outline),
+                child: Icon(CupertinoIcons.search),
               ),
               onTap: () async {
               },
