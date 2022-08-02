@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:keep_note/screen/homepage.dart';
+import 'package:keep_note/screen/splash.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData( textTheme: GoogleFonts.nunitoSansTextTheme( 
         Theme.of(context).textTheme, 
       )), 
-      home:  HomePage(),
+      home:  SplashPage(),
       debugShowCheckedModeBanner: false,
     );
   }
