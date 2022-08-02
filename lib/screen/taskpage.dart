@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
 
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -53,52 +51,53 @@ class _TaskPageState extends State<TaskPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 24, bottom: 12),
-                  child: Row(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(24.0),
-                          child: Icon(
-                            Icons.arrow_back_sharp,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                          child: TextField(
-                        onSubmitted: (value) async {
-                          if (value != '') {
-                            if (widget.task == null) {
-                              Task _newTask =
-                                  Task(title: value, total: 0, status: 0);
-                              await _dbHelper.insertTask(_newTask);
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 16, bottom: 6),
+                //   child: Row(
+                //     children: [
+                //       InkWell(
+                //         onTap: () {
+                //           Navigator.pop(context);
+                //         },
+                //         child: Padding(
+                //           padding: const EdgeInsets.all(10.0),
+                //           child: Icon(
+                //             Icons.arrow_back_sharp,
+                //             size: 30,
+                //           ),
+                //         ),
+                //       ),
+                //       Expanded(
+                //           child: TextField(
+                //         onSubmitted: (value) async {
+                //           if (value != '') {
+                //             if (widget.task == null) {
+                //               Task _newTask =
+                //                   Task(title: value, total: 0, status: 0);
+                //               await _dbHelper.insertTask(_newTask);
 
-                              if (_newTask.status == 0) {
-                              } else {}
-                            } else {
-                              await _dbHelper.updateTaskTitle(_taskId!, value);
-                            }
-                          }
-                        },
-                        controller: TextEditingController()..text = _taskTitle!,
-                        decoration: InputDecoration(
-                            hintText: "  Entrez un titre ...",
-                            border: InputBorder.none),
-                        style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff86829d)),
-                      ))
-                    ],
-                  ),
-                ),
+                //               if (_newTask.status == 0) {
+                //               } else {}
+                //             } else {
+                //               await _dbHelper.updateTaskTitle(_taskId!, value);
+                //             }
+                //           }
+                //         },
+                //         controller: TextEditingController()..text = _taskTitle!,
+                //         decoration: InputDecoration(
+                //             hintText: "  Entrez un titre ...",
+                //             border: InputBorder.none),
+                //         style: TextStyle(
+                //             fontSize: 28,
+                //             fontWeight: FontWeight.bold,
+                //             color: Color(0xff86829d)),
+                //       ))
+                //     ],
+                //   ),
+                // ),
+                TopCard(), 
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.only(bottom:7 ),
                 ),
                 FutureBuilder(
                     initialData: [],

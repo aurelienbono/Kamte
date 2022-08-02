@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, prefer_interpolation_to_compose_strings, sort_child_properties_last
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -120,5 +120,132 @@ class NoGlowBehaviour extends ScrollBehavior{
     BuildContext context , Widget child , AxisDirection  axisDirection
   ) { 
     return child; 
+  }
+}
+
+
+class TopCard extends StatelessWidget {
+  const TopCard({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: 150,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text('B A L A N C E',
+                      style: TextStyle(color: Colors.grey[500], fontSize: 16)), 
+
+                      Icon(Icons.edit)
+                    ],
+                  ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(7),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.grey[200],
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.arrow_upward,
+                              color: Colors.green,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Debit',
+                                style: TextStyle(color: Colors.grey[500])),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text('\$' + "0",
+                                style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontWeight: FontWeight.bold)),
+                          ],
+                        )
+                      ],
+                    ),
+            Text(
+                            '\$' + "0",
+                            style: TextStyle(color: Colors.grey[800], fontSize: 30),
+                          ),
+
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(7),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.grey[200],
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.arrow_downward,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Credit',
+                                style: TextStyle(color: Colors.grey[500])),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text('\$' + "0",
+                                style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontWeight: FontWeight.bold)),
+                          ],
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: Colors.grey[300],
+            // boxShadow: [
+            //   BoxShadow(
+            //       color: Colors.grey.shade500,
+            //       offset: Offset(4.0, 4.0),
+            //       blurRadius: 15.0,
+            //       spreadRadius: 1.0),
+            //   BoxShadow(
+            //       color: Colors.white,
+            //       offset: Offset(-4.0, -4.0),
+            //       blurRadius: 15.0,
+            //       spreadRadius: 1.0),
+            // ] 
+            ),
+      
+    );
   }
 }
