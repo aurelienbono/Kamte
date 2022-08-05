@@ -24,6 +24,14 @@ class _ArchivePageState extends State<ArchivePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+              leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(
+              Icons.arrow_back_outlined,
+              color: Colors.black,
+            )),
           title: Padding(
             padding: const EdgeInsets.symmetric(
               vertical: 15,
@@ -96,7 +104,7 @@ class _ArchivePageState extends State<ArchivePage> {
                                                           mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
                                                     Text(
-                                                        " Votre portefeuille ${snapshot.data[index].title} viens d'etre désarchivé "),
+                                                        " Archivage du portefeuille annulé "),
                                                  
                                                   ],
                                                 )));

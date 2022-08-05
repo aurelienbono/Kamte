@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
                 },
                 child: ListTile( 
                   title: Text("Archives",style: TextStyle(fontWeight: FontWeight.bold),),
-                  leading: Icon(Icons.archive), 
+                  leading: Icon(Icons.archive ,size: 22,), 
                           
                 ),
               ), 
@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                 },
                 child: ListTile( 
                   title: Text("A propos",style: TextStyle(fontWeight: FontWeight.bold),),
-                  leading: Icon(Icons.help_center ),      
+                  leading: Icon(Icons.help_center,size: 22 ),      
                 ),
               ), 
             ],

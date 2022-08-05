@@ -42,9 +42,7 @@ class _AboutPageState extends State<AboutPage> {
             Padding(
               padding: const EdgeInsets.only(top: 60, bottom: 10),
               child: Center(
-                child: FlutterLogo(
-                  size: 100,
-                ),
+                child: Image.asset("assets/images/about_icon.png" ,height: 180,width: 180,)
               ),
             ),
             Column(

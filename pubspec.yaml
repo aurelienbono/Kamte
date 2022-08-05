@@ -44,6 +44,7 @@ flutter:
     - assets/images/image3.png
     - assets/images/icons/splash/icon.png
     - assets/images/icons/icon.png
+    - assets/images/about_icon.png
     
     # - images/a_dot_ham.jpeg
 
