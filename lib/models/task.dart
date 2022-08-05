@@ -14,9 +14,4 @@ class Task{
       'status' : status
     }; 
   }
-
-
-  
-
-
 }

@@ -343,4 +343,39 @@ Future<int> getCountTodo() async{
   return _totalTodo; 
 }
  
+Future<int> debitTotal(int id) async{ 
+  Database _db = await database() ; 
+ List<Map<String, Object?>> number = await _db.rawQuery("SELECT SUM(price) FROM todo where etat = 2 and taskId=$id"); 
+  Map<String, dynamic> _tempNumber = number[0]; 
+    int _resquestTempNumber =0; 
+    _tempNumber.forEach((_key, _value) { 
+    if(_value ==null){ 
+       _resquestTempNumber = 0; 
+    }else { 
+      _resquestTempNumber = _value; 
+    }
+   }); 
+
+  print("la somme : $_resquestTempNumber"); 
+   return _resquestTempNumber ; 
+}
+
+Future<int> creditTotal(int id) async{ 
+  Database _db = await database() ; 
+ List<Map<String, Object?>> number = await _db.rawQuery("SELECT SUM(price) FROM todo where etat = 1 and taskId=$id"); 
+  Map<String, dynamic> _tempNumber = number[0]; 
+    int _resquestTempNumber =0; 
+    _tempNumber.forEach((_key, _value) { 
+    if(_value ==null){ 
+       _resquestTempNumber = 0; 
+    }else { 
+      _resquestTempNumber = _value; 
+    }
+   }); 
+
+  print("la somme : $_resquestTempNumber"); 
+   return _resquestTempNumber ; 
+}
+
+
 }

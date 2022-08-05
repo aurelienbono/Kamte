@@ -25,6 +25,7 @@ class _TaskPageState extends State<TaskPage> {
   int _debit = 0 ; 
   int _credit = 0 ; 
 
+
   void initState() {
     if (widget.task != null) {
       _taskTitle = widget.task?.title;
@@ -53,7 +54,7 @@ class _TaskPageState extends State<TaskPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
   
-                TopCard( title: _taskTitle!,debit: 0 , credit: 0, total: widget.task!.total!,), 
+                TopCard( title: _taskTitle!,debit: _debit , credit: 0, total: widget.task!.total!,), 
                 Padding(
                   padding: const EdgeInsets.only(bottom:7 ),
                 ),
@@ -168,6 +169,7 @@ class _TaskPageState extends State<TaskPage> {
                                                 int _res = await _dbHelper
                                                     .getTemp(snapshot
                                                         .data[index].id);
+                                            
                                                 await _dbHelper
                                                     .updateTaskCredit(
                                                         _taskId!,
@@ -178,7 +180,9 @@ class _TaskPageState extends State<TaskPage> {
                                                         snapshot.data[index].id,
                                                         _permet)
                                                     .then((value) {
-                                                  setState(() {});
+                                                  setState(() { 
+                                                    
+                                                  });
                                                 });
                                               } else {
                                                 int _etat = await _dbHelper
@@ -269,6 +273,7 @@ class _TaskPageState extends State<TaskPage> {
                                       etat: 0,
                                       temp: res,
                                     );
+                                     await _dbHelper.debitTotal(  _taskId!); 
 
                                     await _dbHelper.updateTaskPriceTotal(
                                         _taskId!, 0);
@@ -292,7 +297,7 @@ class _TaskPageState extends State<TaskPage> {
                               }
                             },
                             decoration: InputDecoration(
-                                hintText: " Entrez un nouveau objectif",
+                                hintText: " Entrez une nouvelle  depense",
                                 border: InputBorder.none),
                           ))
                         ],
