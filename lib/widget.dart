@@ -31,14 +31,14 @@ class TaskCardWidget extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ), 
-            trailing:    Padding(
-              padding: EdgeInsets.only(top: 10),
-              child: Text(
-                "$total",
-                style: TextStyle(
-                    fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xff86829d),),
-              ),
-            ),
+            // trailing:    Padding(
+            //   padding: EdgeInsets.only(top: 10),
+            //   child: Text(
+            //     "$total",
+            //     style: TextStyle(
+            //         fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xff86829d),),
+            //   ),
+            // ),
             )
         
         );
@@ -125,12 +125,15 @@ class NoGlowBehaviour extends ScrollBehavior{
 
 
 class TopCard extends StatelessWidget {
-  const TopCard({Key? key}) : super(key: key);
+  final String title ; 
+  final int debit ; 
+   final int credit ; 
+  TopCard({required this.title ,required this.credit , required this.debit}); 
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 150,
+        height: 120,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -138,10 +141,12 @@ class TopCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text('B A L A N C E',
-                      style: TextStyle(color: Colors.grey[500], fontSize: 16)), 
+                      Flexible(
+                        child: Text(title,
+                        style: TextStyle(color: Colors.black45, fontSize: 20,fontWeight: FontWeight.bold)),
+                      ), 
 
-                      Icon(Icons.edit)
+                      //  GestureDetector(onTap:(){print("ouverture du dialogue");}, child:Icon(Icons.edit))
                     ],
                   ),
               Padding(
@@ -176,7 +181,7 @@ class TopCard extends StatelessWidget {
                             SizedBox(
                               height: 5,
                             ),
-                            Text('\$' + "0",
+                            Text("$debit",
                                 style: TextStyle(
                                     color: Colors.grey[600],
                                     fontWeight: FontWeight.bold)),
@@ -184,9 +189,8 @@ class TopCard extends StatelessWidget {
                         )
                       ],
                     ),
-            Text(
-                            '\$' + "0",
-                            style: TextStyle(color: Colors.grey[800], fontSize: 30),
+            Text( "0",
+                            style: TextStyle(color: Colors.grey[800], fontSize: 25),
                           ),
 
                     Row(
@@ -215,7 +219,7 @@ class TopCard extends StatelessWidget {
                             SizedBox(
                               height: 5,
                             ),
-                            Text('\$' + "0",
+                            Text("$debit",
                                 style: TextStyle(
                                     color: Colors.grey[600],
                                     fontWeight: FontWeight.bold)),
@@ -232,18 +236,7 @@ class TopCard extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             color: Colors.grey[300],
-            // boxShadow: [
-            //   BoxShadow(
-            //       color: Colors.grey.shade500,
-            //       offset: Offset(4.0, 4.0),
-            //       blurRadius: 15.0,
-            //       spreadRadius: 1.0),
-            //   BoxShadow(
-            //       color: Colors.white,
-            //       offset: Offset(-4.0, -4.0),
-            //       blurRadius: 15.0,
-            //       spreadRadius: 1.0),
-            // ] 
+           
             ),
       
     );

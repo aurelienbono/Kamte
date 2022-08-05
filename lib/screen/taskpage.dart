@@ -51,51 +51,8 @@ class _TaskPageState extends State<TaskPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 16, bottom: 6),
-                //   child: Row(
-                //     children: [
-                //       InkWell(
-                //         onTap: () {
-                //           Navigator.pop(context);
-                //         },
-                //         child: Padding(
-                //           padding: const EdgeInsets.all(10.0),
-                //           child: Icon(
-                //             Icons.arrow_back_sharp,
-                //             size: 30,
-                //           ),
-                //         ),
-                //       ),
-                //       Expanded(
-                //           child: TextField(
-                //         onSubmitted: (value) async {
-                //           if (value != '') {
-                //             if (widget.task == null) {
-                //               Task _newTask =
-                //                   Task(title: value, total: 0, status: 0);
-                //               await _dbHelper.insertTask(_newTask);
-
-                //               if (_newTask.status == 0) {
-                //               } else {}
-                //             } else {
-                //               await _dbHelper.updateTaskTitle(_taskId!, value);
-                //             }
-                //           }
-                //         },
-                //         controller: TextEditingController()..text = _taskTitle!,
-                //         decoration: InputDecoration(
-                //             hintText: "  Entrez un titre ...",
-                //             border: InputBorder.none),
-                //         style: TextStyle(
-                //             fontSize: 28,
-                //             fontWeight: FontWeight.bold,
-                //             color: Color(0xff86829d)),
-                //       ))
-                //     ],
-                //   ),
-                // ),
-                TopCard(), 
+              
+                TopCard( title: _taskTitle!,debit: 0, credit: 10,), 
                 Padding(
                   padding: const EdgeInsets.only(bottom:7 ),
                 ),
