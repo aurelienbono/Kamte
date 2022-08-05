@@ -22,6 +22,8 @@ class TaskPage extends StatefulWidget {
 class _TaskPageState extends State<TaskPage> {
   String? _taskTitle = '';
   int? _taskId = 0;
+  int _debit = 0 ; 
+  int _credit = 0 ; 
 
   void initState() {
     if (widget.task != null) {
@@ -38,11 +40,10 @@ class _TaskPageState extends State<TaskPage> {
   bool _contentVisile = false;
   int _totalSum = 0;
   int _permet = 0;
-
   DataBaseHelper _dbHelper = DataBaseHelper();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)  {
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -51,8 +52,8 @@ class _TaskPageState extends State<TaskPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-              
-                TopCard( title: _taskTitle!,debit: 0, credit: 10,), 
+  
+                TopCard( title: _taskTitle!,debit: 0 , credit: 0, total: widget.task!.total!,), 
                 Padding(
                   padding: const EdgeInsets.only(bottom:7 ),
                 ),

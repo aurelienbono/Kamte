@@ -128,7 +128,8 @@ class TopCard extends StatelessWidget {
   final String title ; 
   final int debit ; 
    final int credit ; 
-  TopCard({required this.title ,required this.credit , required this.debit}); 
+   final int total ; 
+  TopCard({required this.title ,required this.credit , required this.debit , required this.total}); 
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +144,7 @@ class TopCard extends StatelessWidget {
                     children: [
                       Flexible(
                         child: Text(title,
-                        style: TextStyle(color: Colors.black45, fontSize: 20,fontWeight: FontWeight.bold)),
+                        style: TextStyle(color: Colors.black45, fontSize: 23,fontWeight: FontWeight.bold)),
                       ), 
 
                       //  GestureDetector(onTap:(){print("ouverture du dialogue");}, child:Icon(Icons.edit))
@@ -177,20 +178,20 @@ class TopCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Debit',
-                                style: TextStyle(color: Colors.grey[500])),
+                                style: TextStyle(color: Colors.black45)),
                             SizedBox(
                               height: 5,
                             ),
                             Text("$debit",
                                 style: TextStyle(
-                                    color: Colors.grey[600],
+                                    color: Colors.black,
                                     fontWeight: FontWeight.bold)),
                           ],
                         )
                       ],
                     ),
-            Text( "0",
-                            style: TextStyle(color: Colors.grey[800], fontSize: 25),
+            Text( "$total",
+                            style: TextStyle(color: Colors.grey[800], fontSize: 22),
                           ),
 
                     Row(
@@ -215,13 +216,13 @@ class TopCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Credit',
-                                style: TextStyle(color: Colors.grey[500])),
+                                style: TextStyle(color: Colors.black45)),
                             SizedBox(
                               height: 5,
                             ),
                             Text("$debit",
                                 style: TextStyle(
-                                    color: Colors.grey[600],
+                                    color: Colors.black,
                                     fontWeight: FontWeight.bold)),
                           ],
                         )
@@ -234,8 +235,8 @@ class TopCard extends StatelessWidget {
           ),
         ),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: Colors.grey[300],
+          
+            color: Color(0xff00c4d5)
            
             ),
       
