@@ -17,9 +17,10 @@ class OnBoarding extends StatelessWidget {
             Spacer(), 
             Image.asset(img,height: 200,width: 200,) ,
             Text(title,style: TextStyle(fontSize: 20 , fontWeight: FontWeight.w700),), 
-            SizedBox(height: 16,),
+            SizedBox(height: 20,),
             Text(subtitle, textAlign: TextAlign.center,), 
              Spacer(),  
+            Spacer(), 
           ],
         ),
       ) );

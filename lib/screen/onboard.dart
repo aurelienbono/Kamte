@@ -51,21 +51,38 @@ class _OnboardingPageState extends State<OnboardingPage> {
             itemCount: _pages.length, 
             onPageChanged: _onchanged,
             itemBuilder: (BuildContext context, int index) { 
-              return _pages[index]; 
+              return _pages[index];
             } 
                   
               ), 
-    
-              Column( 
+                   Column( 
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [ 
-                   Row(
+                  (_currentPage ==2 ) ?
+                
+                   GestureDetector(
+                    onTap: (){ 
+                       Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage())); 
+                    },
+                     child: Container( 
+                      height: 40, 
+                      width: 200,
+                      child: Center(child: Text("COMMENCER",style: TextStyle(fontSize: 16 ,color: Colors.white, fontWeight: FontWeight.w700),)),
+                      decoration: BoxDecoration( 
+                        color: Color(0xff00c4d5), 
+                        borderRadius: BorderRadius.circular(10)
+                      ),
+                     ),
+                   )
+                   : 
+                  Padding(padding: EdgeInsets.only(bottom: 60)),
+                  Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List<Widget>.generate(_pages.length, (int index) {
                     return AnimatedContainer(
                         duration: Duration(milliseconds: 300),
                         height: 10,
-                        width: (index == _currentPage) ? 30 : 10,
+                        width: (index == _currentPage) ? 25 : 10,
                         margin:
                             EdgeInsets.symmetric(horizontal: 5, vertical: 30),
                         decoration: BoxDecoration(
