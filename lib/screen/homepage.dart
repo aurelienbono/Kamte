@@ -27,40 +27,51 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: Drawer( 
-          child: ListView( 
-            children: [ 
-             UserAccountsDrawerHeader(accountName: Text("John Doe "), 
-                decoration: BoxDecoration( 
-                  color: Color(0xff00c4d5),
-                ), accountEmail: Text("johndoe@example.com") , 
-                currentAccountPicture: 
-                  CircleAvatar( 
-                    child: Icon(Icons.person ,  size: 50,))
-                
-                 ) , 
-              
-              GestureDetector( 
-                onTap: (){ 
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> ArchivePage())); 
-                },
-                child: ListTile( 
-                  title: Text("Archives",style: TextStyle(fontWeight: FontWeight.bold),),
-                  leading: Icon(Icons.archive ,size: 22,), 
-                          
-                ),
-              ), 
+        drawer: Drawer(
+          child: ListView(
+            children: [
+              UserAccountsDrawerHeader(
+                  accountName: Text("John Doe "),
+                  decoration: BoxDecoration(
+                    color: Color(0xff00c4d5),
+                  ),
+                  accountEmail: Text("johndoe@example.com"),
+                  currentAccountPicture: CircleAvatar(
+                      child: Icon(
+                    Icons.person,
+                    size: 50,
+                  ))),
               GestureDetector(
-                onTap: (){ 
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>AboutPage())); 
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ArchivePage()));
                 },
-                child: ListTile( 
-                  title: Text("A propos",style: TextStyle(fontWeight: FontWeight.bold),),
-                  leading: Icon(Icons.help_center,size: 22 ),      
+                child: ListTile(
+                  title: Text(
+                    "Archives",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  leading: Icon(
+                    Icons.archive,
+                    size: 22,
+                  ),
                 ),
-              ), 
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AboutPage()));
+                },
+                child: ListTile(
+                  title: Text(
+                    "A propos",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  leading: Icon(Icons.help_center, size: 22),
+                ),
+              ),
             ],
-           ),
+          ),
         ),
         appBar: AppBar(
           backgroundColor: Color(0xff00c4d5),
@@ -80,8 +91,7 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(right: 10),
                 child: Icon(CupertinoIcons.search),
               ),
-              onTap: () async {
-              },
+              onTap: () async {},
             ),
           ],
           elevation: 0,
@@ -104,134 +114,170 @@ class _HomePageState extends State<HomePage> {
                             builder: (context, AsyncSnapshot snapshot) {
                               return ScrollConfiguration(
                                 behavior: NoGlowBehaviour(),
-                                child:  snapshot.data.length ==0 ?   Center( child: Column(  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [  Image.asset("assets/images/image2.png", width: 300,height: 300,), 
-                                  SizedBox(height: 50,), 
-                                    Text("Appuyer sur + pour créer un portefeuille",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
-                                   ],),):                                
-                                ListView.builder(
-                                  itemCount: snapshot.data.length,
-                                  itemBuilder: (context, index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (contex) => TaskPage(
-                                                      task:
-                                                          snapshot.data[index],
-                                                    ))).then((value) {
-                                          setState(() {});
-                                        });
-                                      },
-                                      child: Slidable(
-                                        endActionPane: ActionPane(
-                                          motion: DrawerMotion(),
+                                child: snapshot.data.length == 0
+                                    ? Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
-                                            SlidableAction(
-                                              autoClose: true,
-                                              onPressed: (value) async {
-                                                int res = await _dbHelper
-                                                    .getCount(snapshot
-                                                        .data[index].id);
-                                                if (res == 0) {
-                                                  if (snapshot.data[index].id !=
-                                                      0) {
-                                                    //  il va permettre de partager les tasks
-                                                    await _dbHelper
-                                                        .deleteTask(snapshot
-                                                            .data[index].id!)
-                                                        .then((value) {
-                                                      setState(() {});
-                                                    });
-
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(SnackBar(
-                                                            content: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceAround,
-                                                      children: [
-                                                        Flexible(
-                                                          child: Text(
-                                                              " Votre portefeuille ${snapshot.data[index].title} est supprimé"),
-                                                        ),
-                                                      ],
-                                                    )));
-                                                  }
-                                                } else {
-                                                  _alert(
-                                                      snapshot
-                                                          .data[index].title,
-                                                      res);
-                                                }
-                                              },
-                                              backgroundColor: Colors.red,
-                                              icon: CupertinoIcons.delete,
+                                            Image.asset(
+                                              "assets/images/image2.png",
+                                              width: 300,
+                                              height: 300,
+                                            ),
+                                            SizedBox(
+                                              height: 40,
+                                            ),
+                                            Text(
+                                              "Appuyer sur + pour créer un portefeuille",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400),
                                             )
                                           ],
                                         ),
-                                        startActionPane: ActionPane(
-                                          motion: DrawerMotion(),
-                                          children: [
-                                            SlidableAction(
-                                              flex: 1,
-                                              autoClose: true,
-                                              onPressed: (value) async {
-                                                int _permet = 1;
-
-                                                await _dbHelper
-                                                    .updateTastStatus(
-                                                        snapshot.data[index].id,
-                                                        _permet)
-                                                    .then((value) {
-                                                  setState(() {});
-                                                });
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(SnackBar(
-                                                        content: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  children: [
-                                                    Flexible(
-                                                      child: Text(
-                                                          " Portefeuille archivé "),
-                                                    ),
-                                                    TextButton(
-                                                        onPressed: () async {
-                                                          int _temp = 0;
+                                      )
+                                    : ListView.builder(
+                                        itemCount: snapshot.data.length,
+                                        itemBuilder: (context, index) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (contex) =>
+                                                          TaskPage(
+                                                            task: snapshot
+                                                                .data[index],
+                                                          ))).then((value) {
+                                                setState(() {});
+                                              });
+                                            },
+                                            child: Slidable(
+                                              endActionPane: ActionPane(
+                                                motion: DrawerMotion(),
+                                                children: [
+                                                  SlidableAction(
+                                                    autoClose: true,
+                                                    onPressed: (value) async {
+                                                      int res = await _dbHelper
+                                                          .getCount(snapshot
+                                                              .data[index].id);
+                                                      if (res == 0) {
+                                                        if (snapshot.data[index]
+                                                                .id !=
+                                                            0) {
+                                                          //  il va permettre de partager les tasks
                                                           await _dbHelper
-                                                              .updateTastStatus(
+                                                              .deleteTask(
                                                                   snapshot
                                                                       .data[
                                                                           index]
-                                                                      .id,
-                                                                  _temp)
+                                                                      .id!)
                                                               .then((value) {
                                                             setState(() {});
                                                           });
-                                                        },
-                                                        child: Text("Annuler"))
-                                                  ],
-                                                )));
-                                              },
-                                              backgroundColor: Colors.blue,
-                                              icon: CupertinoIcons
-                                                  .archivebox_fill,
-                                            )
-                                          ],
-                                        ),
-                                        child: TaskCardWidget(
-                                          title: snapshot.data[index].title,
-                                          // ici  je vais mettre la fonction pour afficher le prix total de chaque task
-                                          total: snapshot.data[index].total,
-                                        ),
+
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                                  SnackBar(
+                                                                      content:
+                                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceAround,
+                                                            children: [
+                                                              Flexible(
+                                                                child: Text(
+                                                                    " Votre portefeuille ${snapshot.data[index].title} est supprimé"),
+                                                              ),
+                                                            ],
+                                                          )));
+                                                        }
+                                                      } else {
+                                                        _alert(
+                                                            snapshot.data[index]
+                                                                .title,
+                                                            res);
+                                                      }
+                                                    },
+                                                    backgroundColor: Colors.red,
+                                                    icon: CupertinoIcons.delete,
+                                                  )
+                                                ],
+                                              ),
+                                              startActionPane: ActionPane(
+                                                motion: DrawerMotion(),
+                                                children: [
+                                                  SlidableAction(
+                                                    flex: 1,
+                                                    autoClose: true,
+                                                    onPressed: (value) async {
+                                                      int _permet = 1;
+
+                                                      await _dbHelper
+                                                          .updateTastStatus(
+                                                              snapshot
+                                                                  .data[index]
+                                                                  .id,
+                                                              _permet)
+                                                          .then((value) {
+                                                        setState(() {});
+                                                      });
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                              SnackBar(
+                                                                  content: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceAround,
+                                                        children: [
+                                                          Flexible(
+                                                            child: Text(
+                                                                " Portefeuille archivé "),
+                                                          ),
+                                                          TextButton(
+                                                              onPressed:
+                                                                  () async {
+                                                                int _temp = 0;
+                                                                await _dbHelper
+                                                                    .updateTastStatus(
+                                                                        snapshot
+                                                                            .data[
+                                                                                index]
+                                                                            .id,
+                                                                        _temp)
+                                                                    .then(
+                                                                        (value) {
+                                                                  setState(
+                                                                      () {});
+                                                                });
+                                                              },
+                                                              child: Text(
+                                                                  "Annuler"))
+                                                        ],
+                                                      )));
+                                                    },
+                                                    backgroundColor:
+                                                        Colors.blue,
+                                                    icon: CupertinoIcons
+                                                        .archivebox_fill,
+                                                  )
+                                                ],
+                                              ),
+                                              child: TaskCardWidget(
+                                                title:
+                                                    snapshot.data[index].title,
+                                                // ici  je vais mettre la fonction pour afficher le prix total de chaque task
+                                                total:
+                                                    snapshot.data[index].total,
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       ),
-                                    );
-                                  },
-                                ),
                               );
                             }))
                   ],
@@ -318,7 +364,6 @@ class _HomePageState extends State<HomePage> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Icon(Icons.dangerous,color: Colors.red,) ,
                   Text(
                     "Impossible de Supprimer".toUpperCase(),
                     style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
@@ -344,6 +389,4 @@ class _HomePageState extends State<HomePage> {
               ],
             ));
   }
-
-
 }

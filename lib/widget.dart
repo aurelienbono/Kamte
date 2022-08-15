@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:keep_note/database_helper.dart';
 
 DataBaseHelper _dbHelper = DataBaseHelper();
@@ -109,16 +110,27 @@ class NoGlowBehaviour extends ScrollBehavior {
   }
 }
 
-class TopCard extends StatelessWidget {
+class TopCard extends StatefulWidget {
   final String title;
   final int debit;
   final int credit;
   final int total;
+  final int? id; 
   TopCard(
       {required this.title,
       required this.credit,
       required this.debit,
+      this.id,
       required this.total});
+
+  @override
+  State<TopCard> createState() => _TopCardState();
+}
+
+class _TopCardState extends State<TopCard> {
+        TextEditingController nameController = TextEditingController();
+
+         DataBaseHelper _dbHelper = DataBaseHelper();
 
   @override
   Widget build(BuildContext context) {
@@ -132,14 +144,78 @@ class TopCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Flexible(
-                  child: Text(title,
+                  child: Text(widget.title,
                       style: TextStyle(
                           color: Colors.black45,
                           fontSize: 23,
                           fontWeight: FontWeight.bold)),
                 ),
 
-                //  GestureDetector(onTap:(){print("ouverture du dialogue");}, child:Icon(Icons.edit))
+ // le btn pour modifier le title dans la taskPage 
+ // gere le setState 
+
+      //            GestureDetector(onTap:(){  
+      //  showCupertinoDialog(
+      //   context: context,
+      //   builder: (context) => CupertinoAlertDialog(
+      //         title: Row(
+      //           mainAxisAlignment: MainAxisAlignment.center,
+      //           children: [
+      //             Text(
+      //               "Modifier le Titre".toUpperCase(),
+      //               style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+      //             )
+      //           ],
+      //         ),
+      //         content:  Padding(
+      //                             padding: const EdgeInsets.symmetric(
+      //                               vertical: 10,
+      //                             ),
+      //                             child: Column(
+      //                               children: [
+      //                                 CupertinoTextField(
+      //                                   placeholder: "${widget.title}",
+      //                                  controller: nameController,
+      //                                 )
+      //                               ],
+      //                             ),
+      //                           ),
+      //         actions: [
+      //             TextButton(
+      //               onPressed: () {
+                      
+      //                 Navigator.pop(context);
+      //               },
+      //               child: Text("ANNULER",style: TextStyle(color: Colors.black38),)), 
+      //           TextButton(
+      //               onPressed: () async  {
+        
+                                
+      //                                   if (nameController.text != '') {
+
+                                  
+      //                                      await _dbHelper.updateTaskTitle(widget.id!,nameController.text); 
+                                     
+
+      //                                     nameController.clear();
+
+      //                                     Navigator.pop(context);
+      //                                   } else {
+      //                                     Navigator.pop(context);
+      //                                   }
+      //                                   nameController.clear();
+      //                                 }
+
+      //               ,
+      //               child: Text("MODIFIER"))
+                   
+      //         ],
+      //       ));
+
+      //              }, child:Icon(Icons.edit))
+
+       // le btn pour modifier le title dans la taskPage 
+
               ],
             ),
             Padding(
@@ -173,7 +249,7 @@ class TopCard extends StatelessWidget {
                           SizedBox(
                             height: 5,
                           ),
-                          Text("$debit",
+                          Text("${widget.debit}",
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold)),
@@ -181,10 +257,10 @@ class TopCard extends StatelessWidget {
                       )
                     ],
                   ),
-                  Text(
-                    "$total",
-                    style: TextStyle(color: Colors.grey[800], fontSize: 22),
-                  ),
+                  // Text(
+                  //   "${widget.total}",
+                  //   style: TextStyle(color: Colors.grey[800], fontSize: 22),
+                  // ),
                   Row(
                     children: [
                       Container(
@@ -211,7 +287,7 @@ class TopCard extends StatelessWidget {
                           SizedBox(
                             height: 5,
                           ),
-                          Text("$credit",
+                          Text("${widget.credit}",
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold)),

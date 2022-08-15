@@ -51,7 +51,7 @@ class _TaskPageState extends State<TaskPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
   
-                TopCard( title: _taskTitle!,debit: _debit , credit: _credit, total: widget.task!.total!,), 
+                TopCard( id:_taskId ,title: _taskTitle!,debit: _debit , credit: _credit, total: widget.task!.total!,), 
                 Padding(
                   padding: const EdgeInsets.only(bottom:7 ),
                 ),
@@ -61,7 +61,7 @@ class _TaskPageState extends State<TaskPage> {
                     builder: (context, AsyncSnapshot snapshot) {
                       return Expanded(
                         child: snapshot.data.length == 0
-                            ? Image.asset("assets/images/image3.png")
+                            ?  Image.asset("assets/images/image3.png")
                             : ListView.builder(
                                 itemCount: snapshot.data.length,
                                 itemBuilder: (context, index) {
@@ -389,4 +389,5 @@ class _TaskPageState extends State<TaskPage> {
 
     return monRes;
   }
+
 }

@@ -63,6 +63,7 @@ Future<List<Task>> getTaskArchive() async{
 
 Future<void> updateTaskTitle(int id , String title) async{ 
   Database _db = await database() ; 
+  print("Le nouveau title: $title"); 
   await _db.rawUpdate("UPDATE tasks SET title='$title 'where id = '$id'");
   
 }
