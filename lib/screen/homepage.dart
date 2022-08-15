@@ -23,6 +23,7 @@ class _HomePageState extends State<HomePage> {
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   String? _taskTitle = '';
   TextEditingController nameController = TextEditingController();
+  GlobalKey<NavigatorState> _mykey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +97,14 @@ class _HomePageState extends State<HomePage> {
           ],
           elevation: 0,
         ),
-        body: SafeArea(
+        body: WillPopScope(
+             onWillPop: () async {
+            if (_mykey.currentState!.canPop()) {
+              _mykey.currentState!.pop();
+              return false;
+            }
+            return true;
+          },
           child: Container(
             width: double.infinity,
             padding: EdgeInsets.symmetric(horizontal: 24),
