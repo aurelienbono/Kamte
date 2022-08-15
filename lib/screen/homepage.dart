@@ -104,7 +104,11 @@ class _HomePageState extends State<HomePage> {
                             builder: (context, AsyncSnapshot snapshot) {
                               return ScrollConfiguration(
                                 behavior: NoGlowBehaviour(),
-                                child:  snapshot.data.length ==0 ?    Image.asset("assets/images/image2.png") :                                
+                                child:  snapshot.data.length ==0 ?   Center( child: Column(  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [  Image.asset("assets/images/image2.png", width: 300,height: 300,), 
+                                  SizedBox(height: 50,), 
+                                    Text("Appuyer sur + pour créer un portefeuille",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
+                                   ],),):                                
                                 ListView.builder(
                                   itemCount: snapshot.data.length,
                                   itemBuilder: (context, index) {
