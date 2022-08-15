@@ -36,7 +36,6 @@ class _HomePageState extends State<HomePage> {
                 ), accountEmail: Text("johndoe@example.com") , 
                 currentAccountPicture: 
                   CircleAvatar( 
-                    backgroundColor: Color(0xff00c4d5), 
                     child: Icon(Icons.person ,  size: 50,))
                 
                  ) , 

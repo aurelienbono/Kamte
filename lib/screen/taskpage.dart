@@ -26,17 +26,14 @@ class _TaskPageState extends State<TaskPage> {
   int _credit = 0 ; 
 
 
-  void initState() {
+  void initState(){
     if (widget.task != null) {
       _taskTitle = widget.task?.title;
       _taskId = widget.task?.id;
-    
     }
 
     super.initState();
   }
-
-
 
   bool _contentVisile = false;
   int _totalSum = 0;
@@ -54,7 +51,7 @@ class _TaskPageState extends State<TaskPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
   
-                TopCard( title: _taskTitle!,debit: _debit , credit: 0, total: widget.task!.total!,), 
+                TopCard( title: _taskTitle!,debit: _debit , credit: _credit, total: widget.task!.total!,), 
                 Padding(
                   padding: const EdgeInsets.only(bottom:7 ),
                 ),
@@ -169,7 +166,6 @@ class _TaskPageState extends State<TaskPage> {
                                                 int _res = await _dbHelper
                                                     .getTemp(snapshot
                                                         .data[index].id);
-                                            
                                                 await _dbHelper
                                                     .updateTaskCredit(
                                                         _taskId!,
@@ -205,7 +201,9 @@ class _TaskPageState extends State<TaskPage> {
                                                               .data[index].id,
                                                           etat_todo1)
                                                       .then((value) {
-                                                    setState(() {});
+                                                    setState(() { 
+
+                                                    });
                                                   });
                                                 }
                                               }
@@ -264,7 +262,7 @@ class _TaskPageState extends State<TaskPage> {
                               if (val != '') {
                                 if (widget.task != null) {
                                   DataBaseHelper _dbHelper = DataBaseHelper();
-
+                                
                                   if (res != 0) {
                                     Todo _newTodo = Todo(
                                       title: val,
@@ -273,12 +271,12 @@ class _TaskPageState extends State<TaskPage> {
                                       etat: 0,
                                       temp: res,
                                     );
-                                     await _dbHelper.debitTotal(  _taskId!); 
-
                                     await _dbHelper.updateTaskPriceTotal(
                                         _taskId!, 0);
                                     await _dbHelper.insertTodo(_newTodo);
-                                    setState(() {});
+                                    setState(()  { 
+
+                                    });
                                   } else {
                                     Todo _newTodo = Todo(
                                       title: val,
