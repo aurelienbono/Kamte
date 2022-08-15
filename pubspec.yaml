@@ -43,6 +43,9 @@ flutter:
     - assets/images/image2.png
     - assets/images/image3.png
     - assets/images/icons/splash/icon.png
+    - assets/images/icons/splash/page1.png
+    - assets/images/icons/splash/page2.png
+    - assets/images/icons/splash/page3.png
     - assets/images/icons/icon.png
     - assets/images/about_icon.png
     

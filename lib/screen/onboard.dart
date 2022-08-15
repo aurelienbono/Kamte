@@ -17,10 +17,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
   int _currentPage = 0; 
 
   List<Widget> _pages = [ 
-          OnBoarding(img: "assets/images/icons/splash/icon.png", title: "WelCome",subtitle: "And there you are, you now have an onboarding screen that shows the first time your app launches",),
-                  OnBoarding(img: "assets/images/icons/splash/icon.png", title: "Introduce",subtitle: "And there you are, you now have an onboarding screen that shows the first time your app launches",),
+          OnBoarding(img: "assets/images/icons/splash/page1.png", title: "Bienvenue",subtitle: "Kamte est une application mobile qui vous permet d'enregistrer vos opérations financières quotidiennes",),
+                  OnBoarding(img: "assets/images/icons/splash/page2.png", title: "Introduction",subtitle: "Avec Kamte, vous pouvez créer des porte-feuilles à l'infini. Y intégrer des opérations qui peuvent passé en débit ou en crédit",),
                 
-                  OnBoarding(img: "assets/images/icons/splash/icon.png", title: "GetStart",subtitle: "And there you are, you now have an onboarding screen that shows the first time your app launches",)
+                  OnBoarding(img: "assets/images/icons/splash/page3.png", title: "Commencer",subtitle: "Bénéficiez d'une interface intuitive et simple. Une opération est sous la forme :texte + montant ou inversement",)
   ]; 
 
   _onchanged(int index) {

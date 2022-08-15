@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:keep_note/screen/homepage.dart';
 import 'package:keep_note/screen/splash.dart';
 
 void main() {

@@ -15,7 +15,7 @@ class OnBoarding extends StatelessWidget {
         child: Column( 
           children: [ 
             Spacer(), 
-            Image.asset(img,height: 200,width: 200,) ,
+            Image.asset(img,height: 250,width: 250,) ,
             Text(title,style: TextStyle(fontSize: 20 , fontWeight: FontWeight.w700),), 
             SizedBox(height: 20,),
             Text(subtitle, textAlign: TextAlign.center,), 
