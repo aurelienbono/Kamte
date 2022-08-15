@@ -38,9 +38,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
         actions: [ 
           Padding(
             padding: const EdgeInsets.symmetric( horizontal: 12 , vertical: 20),
-            child:  GestureDetector(onTap: (){ 
+            child:  (_currentPage ==2 )  ? Text("") :  GestureDetector(onTap: (){ 
               Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage())); 
-             }, child: Text("Passer",style:TextStyle(color: Colors.black38 , fontSize: 16 , fontWeight: FontWeight.w500) )),
+             }, child:  Text("Passer",style:TextStyle(color: Colors.black38 , fontSize: 16 , fontWeight: FontWeight.w500) ))  
           )
         ],
       ),
