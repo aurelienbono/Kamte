@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings, unused_element
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +9,7 @@ import 'package:keep_note/models/todo.dart';
 import 'package:keep_note/widget.dart';
 import 'dart:math';
 import 'package:share_plus/share_plus.dart';
+
 
 class TaskPage extends StatefulWidget {
   final Task? task;
@@ -21,8 +22,8 @@ class TaskPage extends StatefulWidget {
 class _TaskPageState extends State<TaskPage> {
   String? _taskTitle = '';
   int? _taskId = 0;
-  int _debit = 0 ; 
-  int _credit = 0 ; 
+  int _credit=0; 
+
 
 
   void initState(){
@@ -36,6 +37,15 @@ class _TaskPageState extends State<TaskPage> {
   int _permet = 0;
   DataBaseHelper _dbHelper = DataBaseHelper();
 
+  int  getcredit(int _price){ 
+    _credit = 0;
+    setState(() {
+       _credit += _price; 
+    });
+    return _credit; 
+
+  }
+
   @override
   Widget build(BuildContext context)  {
     return Scaffold(
@@ -47,7 +57,7 @@ class _TaskPageState extends State<TaskPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
   
-                TopCard( id:_taskId ,title: _taskTitle!,debit: _debit , credit: _credit, total: widget.task!.total!,), 
+                TopCard( id:_taskId ,title: _taskTitle!,debit: 0 , credit: _credit , total: widget.task!.total!,), 
                 Padding(
                   padding: const EdgeInsets.only(bottom:7 ),
                 ),
@@ -117,7 +127,10 @@ class _TaskPageState extends State<TaskPage> {
                                                         _permet).then((value) {
                                                   setState(() { 
                                                   });
-                                                });        
+                                                });  
+                                            int nombre =   getcredit(await _dbHelper.creditTotal(_taskId!)); 
+                                            print("Mon nombre : $nombre"); 
+                                                  
                                               } else {
                                                 int _etat = await _dbHelper
                                                     .getEtatTodo(snapshot

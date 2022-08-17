@@ -112,8 +112,8 @@ class NoGlowBehaviour extends ScrollBehavior {
 
 class TopCard extends StatefulWidget {
   final String title;
-  final int debit;
-  final int credit;
+  final int? debit;
+  final int? credit;
   final int total;
   final int? id; 
   TopCard(

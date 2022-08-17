@@ -327,22 +327,22 @@ Future<void> updateTodoPrice(int id , int price) async{
 }
 
 
-Future<int> getCountTask() async{ 
-  Database _db = await database() ; 
- List<Map> result =  await _db.query("tasks"); 
-  int _totalTasks = result.length; 
-  return _totalTasks; 
+// Future<int> getCountTask() async{ 
+//   Database _db = await database() ; 
+//  List<Map> result =  await _db.query("tasks"); 
+//   int _totalTasks = result.length; 
+//   return _totalTasks; 
 
-}
+// }
  
 
-Future<int> getCountTodo() async{ 
+// Future<int> getCountTodo() async{ 
 
-   Database _db = await database() ; 
-  List<Map> result =  await _db.query("tasks"); 
-  int _totalTodo = result.length; 
-  return _totalTodo; 
-}
+//    Database _db = await database() ; 
+//   List<Map> result =  await _db.query("tasks"); 
+//   int _totalTodo = result.length; 
+//   return _totalTodo; 
+// }
  
 Future<int> debitTotal(int id) async{ 
   Database _db = await database() ; 
