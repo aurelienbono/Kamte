@@ -41,14 +41,14 @@ class _TaskPageState extends State<TaskPage> {
   void   getcredit(int _price){ 
     _credit = 0;
     setState(() {
-       _credit += _price; 
+       _credit = _price; 
     });
   }
 
   void  getdebit(int _price){ 
     _debit = 0;
     setState(() {
-       _debit += _price; 
+       _debit = _price; 
     });
   }
 
@@ -99,6 +99,10 @@ class _TaskPageState extends State<TaskPage> {
                                         _taskId!, snapshot.data[index].id ,  snapshot.data[index].price);   
                                                   setState(() {                
                                                   }); 
+
+                                            getdebit(await _dbHelper.debitTotal(_taskId!)); 
+                                            getcredit(await _dbHelper.creditTotal(_taskId!)); 
+
                                           },icon:Icons.delete , 
                                              backgroundColor:
                                                 Colors.red,
@@ -162,8 +166,10 @@ class _TaskPageState extends State<TaskPage> {
                                                   });
 
 
-                                                //  getdebit(await _dbHelper.creditTotal(_taskId!)); 
-                                         
+                                            getdebit(await _dbHelper.debitTotal(_taskId!)); 
+                                             getcredit(await _dbHelper.creditTotal(_taskId!)); 
+
+                                          
                                                 }
                                               }
                                             },
@@ -200,7 +206,7 @@ class _TaskPageState extends State<TaskPage> {
                                                   });
                                                 });
 
-                                         getdebit(await _dbHelper.creditTotal(_taskId!)); 
+                                         getdebit(await _dbHelper.debitTotal(_taskId!)); 
 
                                               } else {
                                                 int _etat = await _dbHelper
@@ -228,7 +234,9 @@ class _TaskPageState extends State<TaskPage> {
                                                     });
                                                   });
 
-                                                // getcredit(await _dbHelper.creditTotal(_taskId!)); 
+                                                getcredit(await _dbHelper.creditTotal(_taskId!)); 
+                                                getdebit(await _dbHelper.debitTotal(_taskId!)); 
+
 
                                                 }
                                               }
