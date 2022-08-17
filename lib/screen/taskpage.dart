@@ -273,7 +273,7 @@ class _TaskPageState extends State<TaskPage> {
                                   height: 22,
                                   decoration: BoxDecoration(
                                       color: Color(0xff82869d),
-                                      borderRadius: BorderRadius.circular(5),
+                                      borderRadius: BorderRadius.circular(7),
                                       border: Border.all(
                                           color: Color(0xff82869d),
                                           width: 1.4)),

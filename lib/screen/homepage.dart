@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
           elevation: 0,
         ),
         body: WillPopScope(
-             onWillPop: () async {
+          onWillPop: () async {
             if (_mykey.currentState!.canPop()) {
               _mykey.currentState!.pop();
               return false;
@@ -295,36 +295,46 @@ class _HomePageState extends State<HomePage> {
                   right: 0,
                   child: GestureDetector(
                     onTap: () {
-                      showCupertinoDialog(
+                      showModalBottomSheet(
                           context: context,
-                          builder: (context) => CupertinoAlertDialog(
-                                title:
-                                    Text("Creer Un PorteFeuille".toUpperCase()),
-                                content: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 10,
+                          builder: (BuildContext context) {
+                            return Container(
+                              height: 450,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15),
+                                    child: Text(
+                                      "Créez votre portefeuille".toUpperCase(),
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600),
+                                    ),
                                   ),
-                                  child: Column(
-                                    children: [
-                                      CupertinoTextField(
-                                        placeholder: "Ex:Marche Noel",
-                                        controller: nameController,
-                                      )
-                                    ],
+                                  SizedBox(height: 30),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: TextFormField(
+                                      controller:nameController ,
+                                      decoration: InputDecoration(
+                                          hintText:
+                                              " Ex: Marche Noel".toUpperCase(),
+                                          icon: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Icon(
+                                              Icons.shopping_basket,
+                                              size: 29,
+                                              color: Color(0xff00c4d5),
+                                            ),
+                                          )),
+                                    ),
                                   ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text(
-                                        "Annuler".toUpperCase(),
-                                        style: TextStyle(color: Colors.red),
-                                      )),
-                                  CupertinoButton(
-                                      child: Text("Valider".toUpperCase()),
-                                      onPressed: () async {
+                                  SizedBox(
+                                    height: 40,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
                                         if (nameController.text != '') {
                                           Task _newTask = Task(
                                               title: nameController.text,
@@ -342,9 +352,87 @@ class _HomePageState extends State<HomePage> {
                                           Navigator.pop(context);
                                         }
                                         nameController.clear();
-                                      })
+                                      }, 
+                                    child: Container(
+                                        width: 200,
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                            color: Color(0xff00c4d5),
+                                            borderRadius:
+                                                BorderRadius.circular(7)),
+                                        child: Center(
+                                            child: Text(
+                                          "Valider".toUpperCase(),
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w700),
+                                        ))),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    child: Text(
+                                        " Créez un portefeuille (Ex: Marche Noel) ici vous permettra d'y mettre toutes vos depenses  en :  Debit(Gain ) , Credit(Perte), prevision (Surement une promesse d'argent ) , "),
+                                  ),
                                 ],
-                              ));
+                              ),
+                            );
+                     
+                          });
+                      // showCupertinoDialog(
+                      //     context: context,
+                      //     builder: (context) => CupertinoAlertDialog(
+                      //           title:
+                      //               Text("Creer Un PorteFeuille".toUpperCase()),
+                      //           content: Padding(
+                      //             padding: const EdgeInsets.symmetric(
+                      //               vertical: 10,
+                      //             ),
+                      //             child: Column(
+                      //               children: [
+                      //                 CupertinoTextField(
+                      //                   placeholder: "Ex:Marche Noel",
+                      //                   controller: nameController,
+                      //                 )
+                      //               ],
+                      //             ),
+                      //           ),
+                      //           actions: [
+                      //             TextButton(
+                      //                 onPressed: () {
+                      //                   Navigator.pop(context);
+                      //                 },
+                      //                 child: Text(
+                      //                   "Annuler".toUpperCase(),
+                      //                   style: TextStyle(color: Colors.red),
+                      //                 )),
+                      //             CupertinoButton(
+                      //                 child: Text("Valider".toUpperCase()),
+                      //                 onPressed: () async {
+                      //                   if (nameController.text != '') {
+                      //                     Task _newTask = Task(
+                      //                         title: nameController.text,
+                      //                         total: 0,
+                      //                         status: 0);
+                      //                     await _dbHelper
+                      //                         .insertTask(_newTask)
+                      //                         .then((value) {
+                      //                       setState(() {});
+                      //                     });
+                      //                     nameController.clear();
+
+                      //                     Navigator.pop(context);
+                      //                   } else {
+                      //                     Navigator.pop(context);
+                      //                   }
+                      //                   nameController.clear();
+                      //                 } )
+                      //           ],
+                      //         ));
                     },
                     child: Container(
                         width: 55,
