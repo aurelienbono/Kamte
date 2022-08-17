@@ -23,6 +23,7 @@ class _TaskPageState extends State<TaskPage> {
   String? _taskTitle = '';
   int? _taskId = 0;
   int _credit=0; 
+  int _debit=0; 
 
 
 
@@ -37,14 +38,20 @@ class _TaskPageState extends State<TaskPage> {
   int _permet = 0;
   DataBaseHelper _dbHelper = DataBaseHelper();
 
-  int  getcredit(int _price){ 
+  void   getcredit(int _price){ 
     _credit = 0;
     setState(() {
        _credit += _price; 
     });
-    return _credit; 
-
   }
+
+  void  getdebit(int _price){ 
+    _debit = 0;
+    setState(() {
+       _debit += _price; 
+    });
+  }
+
 
   @override
   Widget build(BuildContext context)  {
@@ -57,7 +64,7 @@ class _TaskPageState extends State<TaskPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
   
-                TopCard( id:_taskId ,title: _taskTitle!,debit: 0 , credit: _credit , total: widget.task!.total!,), 
+                TopCard( id:_taskId ,title: _taskTitle!,debit: _debit , credit: _credit , total: widget.task!.total!,), 
                 Padding(
                   padding: const EdgeInsets.only(bottom:7 ),
                 ),
@@ -128,9 +135,7 @@ class _TaskPageState extends State<TaskPage> {
                                                   setState(() { 
                                                   });
                                                 });  
-                                            int nombre =   getcredit(await _dbHelper.creditTotal(_taskId!)); 
-                                            print("Mon nombre : $nombre"); 
-                                                  
+                                             getcredit(await _dbHelper.creditTotal(_taskId!)); 
                                               } else {
                                                 int _etat = await _dbHelper
                                                     .getEtatTodo(snapshot
@@ -155,6 +160,10 @@ class _TaskPageState extends State<TaskPage> {
                                                       .then((value) {
                                                     setState(() {});
                                                   });
+
+
+                                                //  getdebit(await _dbHelper.creditTotal(_taskId!)); 
+                                         
                                                 }
                                               }
                                             },
@@ -190,6 +199,9 @@ class _TaskPageState extends State<TaskPage> {
                                                     
                                                   });
                                                 });
+
+                                         getdebit(await _dbHelper.creditTotal(_taskId!)); 
+
                                               } else {
                                                 int _etat = await _dbHelper
                                                     .getEtatTodo(snapshot
@@ -215,6 +227,9 @@ class _TaskPageState extends State<TaskPage> {
 
                                                     });
                                                   });
+
+                                                // getcredit(await _dbHelper.creditTotal(_taskId!)); 
+
                                                 }
                                               }
                                             },
