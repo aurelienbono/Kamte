@@ -128,9 +128,7 @@ class TopCard extends StatefulWidget {
 }
 
 class _TopCardState extends State<TopCard> {
-        TextEditingController nameController = TextEditingController();
-
-         DataBaseHelper _dbHelper = DataBaseHelper();
+  TextEditingController nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -249,10 +247,14 @@ class _TopCardState extends State<TopCard> {
                           SizedBox(
                             height: 5,
                           ),
-                          Text("${widget.debit}",
+                            Text("${  widget.debit  }",
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold)),
+                          // Text("${  widget.debit  }",
+                          //     style: TextStyle(
+                          //         color: Colors.black,
+                          //         fontWeight: FontWeight.bold)),
                         ],
                       )
                     ],

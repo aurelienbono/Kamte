@@ -8,7 +8,6 @@ import 'package:keep_note/models/task.dart';
 import 'package:keep_note/models/todo.dart';
 import 'package:keep_note/widget.dart';
 import 'dart:math';
-
 import 'package:share_plus/share_plus.dart';
 
 class TaskPage extends StatefulWidget {
@@ -34,9 +33,6 @@ class _TaskPageState extends State<TaskPage> {
 
     super.initState();
   }
-
-  bool _contentVisile = false;
-  int _totalSum = 0;
   int _permet = 0;
   DataBaseHelper _dbHelper = DataBaseHelper();
 
@@ -103,6 +99,7 @@ class _TaskPageState extends State<TaskPage> {
                                               int _etat =
                                                   await _dbHelper.getEtatTodo(
                                                       snapshot.data[index].id);
+
                                               if (_etat == 0) {
                                                 _permet = 1;
                                                 int _res = await _dbHelper
@@ -117,10 +114,10 @@ class _TaskPageState extends State<TaskPage> {
                                                 await _dbHelper
                                                     .updateTodoEtat(
                                                         snapshot.data[index].id,
-                                                        _permet)
-                                                    .then((value) {
-                                                  setState(() {});
-                                                });
+                                                        _permet).then((value) {
+                                                  setState(() { 
+                                                  });
+                                                });        
                                               } else {
                                                 int _etat = await _dbHelper
                                                     .getEtatTodo(snapshot
@@ -291,7 +288,8 @@ class _TaskPageState extends State<TaskPage> {
                                     await _dbHelper.insertTodo(_newTodo);
                                     setState(() {});
                                   }
-                                }
+                    
+                                } 
                               }
                             },
                             decoration: InputDecoration(
