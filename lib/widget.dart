@@ -133,7 +133,7 @@ class _TopCardState extends State<TopCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 120,
+      height: 80,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

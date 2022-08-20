@@ -64,106 +64,110 @@ class _TaskPageState extends State<TaskPage> {
               children: [
                 Container(
                   color: Color(0xff00c4d5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Flexible(
-                        child: Text(_taskTitle!,
-                            style: TextStyle(
-                                color: Colors.black45,
-                                fontSize: 23,
-                                fontWeight: FontWeight.bold)),
-                      ),
-                      GestureDetector(
-                          onTap: () {
-                           
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10), 
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        
+                        Flexible(
+                          child: Text(_taskTitle!,
+                              style: TextStyle(
+                                  color: Colors.black45,
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                        GestureDetector(
+                            onTap: () {
+                             
 showModalBottomSheet(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Container(
-                              height: 450,
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 15),
-                                    child: Text(
-                                      "Modifier le titre de  votre portefeuille".toUpperCase(),
-                                      style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w600),
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Container(
+                                height: 450,
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 15),
+                                      child: Text(
+                                        "Modifier le titre de  votre portefeuille".toUpperCase(),
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(height: 30),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: TextFormField(
-                                      controller:nameController ,
-                                      decoration: InputDecoration(
-                                          hintText:
-                                              _taskTitle,
-                                          icon: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Icon(
-                                              Icons.shopping_basket,
-                                              size: 29,
-                                              color: Color(0xff00c4d5),
-                                            ),
-                                          )),
+                                    SizedBox(height: 30),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      child: TextFormField(
+                                        controller:nameController ,
+                                        decoration: InputDecoration(
+                                            hintText:
+                                                _taskTitle,
+                                            icon: Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Icon(
+                                                Icons.shopping_basket,
+                                                size: 29,
+                                                color: Color(0xff00c4d5),
+                                              ),
+                                            )),
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 40,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () async {
-                                        if (nameController.text != '') {
-                                         await _dbHelper.updateTaskTitle(_taskId!, nameController.text).then((value) { setState(() {
-                                           
-                                         }); }); 
+                                    SizedBox(
+                                      height: 40,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () async {
+                                          if (nameController.text != '') {
+                                           await _dbHelper.updateTaskTitle(_taskId!, nameController.text).then((value) { setState(() {
+                                             
+                                           }); }); 
+                                            nameController.clear();
+
+                                            Navigator.pop(context);
+                                          } else {
+                                            Navigator.pop(context);
+                                          }
                                           nameController.clear();
+                                        }, 
+                                      child: Container(
+                                          width: 200,
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                              color: Color(0xff00c4d5),
+                                              borderRadius:
+                                                  BorderRadius.circular(7)),
+                                          child: Center(
+                                              child: Text(
+                                            "Modifier".toUpperCase(),
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w700),
+                                          ))),
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 10),
+                                      child: Text(
+                                          " Créez un portefeuille (Ex: Marche Noel) ici vous permettra d'y mettre toutes vos depenses  en :  Debit(Gain ) , Credit(Perte), prevision (Surement une promesse d'argent ) , "),
+                                    ),
+                                  ],
+                                ),
+                              );
+                       
+                            });
 
-                                          Navigator.pop(context);
-                                        } else {
-                                          Navigator.pop(context);
-                                        }
-                                        nameController.clear();
-                                      }, 
-                                    child: Container(
-                                        width: 200,
-                                        height: 50,
-                                        decoration: BoxDecoration(
-                                            color: Color(0xff00c4d5),
-                                            borderRadius:
-                                                BorderRadius.circular(7)),
-                                        child: Center(
-                                            child: Text(
-                                          "Modifier".toUpperCase(),
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w700),
-                                        ))),
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 10),
-                                    child: Text(
-                                        " Créez un portefeuille (Ex: Marche Noel) ici vous permettra d'y mettre toutes vos depenses  en :  Debit(Gain ) , Credit(Perte), prevision (Surement une promesse d'argent ) , "),
-                                  ),
-                                ],
-                              ),
-                            );
-                     
-                          });
-
-                           
-                          },
-                          child: Icon(Icons.edit))
-                    ],
+                             
+                            },
+                            child: Icon(Icons.edit))
+                      ],
+                    ),
                   ),
                 ),
                 TopCard(
