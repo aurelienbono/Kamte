@@ -10,7 +10,6 @@ import 'package:keep_note/widget.dart';
 import 'dart:math';
 import 'package:share_plus/share_plus.dart';
 
-
 class TaskPage extends StatefulWidget {
   final Task? task;
   TaskPage({required this.task});
@@ -22,12 +21,10 @@ class TaskPage extends StatefulWidget {
 class _TaskPageState extends State<TaskPage> {
   String? _taskTitle = '';
   int? _taskId = 0;
-  int _credit=0; 
-  int _debit=0; 
+  int _credit = 0;
+  int _debit = 0;
 
-
-
-  void initState(){
+  void initState() {
     if (widget.task != null) {
       _taskTitle = widget.task?.title;
       _taskId = widget.task?.id;
@@ -35,26 +32,28 @@ class _TaskPageState extends State<TaskPage> {
 
     super.initState();
   }
+
   int _permet = 0;
   DataBaseHelper _dbHelper = DataBaseHelper();
 
-  void   getcredit(int _price){ 
+  void getcredit(int _price) {
     _credit = 0;
     setState(() {
-       _credit = _price; 
+      _credit = _price;
     });
   }
 
-  void  getdebit(int _price){ 
+  void getdebit(int _price) {
     _debit = 0;
     setState(() {
-       _debit = _price; 
+      _debit = _price;
     });
   }
 
+  TextEditingController nameController = TextEditingController();
 
   @override
-  Widget build(BuildContext context)  {
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -63,10 +62,125 @@ class _TaskPageState extends State<TaskPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-  
-                TopCard( id:_taskId ,title: _taskTitle!,debit: _debit , credit: _credit , total: widget.task!.total!,), 
+                Container(
+                  color: Color(0xff00c4d5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Flexible(
+                        child: Text(_taskTitle!,
+                            style: TextStyle(
+                                color: Colors.black45,
+                                fontSize: 23,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      GestureDetector(
+                          onTap: () {
+                           
+showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+                              height: 450,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15),
+                                    child: Text(
+                                      "Modifier le titre de  votre portefeuille".toUpperCase(),
+                                      style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
+                                  SizedBox(height: 30),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: TextFormField(
+                                      controller:nameController ,
+                                      decoration: InputDecoration(
+                                          hintText:
+                                              _taskTitle,
+                                          icon: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Icon(
+                                              Icons.shopping_basket,
+                                              size: 29,
+                                              color: Color(0xff00c4d5),
+                                            ),
+                                          )),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 40,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                        if (nameController.text != '') {
+                                          Task _newTask = Task(
+                                              title: nameController.text,
+                                              total: 0,
+                                              status: 0);
+                                          await _dbHelper
+                                              .insertTask(_newTask)
+                                              .then((value) {
+                                            setState(() {});
+                                          });
+                                          nameController.clear();
+
+                                          Navigator.pop(context);
+                                        } else {
+                                          Navigator.pop(context);
+                                        }
+                                        nameController.clear();
+                                      }, 
+                                    child: Container(
+                                        width: 200,
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                            color: Color(0xff00c4d5),
+                                            borderRadius:
+                                                BorderRadius.circular(7)),
+                                        child: Center(
+                                            child: Text(
+                                          "Modifier".toUpperCase(),
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w700),
+                                        ))),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    child: Text(
+                                        " Créez un portefeuille (Ex: Marche Noel) ici vous permettra d'y mettre toutes vos depenses  en :  Debit(Gain ) , Credit(Perte), prevision (Surement une promesse d'argent ) , "),
+                                  ),
+                                ],
+                              ),
+                            );
+                     
+                          });
+
+                           
+                          },
+                          child: Icon(Icons.edit))
+                    ],
+                  ),
+                ),
+                TopCard(
+                  id: _taskId,
+                  title: _taskTitle!,
+                  debit: _debit,
+                  credit: _credit,
+                  total: widget.task!.total!,
+                ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom:7 ),
+                  padding: const EdgeInsets.only(bottom: 7),
                 ),
                 FutureBuilder(
                     initialData: [],
@@ -74,7 +188,7 @@ class _TaskPageState extends State<TaskPage> {
                     builder: (context, AsyncSnapshot snapshot) {
                       return Expanded(
                         child: snapshot.data.length == 0
-                            ?  Image.asset("assets/images/image3.png")
+                            ? Image.asset("assets/images/image3.png")
                             : ListView.builder(
                                 itemCount: snapshot.data.length,
                                 itemBuilder: (context, index) {
@@ -84,29 +198,37 @@ class _TaskPageState extends State<TaskPage> {
                                       startActionPane: ActionPane(
                                         motion: DrawerMotion(),
                                         dragDismissible: false,
-                                        children: [                             
-                                          SlidableAction(onPressed: (val) async{ 
-                                      int _tempEtat =   await  _dbHelper.getEtatTodo(snapshot.data[index].id); 
-                                       if(_tempEtat ==1){ 
-                                      int nbr = snapshot.data[index].price ; 
+                                        children: [
+                                          SlidableAction(
+                                              onPressed: (val) async {
+                                                int _tempEtat = await _dbHelper
+                                                    .getEtatTodo(snapshot
+                                                        .data[index].id);
+                                                if (_tempEtat == 1) {
+                                                  int nbr = snapshot
+                                                      .data[index].price;
 
-                                        nbr = nbr*(-1); 
-                                         await  _dbHelper.deleteTodo(
-                                        _taskId!, snapshot.data[index].id , nbr); 
-                                       }  
-                                       // sinon 
-                                         await  _dbHelper.deleteTodo(
-                                        _taskId!, snapshot.data[index].id ,  snapshot.data[index].price);   
-                                                  setState(() {                
-                                                  }); 
+                                                  nbr = nbr * (-1);
+                                                  await _dbHelper.deleteTodo(
+                                                      _taskId!,
+                                                      snapshot.data[index].id,
+                                                      nbr);
+                                                }
+                                                // sinon
+                                                await _dbHelper.deleteTodo(
+                                                    _taskId!,
+                                                    snapshot.data[index].id,
+                                                    snapshot.data[index].price);
+                                                setState(() {});
 
-                                            getdebit(await _dbHelper.debitTotal(_taskId!)); 
-                                            getcredit(await _dbHelper.creditTotal(_taskId!)); 
-
-                                          },icon:Icons.delete , 
-                                             backgroundColor:
-                                                Colors.red,
-                                            foregroundColor: Colors.white)
+                                                getdebit(await _dbHelper
+                                                    .debitTotal(_taskId!));
+                                                getcredit(await _dbHelper
+                                                    .creditTotal(_taskId!));
+                                              },
+                                              icon: Icons.delete,
+                                              backgroundColor: Colors.red,
+                                              foregroundColor: Colors.white)
                                         ],
                                       ),
                                       endActionPane: ActionPane(
@@ -135,20 +257,20 @@ class _TaskPageState extends State<TaskPage> {
                                                 await _dbHelper
                                                     .updateTodoEtat(
                                                         snapshot.data[index].id,
-                                                        _permet).then((value) {
-                                                  setState(() { 
-                                                  });
-                                                });  
-                                             getcredit(await _dbHelper.creditTotal(_taskId!)); 
+                                                        _permet)
+                                                    .then((value) {
+                                                  setState(() {});
+                                                });
+                                                getcredit(await _dbHelper
+                                                    .creditTotal(_taskId!));
                                               } else {
                                                 int _etat = await _dbHelper
                                                     .getEtatTodo(snapshot
                                                         .data[index].id);
 
                                                 if (_etat == 1) {
-                                                  // aucune action 
+                                                  // aucune action
                                                 } else {
-                                                 
                                                   int etat_todo = 1;
                                                   int _res = await _dbHelper
                                                       .getPrice(snapshot
@@ -165,21 +287,20 @@ class _TaskPageState extends State<TaskPage> {
                                                     setState(() {});
                                                   });
 
-
-                                            getdebit(await _dbHelper.debitTotal(_taskId!)); 
-                                             getcredit(await _dbHelper.creditTotal(_taskId!)); 
-
-                                          
+                                                  getdebit(await _dbHelper
+                                                      .debitTotal(_taskId!));
+                                                  getcredit(await _dbHelper
+                                                      .creditTotal(_taskId!));
                                                 }
                                               }
                                             },
                                             backgroundColor:
                                                 Colors.red.shade200,
                                             foregroundColor: Colors.white,
-                                            icon: CupertinoIcons.cart_fill_badge_minus,
+                                            icon: CupertinoIcons
+                                                .cart_fill_badge_minus,
                                           ),
-                                             
-                                        SlidableAction(
+                                          SlidableAction(
                                             autoClose: true,
                                             flex: 1,
                                             onPressed: (value) async {
@@ -201,20 +322,18 @@ class _TaskPageState extends State<TaskPage> {
                                                         snapshot.data[index].id,
                                                         _permet)
                                                     .then((value) {
-                                                  setState(() { 
-                                                    
-                                                  });
+                                                  setState(() {});
                                                 });
 
-                                         getdebit(await _dbHelper.debitTotal(_taskId!)); 
-
+                                                getdebit(await _dbHelper
+                                                    .debitTotal(_taskId!));
                                               } else {
                                                 int _etat = await _dbHelper
                                                     .getEtatTodo(snapshot
                                                         .data[index].id);
 
                                                 if (_etat == 2) {
-                                                // aucune action                                                   
+                                                  // aucune action
                                                 } else {
                                                   int etat_todo1 = 2;
                                                   int _res = await _dbHelper
@@ -229,23 +348,22 @@ class _TaskPageState extends State<TaskPage> {
                                                               .data[index].id,
                                                           etat_todo1)
                                                       .then((value) {
-                                                    setState(() { 
-
-                                                    });
+                                                    setState(() {});
                                                   });
 
-                                                getcredit(await _dbHelper.creditTotal(_taskId!)); 
-                                                getdebit(await _dbHelper.debitTotal(_taskId!)); 
-
-
+                                                  getcredit(await _dbHelper
+                                                      .creditTotal(_taskId!));
+                                                  getdebit(await _dbHelper
+                                                      .debitTotal(_taskId!));
                                                 }
                                               }
                                             },
                                             backgroundColor:
                                                 Colors.green.shade200,
                                             foregroundColor: Colors.white,
-                                            icon: CupertinoIcons.cart_badge_plus,
-                                          ),     
+                                            icon:
+                                                CupertinoIcons.cart_badge_plus,
+                                          ),
                                         ],
                                       ),
                                       child: TodoWidget(
@@ -295,7 +413,7 @@ class _TaskPageState extends State<TaskPage> {
                               if (val != '') {
                                 if (widget.task != null) {
                                   DataBaseHelper _dbHelper = DataBaseHelper();
-                                
+
                                   if (res != 0) {
                                     Todo _newTodo = Todo(
                                       title: val,
@@ -307,9 +425,7 @@ class _TaskPageState extends State<TaskPage> {
                                     await _dbHelper.updateTaskPriceTotal(
                                         _taskId!, 0);
                                     await _dbHelper.insertTodo(_newTodo);
-                                    setState(()  { 
-
-                                    });
+                                    setState(() {});
                                   } else {
                                     Todo _newTodo = Todo(
                                       title: val,
@@ -324,8 +440,7 @@ class _TaskPageState extends State<TaskPage> {
                                     await _dbHelper.insertTodo(_newTodo);
                                     setState(() {});
                                   }
-                    
-                                } 
+                                }
                               }
                             },
                             decoration: InputDecoration(
@@ -423,5 +538,4 @@ class _TaskPageState extends State<TaskPage> {
 
     return monRes;
   }
-
 }
