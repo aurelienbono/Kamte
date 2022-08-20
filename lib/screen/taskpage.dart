@@ -118,15 +118,9 @@ showModalBottomSheet(
                                   GestureDetector(
                                     onTap: () async {
                                         if (nameController.text != '') {
-                                          Task _newTask = Task(
-                                              title: nameController.text,
-                                              total: 0,
-                                              status: 0);
-                                          await _dbHelper
-                                              .insertTask(_newTask)
-                                              .then((value) {
-                                            setState(() {});
-                                          });
+                                         await _dbHelper.updateTaskTitle(_taskId!, nameController.text).then((value) { setState(() {
+                                           
+                                         }); }); 
                                           nameController.clear();
 
                                           Navigator.pop(context);
