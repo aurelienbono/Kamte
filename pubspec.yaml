@@ -19,6 +19,7 @@ dependencies:
   flutter_slidable: ^2.0.0
   share_plus: ^4.0.10
   shared_preferences: ^2.0.15
+  rename: ^2.0.1
 
 dev_dependencies:
   flutter_test:
