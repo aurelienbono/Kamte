@@ -376,7 +376,7 @@ class _HomePageState extends State<HomePage> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 10),
                                     child: Text(
-                                        " Créez un portefeuille (Ex: Marche Noel) ici vous permettra d'y mettre toutes vos depenses  en :  Debit(Gain ) , Credit(Perte), prevision (Surement une promesse d'argent ) , "),
+                                        " Créer un portefeuille (Ex: Christmas Walk) ici vous permettra de mettre toutes vos dépenses dans: Débit(Gain), Crédit(Perte), Prévision (sûrement une promesse d'argent.) "),
                                   ),
                                 ],
                               ),
