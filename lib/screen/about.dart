@@ -29,7 +29,7 @@ class _AboutPageState extends State<AboutPage> {
           child: Text(
             "A PROPOS",
             style: TextStyle(
-                color: Colors.black54, fontSize: 25, fontWeight: FontWeight.w600),
+                 fontSize: 25, fontWeight: FontWeight.w600),
           ),
         ),
         centerTitle: true,
@@ -66,7 +66,7 @@ class _AboutPageState extends State<AboutPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          " Kamte est une idée original de Marius NGADOM ",
+                          " Kamte est une idée originale de Marius NGADOM ",
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w600),
                         ),
@@ -81,7 +81,7 @@ class _AboutPageState extends State<AboutPage> {
                       height: 12,
                     ),
                     Text(
-                      " Dévelopé par Bono Mbelle Aurelien ",
+                      " Développé par Bono Mbelle Aurélien ",
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),

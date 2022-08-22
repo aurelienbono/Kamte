@@ -38,7 +38,7 @@ class _ArchivePageState extends State<ArchivePage> {
             ),
             child: Text(
               "ARCHIVES",
-              style: TextStyle(color:  Colors.black54, fontSize: 25, fontWeight: FontWeight.w600),
+              style: TextStyle( fontSize: 25, fontWeight: FontWeight.w600),
             ),
           ),
           centerTitle: true,

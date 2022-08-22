@@ -155,7 +155,7 @@ showModalBottomSheet(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 10),
                                       child: Text(
-                                          " Créez un portefeuille (Ex: Marche Noel) ici vous permettra d'y mettre toutes vos depenses  en :  Debit(Gain ) , Credit(Perte), prevision (Surement une promesse d'argent ) , "),
+                                          "En cas d'erreur de titre dans votre portefeuille, vous avez la possibilité de modifier clairement votre titre défini au départ."),
                                     ),
                                   ],
                                 ),
