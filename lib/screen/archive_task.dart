@@ -65,7 +65,30 @@ class _ArchivePageState extends State<ArchivePage> {
                             builder: (context, AsyncSnapshot snapshot) {
                               return ScrollConfiguration(
                                 behavior: NoGlowBehaviour(),
-                                child: ListView.builder(
+                                   child: snapshot.data.length == 0
+                                    ? Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              "assets/images/icons/trash.png",
+                                              width: 300,
+                                              height: 300,
+                                            ),
+                                            SizedBox(
+                                              height: 40,
+                                            ),
+                                            Text(
+                                              "Votre corbeille est vide ",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    : ListView.builder(
                                   itemCount: snapshot.data.length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(

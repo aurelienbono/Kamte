@@ -48,6 +48,7 @@ flutter:
     - assets/images/icons/splash/page1.png
     - assets/images/icons/splash/page2.png
     - assets/images/icons/splash/page3.png
+    - assets/images/icons/trash.png
     - assets/images/icons/icon.png
     - assets/images/about_icon.png
     
