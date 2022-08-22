@@ -442,7 +442,7 @@ showModalBottomSheet(
                               }
                             },
                             decoration: InputDecoration(
-                                hintText: " Entrez une nouvelle  depense",
+                                hintText: " Entrez une nouvelle  opération",
                                 border: InputBorder.none),
                           ))
                         ],
